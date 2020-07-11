@@ -3,9 +3,9 @@ using System.Data;
 
 namespace MordorFanficWeb.ViewModels.FluentValidation
 {
-    public class UpdateUserViewModelValidation : AbstractValidator<RegistrationViewModel>
+    public class UpdateUserViewModelValidator : AbstractValidator<UpdateUserViewModel>
     {
-        public UpdateUserViewModelValidation()
+        public UpdateUserViewModelValidator()
         {
             RuleFor(vm => vm.UserName).NotEmpty().WithMessage("User name cannot be empty");
             RuleFor(vm => vm.FirstName).NotEmpty().WithMessage("First name cannot be empty");

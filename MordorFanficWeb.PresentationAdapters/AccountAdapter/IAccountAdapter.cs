@@ -10,7 +10,7 @@ namespace MordorFanficWeb.PresentationAdapters.AccountAdapter
     {
         Task<bool> CreateUser(RegistrationViewModel user, string password);
         Task DeleteUser(string id);
-        Task<AppUserModel> GetUserById(string id);
+        Task<GetUserViewModel> GetUserById(string id);
         Task<List<UsersListViewModel>> GetUsersList();
         Task UpdateUser(UpdateUserViewModel user);        
     }

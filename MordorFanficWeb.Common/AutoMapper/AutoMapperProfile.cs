@@ -10,7 +10,7 @@ namespace MordorFanficWeb.Common.AutoMapper
         {
             CreateMap<RegistrationViewModel, AppUserModel>();
             CreateMap<UsersListViewModel, AppUserModel>().ReverseMap();
-            CreateMap<UpdateUserViewModel, AppUserModel>();
+            CreateMap<GetUserViewModel, AppUserModel>().ReverseMap();
         }
     }
 }

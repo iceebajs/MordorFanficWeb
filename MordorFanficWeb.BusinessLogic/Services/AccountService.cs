@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using MordorFanficWeb.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using MordorFanficWeb.BusinessLogic.Interfaces;
 
 namespace MordorFanficWeb.BusinessLogic.Services
 {
-    public class AccountService: IDisposable
+    public class AccountService : IAccountService, IDisposable
     {
         protected readonly UserManager<AppUserModel> userManager;
 

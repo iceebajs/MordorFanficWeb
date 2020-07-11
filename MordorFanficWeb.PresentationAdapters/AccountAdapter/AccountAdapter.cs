@@ -4,15 +4,16 @@ using MordorFanficWeb.BusinessLogic.Services;
 using MordorFanficWeb.Models;
 using MordorFanficWeb.ViewModels;
 using AutoMapper;
+using MordorFanficWeb.BusinessLogic.Interfaces;
 
 namespace MordorFanficWeb.PresentationAdapters.AccountAdapter
 {
     public class AccountAdapter : IAccountAdapter
     {
         private readonly IMapper mapper;
-        private readonly AccountService accService;
+        private readonly IAccountService accService;
 
-        public AccountAdapter(IMapper mapper, AccountService accService)
+        public AccountAdapter(IMapper mapper, IAccountService accService)
         {
             this.mapper = mapper;
             this.accService = accService;
@@ -28,9 +29,9 @@ namespace MordorFanficWeb.PresentationAdapters.AccountAdapter
             await accService.DeleteUser(id).ConfigureAwait(false);
         }
 
-        public async Task<AppUserModel> GetUserById(string id)
+        public async Task<GetUserViewModel> GetUserById(string id)
         {
-            return await accService.GetUserById(id).ConfigureAwait(false);
+            return mapper.Map<GetUserViewModel>(await accService.GetUserById(id).ConfigureAwait(false));
         }
 
         public async Task<List<UsersListViewModel>> GetUsersList()
@@ -40,7 +41,17 @@ namespace MordorFanficWeb.PresentationAdapters.AccountAdapter
 
         public async Task UpdateUser(UpdateUserViewModel user)
         {
-            await accService.UpdateUser(mapper.Map<AppUserModel>(user)).ConfigureAwait(false);
+            var userIdentity = await AssignUpdatedUserFields(user).ConfigureAwait(false);
+            await accService.UpdateUser(userIdentity).ConfigureAwait(false);
+        }
+
+        public async Task<AppUserModel> AssignUpdatedUserFields(UpdateUserViewModel user)
+        {
+            var userIdentity = await accService.GetUserById(user.Id).ConfigureAwait(false);
+            userIdentity.UserName = user.UserName;
+            userIdentity.FirstName = user.FirstName;
+            userIdentity.LastName = user.LastName;
+            return userIdentity;
         }
     }
 }
