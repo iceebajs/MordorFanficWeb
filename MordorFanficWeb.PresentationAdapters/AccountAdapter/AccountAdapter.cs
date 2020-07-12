@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using MordorFanficWeb.BusinessLogic.Services;
 using MordorFanficWeb.Models;
 using MordorFanficWeb.ViewModels;
 using AutoMapper;
 using MordorFanficWeb.BusinessLogic.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace MordorFanficWeb.PresentationAdapters.AccountAdapter
 {
@@ -19,7 +19,7 @@ namespace MordorFanficWeb.PresentationAdapters.AccountAdapter
             this.accService = accService;
         }
 
-        public async Task<bool> CreateUser(RegistrationViewModel user, string password)
+        public async Task<IdentityResult> CreateUser(RegistrationViewModel user, string password)
         {
             return await accService.CreateUser(mapper.Map<AppUserModel>(user), password).ConfigureAwait(false);
         }

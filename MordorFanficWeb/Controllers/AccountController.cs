@@ -6,6 +6,8 @@ using MordorFanficWeb.ViewModels;
 using System;
 using NLog.Fluent;
 using System.Collections.Generic;
+using MordorFanficWeb.Common;
+using MordorFanficWeb.Common.Helper;
 
 namespace MordorFanficWeb.Controllers
 {
@@ -33,8 +35,12 @@ namespace MordorFanficWeb.Controllers
                     return BadRequest("User object is null");
                 }
 
+                if(!RegistrationPasswordValidator.Validation(user.Password))
+                    return BadRequest("Pasword can contain only basic latin symbols");
+
                 user = SetUserVariables(user);
-                await accountAdapter.CreateUser(user, user.Password).ConfigureAwait(false);
+                var result = await accountAdapter.CreateUser(user, user.Password).ConfigureAwait(false);
+                if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
                 logger.LogInformation($"User account {user.UserName} is successfully created");
                 return Ok("Account successfully created!");
             }

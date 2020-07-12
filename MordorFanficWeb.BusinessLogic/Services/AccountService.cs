@@ -17,10 +17,9 @@ namespace MordorFanficWeb.BusinessLogic.Services
             this.userManager = userManager;
         }
 
-        public async Task<bool> CreateUser(AppUserModel user, string password)
-        {
-            var identityResult = await userManager.CreateAsync(user, password).ConfigureAwait(false);
-            return identityResult.Succeeded;
+        public async Task<IdentityResult> CreateUser(AppUserModel user, string password)
+        {             
+            return await userManager.CreateAsync(user, password).ConfigureAwait(false); ;
         }
 
         public async Task DeleteUser(string id)

@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-lg nav mw-100">
+  <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
+    &#9776;
+  </button>
+  <div [ngbCollapse]="isMenuCollapsed"
+       class="collapse navbar-collapse">
+    <ul class="navbar-nav margin-nav"
+        style="margin-left: 15%">
+      <li>
+        <a>Home</a>
+        <ul>
+          <li class="rounded-top rounded-bottom">
+            <a (click)="goTo('/'); isMenuCollapsed = true;">Home</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <ul class="navbar-nav margin-nav account-panel" *ngIf="!isLoggedIn">
+      <li>
+        <a (click)="goTo('/registration'); isMenuCollapsed = true;">Registration</a>
+      </li>
+      <li>
+        <a (click)="goTo('/login'); isMenuCollapsed = true;">Log-in</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav margin-nav account-panel" *ngIf="isLoggedIn">
+      <li>
+        <a (click)="signout(); isMenuCollapsed = true;">Sign out</a>
+      </li>
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,15 @@
+.account-panel {
+  position: absolute;
+  right: 20px;
+}
+
+@media (max-width: 991.98px) {
+  .navbar-toggler {
+    color: whitesmoke;
+  }
+
+  .account-panel {
+    position: static;
+    right: 0;
+  }
+}

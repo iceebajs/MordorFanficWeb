@@ -33,6 +33,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\common\config.service.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\common\route.guard.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\helpers\message.service.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\registration.interface.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\services\http-error-hander.service.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\services\registratoin.service.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MordorFanficWeb.PresentationAdapters\MordorFanficWeb.PresentationAdapters.csproj" />
   </ItemGroup>
 

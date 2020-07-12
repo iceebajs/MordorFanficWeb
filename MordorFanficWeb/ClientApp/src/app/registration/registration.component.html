@@ -1,0 +1,87 @@
+<title>Registration</title>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6 col-md-8 col-sm-10 mx-auto shadow-lg mt-5 p-3">
+
+      <h2 class="text-center">Create your account</h2>
+      <hr />
+
+      <div class="col-xl-6 col-lg-6 col-md-8 col-xm-10 mx-auto">
+        <div *ngIf="hasError" class="alert alert-danger" role="alert">
+          Invalid form values / User name or email duplicate
+        </div>
+        <mat-form-field appearance="fill">
+          <mat-label>Enter first name</mat-label>
+          <input matInput placeholder="Forsaan" [formControl]="firstName" required>
+          <mat-error *ngIf="firstName.invalid">{{errorFirstName()}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-xl-6 col-lg-6 col-md-8 col-xm-10 mx-auto">
+        <mat-form-field appearance="fill">
+          <mat-label>Enter last name</mat-label>
+          <input matInput placeholder="Dogtamer" [formControl]="lastName" required>
+          <mat-error *ngIf="lastName.invalid">{{errorLastName()}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-xl-6 col-lg-6 col-md-8 col-xm-10 mx-auto">
+        <mat-form-field appearance="fill">
+          <mat-label>Enter user name</mat-label>
+          <input matInput placeholder="forsenJoy" [formControl]="userName" required>
+          <mat-error *ngIf="userName.invalid">{{errorUserName()}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="w-100 mb-2"></div>
+
+      <div class="col-xl-6 col-lg-6 col-md-8 col-xm-10 mx-auto">
+        <mat-form-field appearance="fill">
+          <mat-label>Enter email</mat-label>
+          <input matInput placeholder="example@example.com" [formControl]="email" required>
+          <mat-error *ngIf="email.invalid">{{errorEmail()}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="w-100 mb-2"></div>
+
+      <div class="col-xl-6 col-lg-6 col-md-8 col-xm-10 mx-auto">
+        <mat-form-field appearance="fill">
+          <mat-label>Confirm email</mat-label>
+          <input matInput placeholder="example@example.com" [formControl]="emailConfirm" required>
+          <mat-error *ngIf="emailConfirm.invalid">{{errorEmailConfirm()}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="w-100 mb-2"></div>
+
+      <div class="col-xl-6 col-lg-6 col-md-8 col-xm-10 mx-auto">
+        <mat-form-field appearance="fill">
+          <mat-label>Enter password</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'" [formControl]="password" required>
+          <mat-error *ngIf="password.invalid">{{errorPassword()}}</mat-error>
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <div class="w-100 mb-2"></div>
+
+      <div class="col-xl-6 col-lg-6 col-md-8 col-xm-10 mx-auto">
+        <mat-form-field appearance="fill">
+          <mat-label>Confirm password</mat-label>
+          <input matInput [type]="hideConf ? 'password' : 'text'" [formControl]="passwordConfirm" required>
+          <mat-error *ngIf="passwordConfirm.invalid">{{errorPasswordConfirm()}}</mat-error>
+          <button mat-icon-button matSuffix (click)="hideConf = !hideConf" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hideConf ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <div class="w-100 mb-2"></div>
+
+      <button class="btn btn-primary" (click)="registerUser();">Submit</button>
+    </div>
+  </div>
+</div>

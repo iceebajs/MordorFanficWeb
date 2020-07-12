@@ -1,0 +1,13 @@
+::ng-deep .mat-form-field-label {
+  color: grey;
+}
+
+::ng-deep .mat-input-element::placeholder {
+  color: lightgrey;
+  background: none !important;
+}
+
+::ng-deep .mat-form-field {
+  width: 100%;
+  background-color: whitesmoke;
+}
