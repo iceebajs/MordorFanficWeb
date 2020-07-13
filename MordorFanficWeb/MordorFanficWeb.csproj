@@ -36,7 +36,10 @@
     <TypeScriptCompile Remove="ClientApp\src\app\shared\common\config.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\common\route.guard.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\helpers\message.service.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\auth-responce.interface.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\credentials.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\registration.interface.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\services\authorization.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\services\http-error-hander.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\services\registratoin.service.ts" />
   </ItemGroup>

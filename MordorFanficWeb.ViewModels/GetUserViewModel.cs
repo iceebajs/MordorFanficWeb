@@ -12,5 +12,7 @@ namespace MordorFanficWeb.ViewModels
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public bool AccountStatus { get; set; }
+        public string CreationDate { get; set; }
+        public string LastVisit { get; set; }
     }
 }

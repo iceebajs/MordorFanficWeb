@@ -5,11 +5,16 @@
 
       <h2 class="text-center">Create your account</h2>
       <hr />
+      <div class="col">
+        <div *ngIf="hasError" class="alert alert-danger" role="alert">
+          <p *ngFor="let err of errorMessage">
+            {{err}}
+          </p>
+        </div>
+      </div>
 
       <div class="col-xl-6 col-lg-6 col-md-8 col-xm-10 mx-auto">
-        <div *ngIf="hasError" class="alert alert-danger" role="alert">
-          Invalid form values / User name or email duplicate
-        </div>
+
         <mat-form-field appearance="fill">
           <mat-label>Enter first name</mat-label>
           <input matInput placeholder="Forsaan" [formControl]="firstName" required>

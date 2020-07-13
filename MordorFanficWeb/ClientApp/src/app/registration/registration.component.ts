@@ -17,6 +17,7 @@ export class RegistrationComponent implements OnInit {
   hideConf = true;
   hasError: boolean = false;
   requestStatus: any;
+  errorMessage = [];
 
   constructor(private router: Router, private registrationService: RegistrationService) { }
 
@@ -42,11 +43,22 @@ export class RegistrationComponent implements OnInit {
             if (result)
               this.router.navigate(['login'], { queryParams: { brandNew: true } })
           },
-          error => {
-            this.hasError = true;
-            console.log(error);
+          () => {
+            this.setErrors();
           });
     }
+  }
+
+  private setErrors() {
+    this.hasError = true;
+    let errResponse = this.registrationService.getErrorMessage();
+    if (errResponse['errors'] !== undefined)
+      errResponse = errResponse['errors'];
+    let errors = [];
+    for (const [, value] of Object.entries(errResponse)) {
+      errors.push(value);
+    }
+    this.errorMessage = errors;
   }
 
   userModelIsValid() {

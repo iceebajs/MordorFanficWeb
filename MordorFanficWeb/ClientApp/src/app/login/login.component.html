@@ -5,17 +5,19 @@
 
       <h1 class="text-center">Log-in</h1>
       <hr />
-      <div class="col-xl-6 col-lg-6 col-md-8 col-xm-10 mx-auto">
+      <div class="col">
         <div *ngIf="brandNew" class="alert alert-success" role="alert">
           <strong>All set!</strong> Please login with your account
         </div>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-8 col-xm-10 mx-auto">
         <div *ngIf="hasError" class="alert alert-danger" role="alert">
           Invalid user name/password or user blocked
         </div>
         <mat-form-field appearance="fill">
-          <mat-label>Enter user name</mat-label>
-          <input matInput placeholder="forsenJoy" [formControl]="userName" required>
-          <mat-error *ngIf="userName.invalid">{{errorUserName()}}</mat-error>
+          <mat-label>Enter email</mat-label>
+          <input matInput placeholder="forsenJoy" [formControl]="email" required>
+          <mat-error *ngIf="email.invalid">{{errorEmail()}}</mat-error>
         </mat-form-field>
       </div>
 

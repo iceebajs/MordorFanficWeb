@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { HandleError, HttpErrorHandler } from './../helpers/http-error-hander.service';
+import { HandleError ,HttpErrorHandler } from './../helpers/http-error-hander.service';
 import { ConfigService } from '../common/config.service';
 import { UserRegistrationInterface } from '../interfaces/registration.interface';
 import { Observable } from 'rxjs';
@@ -11,10 +11,7 @@ export class RegistrationService {
   baseURL: string = '';
   handleError: HandleError;
 
-  constructor(private httpClient: HttpClient,
-    private configService: ConfigService,
-    private httpErrorHandler: HttpErrorHandler,
-  ) {
+  constructor(private httpClient: HttpClient, private configService: ConfigService, private httpErrorHandler: HttpErrorHandler) {
     this.baseURL = this.configService.getApiURI();
     this.handleError = this.httpErrorHandler.createHandleError('RegistrationService');
   }
@@ -24,6 +21,9 @@ export class RegistrationService {
       .pipe(
         catchError(this.handleError('register', user))
       );
+  }
 
+  getErrorMessage() {
+    return this.httpErrorHandler.getError();
   }
 }

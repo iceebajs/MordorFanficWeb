@@ -21,6 +21,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { ConfigService } from './shared/common/config.service';
 import { HttpErrorHandler } from './shared/helpers/http-error-hander.service';
 import { MessageService } from './shared/helpers/message.service';
+import { AuthorizationService } from './shared/services/authorization.service';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { MessageService } from './shared/helpers/message.service';
   providers: [
     ConfigService,
     HttpErrorHandler,
-    MessageService
+    MessageService,
+    AuthorizationService
   ],
   bootstrap: [AppComponent]
 })

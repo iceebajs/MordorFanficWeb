@@ -9,8 +9,9 @@ namespace MordorFanficWeb.BusinessLogic.Interfaces
     {
         Task<IdentityResult> CreateUser(AppUserModel user, string password);
         Task DeleteUser(string id);
-        Task<AppUserModel> GetUserById(string id);
+        Task<AppUserModel> GetUserByEmail(string email);
         Task<List<AppUserModel>> GetUsersList();
         Task UpdateUser(AppUserModel user);
+        Task<bool> VerifyUserPassowrd(AppUserModel user, string password);
     }
 }

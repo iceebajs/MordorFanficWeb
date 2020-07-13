@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthorizationService } from './../shared/services/authorization.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-nav-bar',
@@ -10,16 +12,24 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   isMenuCollapsed = true;
   isLoggedIn: boolean = false;
+  subscription: Subscription;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private authService: AuthorizationService) { }
 
   ngOnInit(): void {
+    this.subscription = this.authService.authStatusSubject.
+      asObservable().
+      subscribe(isLoggedIn => {
+        this.isLoggedIn = isLoggedIn;
+      });
   }
 
-  signout() {
+  logout() {
+    this.authService.logout();
   }
 
   ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   goTo(route: string): void {

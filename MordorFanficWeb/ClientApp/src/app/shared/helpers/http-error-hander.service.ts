@@ -10,6 +10,7 @@ export type HandleError =
 @Injectable()
 export class HttpErrorHandler {
   constructor(private messageService: MessageService) { }
+  errorMessage: any;
 
   createHandleError = (serviceName = '') => <T>
     (operation = 'operation', result = {} as T) => this.handleError(serviceName, operation, result);
@@ -17,7 +18,6 @@ export class HttpErrorHandler {
   handleError<T> (serviceName = '', operation = 'operation', result = {} as T) {
 
     return (error: HttpErrorResponse): Observable<T> => {
-      console.error(error);
 
       const message = (error.error instanceof ErrorEvent) ?
         error.error.message :
@@ -26,9 +26,16 @@ export class HttpErrorHandler {
 
       if (error.status === 200)
         return of(result);
-      else
+      else {
+        this.errorMessage = error.error;
+        console.error(error);
         return throwError(message);
+      }
     };
 
+  }
+
+  getError() {
+    return this.errorMessage;
   }
 }

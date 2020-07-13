@@ -4,10 +4,10 @@ using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using MordorFanficWeb.ViewModels;
 using System;
-using NLog.Fluent;
 using System.Collections.Generic;
 using MordorFanficWeb.Common;
 using MordorFanficWeb.Common.Helper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MordorFanficWeb.Controllers
 {
@@ -60,6 +60,8 @@ namespace MordorFanficWeb.Controllers
             return user;
         }
 
+        //[Authorize(Policy = "Administrator")]
+        [Authorize(Policy = "AccountUser")]
         [HttpPost("update-user-information")]
         public async Task<ActionResult> UpdateUserInformation(UpdateUserViewModel user)
         {
@@ -82,28 +84,30 @@ namespace MordorFanficWeb.Controllers
             }
         }
 
+        //[Authorize(Policy = "Administrator")]
         [HttpPost("{id}")]
-        public async Task<ActionResult> GetUserById(string id)
+        public async Task<ActionResult> GetUserByEmail(string email)
         {
             try
             {
-                if (id == null)
+                if (email == null)
                 {
                     logger.LogError("User id object sent from client is null.");
                     return BadRequest("User id object is null");
                 }
 
-                var user = await accountAdapter.GetUserById(id).ConfigureAwait(false);
+                var user = await accountAdapter.GetUserByEmail(email).ConfigureAwait(false);
                 logger.LogInformation("Get user by id action succeed");
                 return Ok(user);
             }
             catch (Exception ex)
             {
-                logger.LogError($"Something gone wrong inside GetUserById action: {ex.Message}");
+                logger.LogError($"Something gone wrong inside GetUserByEmail action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }
 
+        //[Authorize(Policy = "Administrator")]
         [HttpGet]
         public async Task<ActionResult> GetUsersList()
         {
@@ -120,6 +124,7 @@ namespace MordorFanficWeb.Controllers
             }
         }
 
+        //[Authorize(Policy = "Administrator")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(string id)
         {

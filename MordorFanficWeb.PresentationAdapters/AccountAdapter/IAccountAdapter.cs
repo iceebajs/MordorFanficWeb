@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using MordorFanficWeb.Models;
 using MordorFanficWeb.ViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,8 +10,10 @@ namespace MordorFanficWeb.PresentationAdapters.AccountAdapter
     {
         Task<IdentityResult> CreateUser(RegistrationViewModel user, string password);
         Task DeleteUser(string id);
-        Task<GetUserViewModel> GetUserById(string id);
+        Task<GetUserViewModel> GetUserByEmail(string email);
         Task<List<UsersListViewModel>> GetUsersList();
-        Task UpdateUser(UpdateUserViewModel user);        
+        Task UpdateUser(UpdateUserViewModel user);
+        Task<bool> VerifyUserPassword(AppUserModel user, string password);
+        Task<AppUserModel> GetUserIdentity(string email);
     }
 }

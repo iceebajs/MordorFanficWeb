@@ -17,11 +17,20 @@ using MordorFanficWeb.BusinessLogic.Services;
 using MordorFanficWeb.BusinessLogic.Interfaces;
 using System;
 using MordorFanficWeb.PresentationAdapters.AccountAdapter;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using MordorFanficWeb.Common.Auth;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using MordorFanficWeb.Common.Helper;
+using System.Runtime;
 
 namespace MordorFanficWeb
 {
     public class Startup
     {
+        private const string SecretKey = "CEDC8931EF250581370A5816E6F71ED3FC14D4CF3004809907978147A5175F03";
+        private readonly SymmetricSecurityKey signinKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -35,18 +44,60 @@ namespace MordorFanficWeb
             services.AddDbContext<AppDbContext>(
                 options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("MordorFanficWeb")));
 
+            services.AddSingleton<IJwtFactory, JwtFactory>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IAccountAdapter, AccountAdapter>();
             services.AddScoped<IAppDbContext, AppDbContext>();
 
+            var jwtAppSettingsOptions = Configuration.GetSection(nameof(JwtIssuerOptionsModel));
+            services.Configure<JwtIssuerOptionsModel>(options =>
+            {
+                options.Issuer = jwtAppSettingsOptions[nameof(JwtIssuerOptionsModel.Issuer)];
+                options.Audience = jwtAppSettingsOptions[nameof(JwtIssuerOptionsModel.Audience)];
+                options.SigningCredentials = new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256);
+            });
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = jwtAppSettingsOptions[nameof(JwtIssuerOptionsModel.Issuer)],
+
+                    ValidateAudience = true,
+                    ValidAudience = jwtAppSettingsOptions[nameof(JwtIssuerOptionsModel.Audience)],
+
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = signinKey,
+
+                    RequireExpirationTime = false,
+                    ValidateLifetime = false,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AccountUser", policy =>
+                {
+                    policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess);
+                });
+            });
+
             services.AddIdentity<AppUserModel, IdentityRole>(
                  options =>
                  {
-                     options.Password.RequireDigit = false;
-                     options.Password.RequireLowercase = false;
+                     options.Password.RequireDigit = true;
+                     options.Password.RequireLowercase = true;
                      options.Password.RequireNonAlphanumeric = false;
-                     options.Password.RequireUppercase = false;
-                     options.Password.RequiredLength = 1;
+                     options.Password.RequireUppercase = true;
+                     options.Password.RequiredLength = 6;
                      options.Password.RequiredUniqueChars = 1;
 
                      options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
@@ -62,6 +113,7 @@ namespace MordorFanficWeb
 
             services.AddTransient<IValidator<RegistrationViewModel>, RegistrationViewModelValidator>();
             services.AddTransient<IValidator<UpdateUserViewModel>, UpdateUserViewModelValidator>();
+            services.AddTransient<IValidator<CredentialsViewModel>, CredentialsViewModelValidator>();
             services.AddSingleton(Common.AutoMapper.AutoMapper.Configure());
 
             services.AddMvc(

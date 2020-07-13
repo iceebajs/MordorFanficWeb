@@ -22,16 +22,16 @@ namespace MordorFanficWeb.BusinessLogic.Services
             return await userManager.CreateAsync(user, password).ConfigureAwait(false); ;
         }
 
-        public async Task DeleteUser(string id)
+        public async Task DeleteUser(string email)
         {
-            var user = GetUserById(id).Result;
+            var user = GetUserByEmail(email).Result;
             if (user != null)
                 await userManager.DeleteAsync(user).ConfigureAwait(false);
         }
 
-        public async Task<AppUserModel> GetUserById(string id)
+        public async Task<AppUserModel> GetUserByEmail(string email)
         {
-            return await userManager.FindByIdAsync(id).ConfigureAwait(false);
+            return await userManager.FindByEmailAsync(email).ConfigureAwait(false);
         }
 
         public async Task<List<AppUserModel>> GetUsersList()
@@ -42,6 +42,11 @@ namespace MordorFanficWeb.BusinessLogic.Services
         public async Task UpdateUser(AppUserModel user)
         {
             await userManager.UpdateAsync(user).ConfigureAwait(false);
+        }
+
+        public async Task<bool> VerifyUserPassowrd(AppUserModel user, string password)
+        {
+            return await userManager.CheckPasswordAsync(user, password).ConfigureAwait(false);
         }
 
         public void Dispose()
