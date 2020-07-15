@@ -11,15 +11,26 @@ namespace MordorFanficWeb.BusinessLogic.Services
     public class AccountService : IAccountService, IDisposable
     {
         protected readonly UserManager<AppUserModel> userManager;
+        protected readonly RoleManager<IdentityRole> roleManager;
 
-        public AccountService(UserManager<AppUserModel> userManager)
+        public AccountService(UserManager<AppUserModel> userManager, RoleManager<IdentityRole> roleManager)
         {
             this.userManager = userManager;
+            this.roleManager = roleManager;
         }
 
+        // Users
         public async Task<IdentityResult> CreateUser(AppUserModel user, string password)
-        {             
-            return await userManager.CreateAsync(user, password).ConfigureAwait(false); ;
+        {
+            IdentityResult identityResult = await userManager.CreateAsync(user, password).ConfigureAwait(false);
+            if (identityResult.Succeeded) await userManager.AddToRoleAsync(user, "user").ConfigureAwait(false);
+            return identityResult;
+        }
+
+        public async Task CreateAdminOnInit(AppUserModel user, string password)
+        {
+            await userManager.CreateAsync(user, password).ConfigureAwait(false);
+            await userManager.AddToRoleAsync(user, "admin").ConfigureAwait(false);
         }
 
         public async Task DeleteUser(string email)
@@ -52,6 +63,23 @@ namespace MordorFanficWeb.BusinessLogic.Services
         public async Task<bool> VerifyUserPassowrd(AppUserModel user, string password)
         {
             return await userManager.CheckPasswordAsync(user, password).ConfigureAwait(false);
+        }
+        
+        // Roles
+
+        public async Task SetAsAdmin(string id)
+        {
+            await userManager.AddToRoleAsync(await userManager.FindByIdAsync(id).ConfigureAwait(false), "admin").ConfigureAwait(false);
+        }
+
+        public async Task UnsetAsAdmin(string id)
+        {
+            await userManager.RemoveFromRoleAsync(await userManager.FindByIdAsync(id).ConfigureAwait(false), "admin").ConfigureAwait(false);
+        }
+
+        public async Task<IList<string>> GetUserRoles(string id)
+        {
+            return await userManager.GetRolesAsync(await userManager.FindByIdAsync(id).ConfigureAwait(false)).ConfigureAwait(false);
         }
 
         public void Dispose()

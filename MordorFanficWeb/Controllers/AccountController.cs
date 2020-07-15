@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using MordorFanficWeb.Common;
 using MordorFanficWeb.Common.Helper;
 using Microsoft.AspNetCore.Authorization;
+using NLog.Fluent;
 
 namespace MordorFanficWeb.Controllers
 {
@@ -46,7 +47,7 @@ namespace MordorFanficWeb.Controllers
             }
             catch (Exception ex)
             {
-                logger.LogError($"Something gone wrong inside RegisterUser action: {ex.Message}");
+                logger.LogError($"Something went wrong inside RegisterUser action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }
@@ -79,7 +80,7 @@ namespace MordorFanficWeb.Controllers
             }
             catch (Exception ex)
             {
-                logger.LogError($"Something gone wrong inside UpdateUserInformation action: {ex.Message}");
+                logger.LogError($"Something went wrong inside UpdateUserInformation action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }
@@ -102,7 +103,7 @@ namespace MordorFanficWeb.Controllers
             }
             catch (Exception ex)
             {
-                logger.LogError($"Something gone wrong inside GetUserByEmail action: {ex.Message}");
+                logger.LogError($"Something went wrong inside GetUserByEmail action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }
@@ -127,7 +128,7 @@ namespace MordorFanficWeb.Controllers
             }
             catch (Exception ex)
             {
-                logger.LogError($"Something gone wrong inside GetUserByEmail action: {ex.Message}");
+                logger.LogError($"Something went wrong inside GetUserByEmail action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }
@@ -144,7 +145,7 @@ namespace MordorFanficWeb.Controllers
             }
             catch (Exception ex)
             {
-                logger.LogError($"Something gone wrong inside GetUsersList action: {ex.Message}");
+                logger.LogError($"Something went wrong inside GetUsersList action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }
@@ -157,17 +158,79 @@ namespace MordorFanficWeb.Controllers
             {
                 if (id == null)
                 {
-                    logger.LogError("User id object sent from client is null.");
+                    logger.LogError("User id object sent from client is null");
                     return BadRequest("User id object is null");
                 }
 
-                await accountAdapter.DeleteUser(id);
+                await accountAdapter.DeleteUser(id).ConfigureAwait(false);
                 logger.LogInformation($"User {id} successfully deleted");
                 return Ok();
             }
             catch (Exception ex)
             {
-                logger.LogError($"Something gone wrong inside DeleteUser action: {ex.Message}");
+                logger.LogError($"Something went wrong inside DeleteUser action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPost("set-role/{id}")]
+        public async Task<ActionResult> SetRole(string id)
+        {
+            try
+            {
+                if(id == null)
+                {
+                    logger.LogError("User id object sent from client is null");
+                    return BadRequest("User id object is null");
+                }
+
+                await accountAdapter.SetAsAdmin(id).ConfigureAwait(false);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong inside SetRole action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPost("unset-role/{id}")]
+        public async Task<ActionResult> UnsetRole(string id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    logger.LogError("User id object sent from client is null");
+                    return BadRequest("User id object is null");
+                }
+
+                await accountAdapter.UnsetAsAdmin(id).ConfigureAwait(false);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong inside UnsetRole action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet("get-user-roles/{id}")]
+        public async Task<ActionResult> GetUserRoles(string id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    logger.LogError("User id object sent from client is null");
+                    return BadRequest("User id object is null");
+                }
+
+                return Ok(await accountAdapter.GetUserRoles(id).ConfigureAwait(false));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong inside GetUserRoles action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }
