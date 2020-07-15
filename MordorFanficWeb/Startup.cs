@@ -21,6 +21,8 @@ using System.Text;
 using MordorFanficWeb.Common.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MordorFanficWeb.Common.Helper;
+using MordorFanficWeb.BusinessLogic.Policies;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MordorFanficWeb
 {
@@ -59,6 +61,20 @@ namespace MordorFanficWeb
                     policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
                     policy.RequireAuthenticatedUser();
                     policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess);
+                });
+
+                options.AddPolicy("Admin", policy =>
+                {
+                    policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim(Constants.Strings.JwtClaimIdentifiersAdmin.Rol, Constants.Strings.JwtClaims.ApiAccess);
+                });
+
+                options.AddPolicy("RegisteredUsers", policy =>
+                {
+                    policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+                    policy.RequireAuthenticatedUser();
+                    policy.Requirements.Add(new RegisteredUserRequirement());
                 });
             });
 
@@ -106,6 +122,7 @@ namespace MordorFanficWeb
                  .AddEntityFrameworkStores<AppDbContext>()
                  .AddDefaultTokenProviders();
 
+            services.AddSingleton<IAuthorizationHandler, UserRegisteredHandler>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IAccountAdapter, AccountAdapter>();
             services.AddScoped<IAppDbContext, AppDbContext>();

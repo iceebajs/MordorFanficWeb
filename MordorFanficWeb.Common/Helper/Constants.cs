@@ -10,12 +10,17 @@ namespace MordorFanficWeb.Common.Helper
         {
             public static class JwtClaimIdentifiers
             {
-                public const string Rol = "rol", Id = "id";
+                public const string Rol = "user", Id = "id";
             }
 
             public static class JwtClaims
             {
                 public const string ApiAccess = "api_access";
+            }
+
+            public static class JwtClaimIdentifiersAdmin
+            {
+                public const string Rol = "admin", Id = "id";
             }
         }
     }

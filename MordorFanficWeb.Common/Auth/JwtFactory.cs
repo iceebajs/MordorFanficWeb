@@ -18,14 +18,14 @@ namespace MordorFanficWeb.Common.Auth
             ThrowIfInvalidOptions(this.jwtOptions);
         }
 
-        public async Task<string> GenerateEncodedToken(string email, ClaimsIdentity identity)
+        public async Task<string> GenerateEncodedToken(string email, ClaimsIdentity identity, string role)
         {
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, email),
                 new Claim(JwtRegisteredClaimNames.Jti, await jwtOptions.JtiGenerator().ConfigureAwait(false)),
                 new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
-                identity.FindFirst(Helper.Constants.Strings.JwtClaimIdentifiers.Rol),
+                identity.FindFirst(role),
                 identity.FindFirst(Helper.Constants.Strings.JwtClaimIdentifiers.Id)
             };
 
@@ -40,12 +40,12 @@ namespace MordorFanficWeb.Common.Auth
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
 
-        public ClaimsIdentity GenerateClaimsIdentity(string email, string id)
+        public ClaimsIdentity GenerateClaimsIdentity(string email, string id, string role)
         {
             return new ClaimsIdentity(new GenericIdentity(email, "Token"), new[]
             {
                 new Claim(Helper.Constants.Strings.JwtClaimIdentifiers.Id, id),
-                new Claim(Helper.Constants.Strings.JwtClaimIdentifiers.Rol, Helper.Constants.Strings.JwtClaims.ApiAccess)
+                new Claim(role, Helper.Constants.Strings.JwtClaims.ApiAccess)
             });
         }
 

@@ -61,8 +61,7 @@ namespace MordorFanficWeb.Controllers
             return user;
         }
 
-        //[Authorize(Policy = "Administrator")]
-        [Authorize(Policy = "AccountUser")]
+        [Authorize(Policy = "RegisteredUsers")]
         [HttpPost("update-user-information")]
         public async Task<ActionResult> UpdateUserInformation(UpdateUserViewModel user)
         {
@@ -85,7 +84,7 @@ namespace MordorFanficWeb.Controllers
             }
         }
 
-        //[Authorize(Policy = "Administrator")]
+        [Authorize(Policy = "Admin")]
         [HttpGet("user/{email}")]
         public async Task<ActionResult> GetUserByEmail(string email)
         {
@@ -108,9 +107,7 @@ namespace MordorFanficWeb.Controllers
             }
         }
 
-
-        //[Authorize(Policy = "Administrator")]
-        [Authorize(Policy = "AccountUser")]
+        [Authorize(Policy = "RegisteredUsers")]
         [HttpGet("{id}")]
         public async Task<ActionResult> GetUserById(string id)
         {
@@ -133,7 +130,7 @@ namespace MordorFanficWeb.Controllers
             }
         }
 
-        //[Authorize(Policy = "Administrator")]
+        [Authorize(Policy = "Admin")]
         [HttpGet]
         public async Task<ActionResult> GetUsersList()
         {
@@ -150,7 +147,7 @@ namespace MordorFanficWeb.Controllers
             }
         }
 
-        //[Authorize(Policy = "Administrator")]
+        [Authorize(Policy = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(string id)
         {
@@ -173,6 +170,7 @@ namespace MordorFanficWeb.Controllers
             }
         }
 
+        [Authorize(Policy = "Admin")]
         [HttpPost("set-role/{id}")]
         public async Task<ActionResult> SetRole(string id)
         {
@@ -194,6 +192,7 @@ namespace MordorFanficWeb.Controllers
             }
         }
 
+        [Authorize(Policy = "Admin")]
         [HttpPost("unset-role/{id}")]
         public async Task<ActionResult> UnsetRole(string id)
         {
@@ -215,6 +214,7 @@ namespace MordorFanficWeb.Controllers
             }
         }
 
+        [Authorize(Policy = "Admin")]
         [HttpGet("get-user-roles/{id}")]
         public async Task<ActionResult> GetUserRoles(string id)
         {

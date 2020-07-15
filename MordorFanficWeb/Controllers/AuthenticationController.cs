@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using System.Linq;
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
 namespace MordorFanficWeb.Controllers
 {
@@ -44,14 +45,18 @@ namespace MordorFanficWeb.Controllers
         [HttpPost]
         public async Task<ActionResult> Login([FromBody] CredentialsViewModel credentials)
         {
-            var identity = await GetClaimsIdentity(credentials.Email, credentials.Password).ConfigureAwait(false);
+            var userToVerify = await accountAdapter.GetUserIdentity(credentials.Email).ConfigureAwait(false);
+            string role = await SetUserRole(userToVerify).ConfigureAwait(false);
+            var identity = await GetClaimsIdentity(userToVerify, credentials.Password, role).ConfigureAwait(false);
+
             if (identity == null)
                 return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username of password", ModelState));
 
             var response = new
             {
                 id = identity.Claims.Single(claim => claim.Type == "id").Value,
-                auth_token = await jwtFactory.GenerateEncodedToken(credentials.Email, identity).ConfigureAwait(false),
+                auth_token = await jwtFactory.GenerateEncodedToken(credentials.Email, identity, role).ConfigureAwait(false),
+                userPermissions = role,
                 expires_in = (int)jwtOptions.ValidFor.TotalSeconds
             };
 
@@ -59,13 +64,22 @@ namespace MordorFanficWeb.Controllers
             return new OkObjectResult(json);
         }
 
-        private async Task<ClaimsIdentity> GetClaimsIdentity(string email, string password)
+        private async Task<string> SetUserRole(AppUserModel user)
         {
-            var userToVerify = await accountAdapter.GetUserIdentity(email).ConfigureAwait(false);
+            if (user != null)
+            {
+                IList<string> roles = await accountAdapter.GetUserRoles(user.Id).ConfigureAwait(false);
+                return roles.Contains("admin") ? "admin" : "user";
+            }
+            return null;
+        }
+
+        private async Task<ClaimsIdentity> GetClaimsIdentity(AppUserModel userToVerify, string password, string role)
+        {
             if (userToVerify != null && userToVerify.AccountStatus == true)
             {
                 if (await accountAdapter.VerifyUserPassword(userToVerify, password).ConfigureAwait(false))
-                    return await Task.FromResult(jwtFactory.GenerateClaimsIdentity(email, userToVerify.Id)).ConfigureAwait(false);
+                    return await Task.FromResult(jwtFactory.GenerateClaimsIdentity(userToVerify.Email, userToVerify.Id, role)).ConfigureAwait(false);
             }
             return await Task.FromResult<ClaimsIdentity>(null).ConfigureAwait(false);
         }

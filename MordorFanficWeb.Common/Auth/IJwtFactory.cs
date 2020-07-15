@@ -5,7 +5,7 @@ namespace MordorFanficWeb.Common.Auth
 {
     public interface IJwtFactory
     {
-        Task<string> GenerateEncodedToken(string email, ClaimsIdentity identity);
-        ClaimsIdentity GenerateClaimsIdentity(string email, string id);
+        Task<string> GenerateEncodedToken(string email, ClaimsIdentity identity, string role);
+        ClaimsIdentity GenerateClaimsIdentity(string email, string id, string role);
     }
 }
