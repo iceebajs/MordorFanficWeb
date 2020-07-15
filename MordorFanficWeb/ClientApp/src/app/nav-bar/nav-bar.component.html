@@ -25,6 +25,9 @@
     </ul>
     <ul class="navbar-nav margin-nav account-panel" *ngIf="isLoggedIn">
       <li>
+        <a (click)="goTo('/profile'); isMenuCollapsed = true;">My profile</a>
+      </li>
+      <li>
         <a (click)="logout(); isMenuCollapsed = true;">Sign out</a>
       </li>
     </ul>

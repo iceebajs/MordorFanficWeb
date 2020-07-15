@@ -33,6 +33,11 @@ namespace MordorFanficWeb.BusinessLogic.Services
         {
             return await userManager.FindByEmailAsync(email).ConfigureAwait(false);
         }
+        
+        public async Task<AppUserModel> GetUserById(string id)
+        {
+            return await userManager.FindByIdAsync(id).ConfigureAwait(false);
+        }
 
         public async Task<List<AppUserModel>> GetUsersList()
         {

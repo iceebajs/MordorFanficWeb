@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RegistrationService } from './../shared/services/registratoin.service';
-import { UserRegistrationInterface } from '../shared/interfaces/registration.interface';
+import { UserRegistration } from '../shared/interfaces/registration.interface';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -26,7 +26,7 @@ export class RegistrationComponent implements OnInit {
 
   registerUser() {
     if (this.userModelIsValid()) {
-      const userRegistrationModel: UserRegistrationInterface = {
+      const userRegistrationModel: UserRegistration = {
         firstName: this.firstName.value,
         lastName: this.lastName.value,
         userName: this.userName.value,
@@ -34,7 +34,7 @@ export class RegistrationComponent implements OnInit {
         emailConfirm: this.emailConfirm.value,
         password: this.password.value,
         passwordConfirm: this.passwordConfirm.value
-      } as UserRegistrationInterface;
+      } as UserRegistration;
 
       this.registrationService.register(userRegistrationModel)
         .pipe(take(1))

@@ -9,11 +9,11 @@
         <div *ngIf="brandNew" class="alert alert-success" role="alert">
           <strong>All set!</strong> Please login with your account
         </div>
-      </div>
-      <div class="col-xl-6 col-lg-6 col-md-8 col-xm-10 mx-auto">
         <div *ngIf="hasError" class="alert alert-danger" role="alert">
           Invalid user name/password or user blocked
         </div>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-8 col-xm-10 mx-auto">
         <mat-form-field appearance="fill">
           <mat-label>Enter email</mat-label>
           <input matInput placeholder="forsenJoy" [formControl]="email" required>

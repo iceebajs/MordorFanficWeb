@@ -2,7 +2,6 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
@@ -22,13 +21,12 @@ using System.Text;
 using MordorFanficWeb.Common.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MordorFanficWeb.Common.Helper;
-using System.Runtime;
 
 namespace MordorFanficWeb
 {
     public class Startup
     {
-        private const string SecretKey = "CEDC8931EF250581370A5816E6F71ED3FC14D4CF3004809907978147A5175F03";
+        private const string SecretKey = "ugWlbE2f9-uyfxAjZuaSIoQORme42UW937LbvkxDT8mBISZaD7XTWOLDMLiY679AJFJZdbKxeweM";
         private readonly SymmetricSecurityKey signinKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
 
         public Startup(IConfiguration configuration)
@@ -45,16 +43,23 @@ namespace MordorFanficWeb
                 options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("MordorFanficWeb")));
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
-            services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<IAccountAdapter, AccountAdapter>();
-            services.AddScoped<IAppDbContext, AppDbContext>();
 
-            var jwtAppSettingsOptions = Configuration.GetSection(nameof(JwtIssuerOptionsModel));
-            services.Configure<JwtIssuerOptionsModel>(options =>
+            var jwtAppSettingsOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
+            services.Configure<JwtIssuerOptions>(options =>
             {
-                options.Issuer = jwtAppSettingsOptions[nameof(JwtIssuerOptionsModel.Issuer)];
-                options.Audience = jwtAppSettingsOptions[nameof(JwtIssuerOptionsModel.Audience)];
+                options.Issuer = jwtAppSettingsOptions[nameof(JwtIssuerOptions.Issuer)];
+                options.Audience = jwtAppSettingsOptions[nameof(JwtIssuerOptions.Audience)];
                 options.SigningCredentials = new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256);
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AccountUser", policy =>
+                {
+                    policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess);
+                });
             });
 
             services.AddAuthentication(options =>
@@ -66,10 +71,10 @@ namespace MordorFanficWeb
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = jwtAppSettingsOptions[nameof(JwtIssuerOptionsModel.Issuer)],
+                    ValidIssuer = jwtAppSettingsOptions[nameof(JwtIssuerOptions.Issuer)],
 
                     ValidateAudience = true,
-                    ValidAudience = jwtAppSettingsOptions[nameof(JwtIssuerOptionsModel.Audience)],
+                    ValidAudience = jwtAppSettingsOptions[nameof(JwtIssuerOptions.Audience)],
 
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = signinKey,
@@ -78,16 +83,6 @@ namespace MordorFanficWeb
                     ValidateLifetime = false,
                     ClockSkew = TimeSpan.Zero
                 };
-            });
-
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("AccountUser", policy =>
-                {
-                    policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
-                    policy.RequireAuthenticatedUser();
-                    policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess);
-                });
             });
 
             services.AddIdentity<AppUserModel, IdentityRole>(
@@ -111,6 +106,9 @@ namespace MordorFanficWeb
                  .AddEntityFrameworkStores<AppDbContext>()
                  .AddDefaultTokenProviders();
 
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IAccountAdapter, AccountAdapter>();
+            services.AddScoped<IAppDbContext, AppDbContext>();
             services.AddTransient<IValidator<RegistrationViewModel>, RegistrationViewModelValidator>();
             services.AddTransient<IValidator<UpdateUserViewModel>, UpdateUserViewModelValidator>();
             services.AddTransient<IValidator<CredentialsViewModel>, CredentialsViewModelValidator>();

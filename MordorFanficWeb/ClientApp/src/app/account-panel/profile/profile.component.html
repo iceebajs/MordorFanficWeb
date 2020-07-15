@@ -1,0 +1,23 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-6 mx-auto">
+      Content?
+    </div>
+    <div class="col-4 mx-auto" *ngIf="dataLoaded | async">
+      <h2>Welcome to your profile {{currentUser.userName}}</h2>
+      <div class="col-xl-6 col-lg-6 col-md-8 col-xm-10 mx-auto">
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="forsenJoy" [(ngModel)]="currentUser.email" required>
+        </mat-form-field>
+      </div>
+
+      <div class="col-xl-6 col-lg-6 col-md-8 col-xm-10 mx-auto">
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="forsenJoy" [(ngModel)]="currentUser.firstName" required>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>

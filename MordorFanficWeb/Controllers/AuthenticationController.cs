@@ -24,20 +24,17 @@ namespace MordorFanficWeb.Controllers
     {
         private readonly IAccountAdapter accountAdapter;
         private readonly IJwtFactory jwtFactory;
-        private readonly JwtIssuerOptionsModel jwtOptions;
+        private readonly JwtIssuerOptions jwtOptions;
         private readonly JsonSerializerSettings serializerSettings;
-        private readonly ILogger<AccountController> logger;
 
         public AuthenticationController(
             IAccountAdapter accountAdapter,
             IJwtFactory jwtFactory,
-            IOptions<JwtIssuerOptionsModel> jwtOptions,
-            ILogger<AccountController> logger)
+            IOptions<JwtIssuerOptions> jwtOptions)
         {
             this.accountAdapter = accountAdapter;
             this.jwtFactory = jwtFactory;
             this.jwtOptions = jwtOptions.Value;
-            this.logger = logger;
             serializerSettings = new JsonSerializerSettings
             {
                 Formatting = Formatting.Indented
@@ -49,7 +46,7 @@ namespace MordorFanficWeb.Controllers
         {
             var identity = await GetClaimsIdentity(credentials.Email, credentials.Password).ConfigureAwait(false);
             if (identity == null)
-                return BadRequest(Errors.AddErrorToModelState("login_failure", "Indavlid username of password", ModelState));
+                return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username of password", ModelState));
 
             var response = new
             {

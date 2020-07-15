@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HandleError ,HttpErrorHandler } from './../helpers/http-error-hander.service';
 import { ConfigService } from '../common/config.service';
-import { UserRegistrationInterface } from '../interfaces/registration.interface';
+import { UserRegistration } from '../interfaces/registration.interface';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -16,8 +16,8 @@ export class RegistrationService {
     this.handleError = this.httpErrorHandler.createHandleError('RegistrationService');
   }
 
-  register(user: UserRegistrationInterface) : Observable<UserRegistrationInterface> {
-    return this.httpClient.post<UserRegistrationInterface>(`${this.baseURL}/account/register-user`, user)
+  register(user: UserRegistration) : Observable<UserRegistration> {
+    return this.httpClient.post<UserRegistration>(`${this.baseURL}/account/register-user`, user)
       .pipe(
         catchError(this.handleError('register', user))
       );

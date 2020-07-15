@@ -34,6 +34,11 @@ namespace MordorFanficWeb.PresentationAdapters.AccountAdapter
             return mapper.Map<GetUserViewModel>(await accService.GetUserByEmail(email).ConfigureAwait(false));
         }
 
+        public async Task<GetUserViewModel> GetUserById(string id)
+        {
+            return mapper.Map<GetUserViewModel>(await accService.GetUserById(id).ConfigureAwait(false));
+        }
+
         public async Task<List<UsersListViewModel>> GetUsersList()
         {
             return mapper.Map<List<UsersListViewModel>>(await accService.GetUsersList().ConfigureAwait(false));

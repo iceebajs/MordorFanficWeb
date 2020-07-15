@@ -85,18 +85,43 @@ namespace MordorFanficWeb.Controllers
         }
 
         //[Authorize(Policy = "Administrator")]
-        [HttpPost("{id}")]
+        [HttpGet("user/{email}")]
         public async Task<ActionResult> GetUserByEmail(string email)
         {
             try
             {
                 if (email == null)
                 {
+                    logger.LogError("User email object sent from client is null.");
+                    return BadRequest("User email object is null");
+                }
+
+                var user = await accountAdapter.GetUserByEmail(email).ConfigureAwait(false);
+                logger.LogInformation("Get user by email action succeed");
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something gone wrong inside GetUserByEmail action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+
+        //[Authorize(Policy = "Administrator")]
+        [Authorize(Policy = "AccountUser")]
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetUserById(string id)
+        {
+            try
+            {
+                if (id == null)
+                {
                     logger.LogError("User id object sent from client is null.");
                     return BadRequest("User id object is null");
                 }
 
-                var user = await accountAdapter.GetUserByEmail(email).ConfigureAwait(false);
+                var user = await accountAdapter.GetUserById(id).ConfigureAwait(false);
                 logger.LogInformation("Get user by id action succeed");
                 return Ok(user);
             }

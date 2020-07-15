@@ -10,19 +10,19 @@ namespace MordorFanficWeb.Common.Auth
 {
     public class JwtFactory : IJwtFactory
     {
-        private readonly JwtIssuerOptionsModel jwtOptions;
+        private readonly JwtIssuerOptions jwtOptions;
 
-        public JwtFactory(IOptions<JwtIssuerOptionsModel> jwtOptions)
+        public JwtFactory(IOptions<JwtIssuerOptions> jwtOptions)
         {
             this.jwtOptions = jwtOptions.Value;
             ThrowIfInvalidOptions(this.jwtOptions);
         }
 
-        public async Task<string> GenerateEncodedToken(string userName, ClaimsIdentity identity)
+        public async Task<string> GenerateEncodedToken(string email, ClaimsIdentity identity)
         {
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, userName),
+                new Claim(JwtRegisteredClaimNames.Sub, email),
                 new Claim(JwtRegisteredClaimNames.Jti, await jwtOptions.JtiGenerator().ConfigureAwait(false)),
                 new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
                 identity.FindFirst(Helper.Constants.Strings.JwtClaimIdentifiers.Rol),
@@ -52,18 +52,18 @@ namespace MordorFanficWeb.Common.Auth
         private static long ToUnixEpochDate(DateTime date) =>
             (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
 
-        private static void ThrowIfInvalidOptions(JwtIssuerOptionsModel options)
+        private static void ThrowIfInvalidOptions(JwtIssuerOptions options)
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
 
             if (options.ValidFor <= TimeSpan.Zero)
-                throw new ArgumentException("Must be a non-zero TimeSpan", nameof(JwtIssuerOptionsModel.ValidFor));
+                throw new ArgumentException("Must be a non-zero TimeSpan", nameof(JwtIssuerOptions.ValidFor));
 
             if (options.SigningCredentials == null)
-                throw new ArgumentNullException(nameof(JwtIssuerOptionsModel.SigningCredentials));
+                throw new ArgumentNullException(nameof(JwtIssuerOptions.SigningCredentials));
 
             if (options.JtiGenerator == null)
-                throw new ArgumentNullException(nameof(JwtIssuerOptionsModel.JtiGenerator));
+                throw new ArgumentNullException(nameof(JwtIssuerOptions.JtiGenerator));
         }
     }
 }
