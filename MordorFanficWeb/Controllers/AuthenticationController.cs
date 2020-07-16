@@ -49,6 +49,9 @@ namespace MordorFanficWeb.Controllers
             string role = await SetUserRole(userToVerify).ConfigureAwait(false);
             var identity = await GetClaimsIdentity(userToVerify, credentials.Password, role).ConfigureAwait(false);
 
+            if(userToVerify != null && !userToVerify.AccountStatus)
+                return BadRequest(Errors.AddErrorToModelState("login_failure", "User blocked", ModelState));
+
             if (identity == null)
                 return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username of password", ModelState));
 

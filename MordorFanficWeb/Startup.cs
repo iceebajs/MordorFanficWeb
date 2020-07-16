@@ -96,7 +96,7 @@ namespace MordorFanficWeb
                     IssuerSigningKey = signinKey,
 
                     RequireExpirationTime = false,
-                    ValidateLifetime = false,
+                    ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
                 };
             });

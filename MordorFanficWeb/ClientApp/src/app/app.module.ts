@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -22,6 +22,7 @@ import { ConfigService } from './shared/common/config.service';
 import { HttpErrorHandler } from './shared/helpers/http-error-hander.service';
 import { MessageService } from './shared/helpers/message.service';
 import { AuthorizationService } from './shared/services/authorization.service';
+import { AuthInterceptor } from './shared/helpers/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { AuthorizationService } from './shared/services/authorization.service';
     ConfigService,
     HttpErrorHandler,
     MessageService,
-    AuthorizationService
+    AuthorizationService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

@@ -60,6 +60,13 @@ namespace MordorFanficWeb.PresentationAdapters.AccountAdapter
             return userIdentity;
         }
 
+        public async Task UpdateUserStatus(UpdateUserStatusViewModel user)
+        {
+            var userIdentity = await accService.GetUserById(user.Id).ConfigureAwait(false);
+            userIdentity.AccountStatus = user.AccountStatus;
+            await accService.UpdateUser(userIdentity).ConfigureAwait(false);
+        }
+
         public async Task<bool> VerifyUserPassword(AppUserModel user, string password)
         {
             return await accService.VerifyUserPassowrd(user, password).ConfigureAwait(false);

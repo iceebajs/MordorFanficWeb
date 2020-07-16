@@ -52,7 +52,7 @@ namespace MordorFanficWeb.Controllers
             }
         }
 
-        private static RegistrationViewModel SetUserVariables(RegistrationViewModel user)
+        private static RegistrationViewModel SetUserVariables([FromBody] RegistrationViewModel user)
         {
             user.AccountStatus = true;
             user.CreationDate = DateTime.UtcNow.ToString("g");
@@ -63,7 +63,7 @@ namespace MordorFanficWeb.Controllers
 
         [Authorize(Policy = "RegisteredUsers")]
         [HttpPost("update-user-information")]
-        public async Task<ActionResult> UpdateUserInformation(UpdateUserViewModel user)
+        public async Task<ActionResult> UpdateUserInformation([FromBody] UpdateUserViewModel user)
         {
             try
             {
@@ -75,6 +75,29 @@ namespace MordorFanficWeb.Controllers
 
                 await accountAdapter.UpdateUser(user).ConfigureAwait(false);
                 logger.LogInformation($"User account {user.UserName} successfully updated");
+                return Ok("Account successfully updated");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong inside UpdateUserInformation action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [Authorize(Policy = "Admin")]
+        [HttpPost("update-user-status")]
+        public async Task<ActionResult> UpdateUserStatus([FromBody] UpdateUserStatusViewModel user)
+        {
+            try
+            {
+                if (user == null)
+                {
+                    logger.LogError("User object sent from client is null.");
+                    return BadRequest("User object is null");
+                }
+
+                await accountAdapter.UpdateUserStatus(user).ConfigureAwait(false);
+                logger.LogInformation($"User status with id: '{user.Id}' successfully updated");
                 return Ok("Account successfully updated");
             }
             catch (Exception ex)
@@ -231,6 +254,30 @@ namespace MordorFanficWeb.Controllers
             catch (Exception ex)
             {
                 logger.LogError($"Something went wrong inside GetUserRoles action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [Authorize(Policy = "Admin")]
+        [HttpPost("user-status/{id}")]
+        public async Task<ActionResult> UserStatus(string id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    logger.LogError("User id object sent from client is null");
+                    return BadRequest("User id object is null");
+                }
+
+                var user = await accountAdapter.GetUserById(id).ConfigureAwait(false);
+                if (user == null || !user.AccountStatus)
+                    return Ok(false);
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong inside UserStatus action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }
