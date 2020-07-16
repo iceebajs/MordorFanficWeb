@@ -17,6 +17,12 @@
           <mat-label>Email</mat-label>
           <input matInput placeholder="forsenJoy" [(ngModel)]="currentUser.firstName" required>
         </mat-form-field>
+
+        <div class="w-100"></div>
+
+        <div class="col">
+          <button mat-button (click)="goTo('/change-password')">Change password</button>
+        </div>
       </div>
     </div>
   </div>

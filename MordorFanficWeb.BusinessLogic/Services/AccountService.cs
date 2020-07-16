@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MordorFanficWeb.BusinessLogic.Interfaces;
+using MordorFanficWeb.ViewModels;
 
 namespace MordorFanficWeb.BusinessLogic.Services
 {
@@ -65,6 +66,11 @@ namespace MordorFanficWeb.BusinessLogic.Services
             return await userManager.CheckPasswordAsync(user, password).ConfigureAwait(false);
         }
         
+        public async Task<IdentityResult> ChangeUserPassword(ChangeUserPasswordViewModel userData)
+        {
+            var user = await GetUserById(userData.Id).ConfigureAwait(false);
+            return await userManager.ChangePasswordAsync(user, userData.OldPassword, userData.NewPassword).ConfigureAwait(false);
+        }
         // Roles
 
         public async Task SetAsAdmin(string id)

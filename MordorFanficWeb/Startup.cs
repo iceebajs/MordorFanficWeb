@@ -126,6 +126,7 @@ namespace MordorFanficWeb
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IAccountAdapter, AccountAdapter>();
             services.AddScoped<IAppDbContext, AppDbContext>();
+            services.AddTransient<IValidator<ChangeUserPasswordViewModel>, ChangeUserPasswordValidator>();
             services.AddTransient<IValidator<RegistrationViewModel>, RegistrationViewModelValidator>();
             services.AddTransient<IValidator<UpdateUserViewModel>, UpdateUserViewModelValidator>();
             services.AddTransient<IValidator<CredentialsViewModel>, CredentialsViewModelValidator>();

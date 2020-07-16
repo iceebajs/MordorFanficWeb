@@ -17,6 +17,7 @@ namespace MordorFanficWeb.PresentationAdapters.AccountAdapter
         Task UpdateUserStatus(UpdateUserStatusViewModel user);
         Task<bool> VerifyUserPassword(AppUserModel user, string password);
         Task<AppUserModel> GetUserIdentity(string email);
+        Task<IdentityResult> ChangeUserPassword(ChangeUserPasswordViewModel userData);
 
         //Roles
         Task SetAsAdmin(string id);

@@ -36,7 +36,7 @@ namespace MordorFanficWeb.Controllers
                     return BadRequest("User object is null");
                 }
 
-                if(!RegistrationPasswordValidator.Validation(user.Password))
+                if (!RegistrationPasswordValidator.Validation(user.Password))
                     return BadRequest("Pasword can contain only basic latin symbols");
 
                 user = SetUserVariables(user);
@@ -103,6 +103,30 @@ namespace MordorFanficWeb.Controllers
             catch (Exception ex)
             {
                 logger.LogError($"Something went wrong inside UpdateUserInformation action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [Authorize(Policy = "RegisteredUsers")]
+        [HttpPost("change-password")]
+        public async Task<ActionResult> ChangeUserPassword([FromBody] ChangeUserPasswordViewModel userData)
+        {
+            try
+            {
+                if (userData == null)
+                {
+                    logger.LogError("UserData object sent from client is null.");
+                    return BadRequest("UserData object is null");
+                }
+
+                var result = await accountAdapter.ChangeUserPassword(userData).ConfigureAwait(false);
+                if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
+                logger.LogInformation($"Users password with id: {userData.Id} is successfully updated");
+                return Ok("Account password successfully updated!");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong inside ChangeUserPassword action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }
@@ -280,6 +304,13 @@ namespace MordorFanficWeb.Controllers
                 logger.LogError($"Something went wrong inside UserStatus action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
+        }
+
+        [Authorize(Policy = "RegisteredUsers")]
+        [HttpGet]
+        public ActionResult TokenCheck()
+        {
+            return Ok();
         }
     }
 }

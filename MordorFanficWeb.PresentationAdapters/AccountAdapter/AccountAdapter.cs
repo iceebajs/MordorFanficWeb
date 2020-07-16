@@ -77,6 +77,11 @@ namespace MordorFanficWeb.PresentationAdapters.AccountAdapter
             return await accService.GetUserByEmail(email).ConfigureAwait(false);
         }
 
+        public async Task<IdentityResult> ChangeUserPassword(ChangeUserPasswordViewModel userData)
+        {
+            return await accService.ChangeUserPassword(userData).ConfigureAwait(false);
+        }
+
 
         //Roles
         public async Task SetAsAdmin(string id)

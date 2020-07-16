@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from './../../shared/services/account.service';
 import { User } from './../../shared/interfaces/user.interface';
 import { take } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -11,7 +12,7 @@ import { take } from 'rxjs/operators';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private accountService: AccountService) { }
+  constructor(private accountService: AccountService, private router: Router) { }
 
   currentUser: User;
   dataLoaded: Promise<boolean>;
@@ -26,5 +27,7 @@ export class ProfileComponent implements OnInit {
         error => console.log(error));
   }
 
-
+  goTo(route) {
+    this.router.navigate([route]);
+  }
 }

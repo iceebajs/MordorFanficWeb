@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router'
@@ -45,6 +45,12 @@ export class AuthorizationService {
     this.router.navigate(['/']);
   }
 
+  tokenExpirationCheck() {
+    const headers = this.setUserHeaders();
+
+    return this.httpClient.get(`${this.baseURL}/account/expiration`, { headers: headers })
+  }
+
   getAuthorizationToken() {
     return localStorage.getItem('auth_token');
   }
@@ -56,5 +62,10 @@ export class AuthorizationService {
 
   isSignedIn() {
     return this.isLoggedIn;
+  }
+
+  setUserHeaders() {
+    let authToken = localStorage.getItem('auth_token');
+    return new HttpHeaders({ 'Authorization': `Bearer ${authToken}` });
   }
 }

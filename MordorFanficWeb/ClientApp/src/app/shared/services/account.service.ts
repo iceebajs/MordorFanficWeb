@@ -7,6 +7,7 @@ import { UpdateProfile } from '../interfaces/update-profile.interface';
 import { User } from '../interfaces/user.interface';
 import { catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { ChangePassword } from '../interfaces/change-password.interface';
 
 @Injectable()
 export class AccountService {
@@ -19,36 +20,46 @@ export class AccountService {
   }
 
   updateProfileInfo(user: UpdateProfile) {
-    const headers = this.setUsersHeaders();
+    const headers = this.setUserHeaders();
     return this.httpClient.post<UpdateProfile>(`${this.baseURL}/account/update-user-informtaion`, user, { headers: headers })
       .pipe(catchError(this.handleError('updateProfileInfo', user)));
   }
 
   getUserByEmail(email: string): Observable<User> {
-    const headers = this.setUsersHeaders();
+    const headers = this.setUserHeaders();
     return this.httpClient.get<User>(`${this.baseURL}/account/user/${email}`, { headers: headers })
       .pipe(catchError(this.handleError<User>('getUserByEmail')));
   }
 
   getUserById(id: string): Observable<User> {
-    const headers = this.setUsersHeaders();
+    const headers = this.setUserHeaders();
     return this.httpClient.get<User>(`${this.baseURL}/account/${id}`, { headers: headers })
       .pipe(catchError(this.handleError<User>('getUserById')));
   }
 
   getUsersList(): Observable<User[]> {
-    const headers = this.setUsersHeaders();
+    const headers = this.setUserHeaders();
     return this.httpClient.get<User[]>(`${this.baseURL}/account`, { headers: headers })
       .pipe(catchError(this.handleError<User[]>('getUsersList')));
   }
 
+  changePassword(userData: ChangePassword) {
+    const headers = this.setUserHeaders();
+    return this.httpClient.post<ChangePassword>(`${this.baseURL}/account/change-password`, userData, { headers: headers })
+      .pipe(catchError(this.handleError<ChangePassword>('changePassword', userData)));
+  }
+
   deleteUser(id: string) {
-    const headers = this.setUsersHeaders();
+    const headers = this.setUserHeaders();
     return this.httpClient.delete(`${this.baseURL}/account/${id}`, { headers: headers })
       .pipe(catchError(this.handleError('deleteUser')));
   }
 
-  setUsersHeaders() {
+  getErrorMessage() {
+    return this.httpErrorHandler.getError();
+  }
+
+  setUserHeaders() {
     let authToken = localStorage.getItem('auth_token');
     return new HttpHeaders({ 'Authorization': `Bearer ${authToken}` });
   }
