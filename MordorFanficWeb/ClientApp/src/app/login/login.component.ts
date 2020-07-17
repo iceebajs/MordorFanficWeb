@@ -27,6 +27,8 @@ export class LoginComponent implements OnInit, OnDestroy {
       .subscribe(params => {
         this.brandNew = params['brandNew'];
       });
+    if (this.authService.isSignedIn())
+      this.router.navigate(['account/profile']);
   }
 
   ngOnDestroy() {

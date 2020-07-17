@@ -25,9 +25,9 @@ namespace MordorFanficWeb.PresentationAdapters.AccountAdapter
             return await accService.CreateUser(mapper.Map<AppUserModel>(user), password).ConfigureAwait(false);
         }
 
-        public async Task DeleteUser(string id)
+        public async Task<bool> DeleteUser(string id)
         {
-            await accService.DeleteUser(id).ConfigureAwait(false);
+            return await accService.DeleteUser(id).ConfigureAwait(false);
         }
 
         public async Task<GetUserViewModel> GetUserByEmail(string email)
@@ -60,11 +60,14 @@ namespace MordorFanficWeb.PresentationAdapters.AccountAdapter
             return userIdentity;
         }
 
-        public async Task UpdateUserStatus(UpdateUserStatusViewModel user)
+        public async Task<bool> UpdateUserStatus(UpdateUserStatusViewModel user)
         {
             var userIdentity = await accService.GetUserById(user.Id).ConfigureAwait(false);
+            if (userIdentity.IsMasterAdmin == true)
+                return false;
             userIdentity.AccountStatus = user.AccountStatus;
             await accService.UpdateUser(userIdentity).ConfigureAwait(false);
+            return true;
         }
 
         public async Task<bool> VerifyUserPassword(AppUserModel user, string password)
@@ -89,9 +92,9 @@ namespace MordorFanficWeb.PresentationAdapters.AccountAdapter
             await accService.SetAsAdmin(id).ConfigureAwait(false);
         }
 
-        public async Task UnsetAsAdmin(string id)
+        public async Task<bool> UnsetAsAdmin(string id)
         {
-            await accService.UnsetAsAdmin(id).ConfigureAwait(false);
+            return await accService.UnsetAsAdmin(id).ConfigureAwait(false);
         }
 
         public async Task<IList<string>> GetUserRoles(string id)

@@ -9,19 +9,19 @@ namespace MordorFanficWeb.PresentationAdapters.AccountAdapter
     public interface IAccountAdapter
     {
         Task<IdentityResult> CreateUser(RegistrationViewModel user, string password);
-        Task DeleteUser(string id);
+        Task<bool> DeleteUser(string id);
         Task<GetUserViewModel> GetUserByEmail(string email);
         Task<GetUserViewModel> GetUserById(string id);
         Task<List<UsersListViewModel>> GetUsersList();
         Task UpdateUser(UpdateUserViewModel user);
-        Task UpdateUserStatus(UpdateUserStatusViewModel user);
+        Task<bool> UpdateUserStatus(UpdateUserStatusViewModel user);
         Task<bool> VerifyUserPassword(AppUserModel user, string password);
         Task<AppUserModel> GetUserIdentity(string email);
         Task<IdentityResult> ChangeUserPassword(ChangeUserPasswordViewModel userData);
 
         //Roles
         Task SetAsAdmin(string id);
-        Task UnsetAsAdmin(string id);
+        Task<bool> UnsetAsAdmin(string id);
         Task<IList<string>> GetUserRoles(string id);
     }
 }

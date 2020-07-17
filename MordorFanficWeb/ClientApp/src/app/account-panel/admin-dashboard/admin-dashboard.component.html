@@ -1,0 +1,124 @@
+<title>Administrator dashboard</title>
+<div class="container-fluid">
+  <div class="row mt-3 p-3">
+    <div class="col-lg-11 col-md-11 col-sm-12 mx-auto">
+      <h2 class="text-center">User control panel</h2>
+      <div *ngIf="deleteModalHasError" class="alert alert-danger" role="alert">
+        Cannot delete master administrator
+      </div>
+      <div *ngIf="roleModalHasError" class="alert alert-danger" role="alert">
+        Cannot change role of master administrator
+      </div>
+      <div *ngIf="setUserStatusHasError" class="alert alert-danger" role="alert">
+        Cannot block master administrator
+      </div>
+      <table mat-table *ngIf="dataLoaded | async"
+             [dataSource]="dataSource"
+             class="mat-table-styling">
+
+        <ng-container matColumnDef="userName">
+          <th mat-header-cell *matHeaderCellDef> User name </th>
+          <td mat-cell *matCellDef="let element"> {{element.userName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef> Email </th>
+          <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="creationDate">
+          <th mat-header-cell *matHeaderCellDef> Creation Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.creationDate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="lastVisit">
+          <th mat-header-cell *matHeaderCellDef> Last Visit </th>
+          <td mat-cell *matCellDef="let element"> {{element.lastVisit}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Account status </th>
+          <td mat-cell *matCellDef="let element"> {{element.accountStatus ? 'Unblocked' : 'Blocked'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="asUser">
+          <th mat-header-cell *matHeaderCellDef> Login as user </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="loginAsUser(element)">
+              <mat-icon class="mat-18 mat_icon">people</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="changeRole">
+          <th mat-header-cell *matHeaderCellDef> Change role </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="changeRole(changeRoleModal, element)">
+              <mat-icon class="mat-18 mat_icon">swap_horiz</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="block">
+          <th mat-header-cell *matHeaderCellDef>
+            Change user status
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="setUserStatus(element)">
+              <mat-icon class="mat-18 mat_icon">{{element.accountStatus ? 'block' : 'lock_open'}}</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="delete">
+          <th mat-header-cell *matHeaderCellDef> Delete user </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button color="warn" (click)="deleteUser(deleteUserModal, element)">
+              <mat-icon class="mat-18 mat_icon">delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #changeRoleModal let-modal>
+  <div class="modal-header">
+    <h2 class="modal-title" id="modal-change">Change user role</h2>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <h3>{{userEmailToChangeRole}} role is <strong>{{currentUserRole}}</strong>.</h3>
+        <h3>Change selected user role to <strong>{{changeUserRoleTo}}</strong>?</h3>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button mat-button (click)="modal.close(true)">Yes</button>
+  </div>
+</ng-template>
+
+
+<ng-template #deleteUserModal let-modal>
+  <div class="modal-header">
+    <h2 class="modal-title" id="modal-delete">Delete {{userEmailToDelete}}?</h2>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-footer">
+    <button mat-button (click)="modal.close(false)">No</button>
+    <button class="alert-danger" mat-button (click)="modal.close(true)">Yes</button>
+  </div>
+</ng-template>

@@ -96,7 +96,11 @@ namespace MordorFanficWeb.Controllers
                     return BadRequest("User object is null");
                 }
 
-                await accountAdapter.UpdateUserStatus(user).ConfigureAwait(false);
+                if(!await accountAdapter.UpdateUserStatus(user).ConfigureAwait(false))
+                {
+                    logger.LogError("Master administrator block action is abbadoned");
+                    return BadRequest("Cant block master administrator");
+                }
                 logger.LogInformation($"User status with id: '{user.Id}' successfully updated");
                 return Ok("Account successfully updated");
             }
@@ -178,7 +182,7 @@ namespace MordorFanficWeb.Controllers
         }
 
         [Authorize(Policy = "Admin")]
-        [HttpGet]
+        [HttpGet("get-users-list")]
         public async Task<ActionResult> GetUsersList()
         {
             try
@@ -206,7 +210,12 @@ namespace MordorFanficWeb.Controllers
                     return BadRequest("User id object is null");
                 }
 
-                await accountAdapter.DeleteUser(id).ConfigureAwait(false);
+                if(!await accountAdapter.DeleteUser(id).ConfigureAwait(false))
+                {
+                    logger.LogError("Master administrator delete action is abbadoned");
+                    return BadRequest("Cant delete master administrator");
+                }
+
                 logger.LogInformation($"User {id} successfully deleted");
                 return Ok();
             }
@@ -251,7 +260,11 @@ namespace MordorFanficWeb.Controllers
                     return BadRequest("User id object is null");
                 }
 
-                await accountAdapter.UnsetAsAdmin(id).ConfigureAwait(false);
+                if(!await accountAdapter.UnsetAsAdmin(id).ConfigureAwait(false))
+                {
+                    logger.LogError("Master administrator unset action is abbadoned");
+                    return BadRequest("Cant unset master administrator");
+                }
                 return Ok();
             }
             catch (Exception ex)

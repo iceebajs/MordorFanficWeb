@@ -31,6 +31,7 @@ export class AuthorizationService {
       .pipe(map(response => {
         localStorage.setItem('auth_token', response.body.auth_token);
         localStorage.setItem('id', response.body.id);
+        localStorage.setItem('role', response.body.userPermissions);
         this.isLoggedIn = true;
         this.authStatusSubject.next(this.isLoggedIn);
         return true;
@@ -47,7 +48,6 @@ export class AuthorizationService {
 
   tokenExpirationCheck() {
     const headers = this.setUserHeaders();
-
     return this.httpClient.get(`${this.baseURL}/account/expiration`, { headers: headers })
   }
 
@@ -58,6 +58,8 @@ export class AuthorizationService {
   removeUserData() {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('id');
+    localStorage.removeItem('role');
+    localStorage.removeItem('asUser');
   }
 
   isSignedIn() {

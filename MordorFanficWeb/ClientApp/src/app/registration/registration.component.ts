@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RegistrationService } from './../shared/services/registratoin.service';
+import { AuthorizationService } from './../shared/services/authorization.service';
 import { UserRegistration } from '../shared/interfaces/registration.interface';
 import { take } from 'rxjs/operators';
 
@@ -19,9 +20,11 @@ export class RegistrationComponent implements OnInit {
   requestStatus: any;
   errorMessage = [];
 
-  constructor(private router: Router, private registrationService: RegistrationService) { }
+  constructor(private router: Router, private registrationService: RegistrationService, private authService: AuthorizationService) { }
 
   ngOnInit(): void {
+    if (this.authService.isSignedIn())
+      this.router.navigate(['account/profile']);
   }
 
   registerUser() {

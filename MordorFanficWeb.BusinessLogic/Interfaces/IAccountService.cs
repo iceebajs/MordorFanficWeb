@@ -11,7 +11,7 @@ namespace MordorFanficWeb.BusinessLogic.Interfaces
         //Users
         Task<IdentityResult> CreateUser(AppUserModel user, string password);
         Task CreateAdminOnInit(AppUserModel user, string password);
-        Task DeleteUser(string id);
+        Task<bool> DeleteUser(string id);
         Task<AppUserModel> GetUserByEmail(string email);
         Task<AppUserModel> GetUserById(string id);
         Task<List<AppUserModel>> GetUsersList();
@@ -21,7 +21,7 @@ namespace MordorFanficWeb.BusinessLogic.Interfaces
 
         //Roles
         Task SetAsAdmin(string id);
-        Task UnsetAsAdmin(string id);
+        Task<bool> UnsetAsAdmin(string id);
         Task<IList<string>> GetUserRoles(string id);
     }
 }

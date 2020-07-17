@@ -1,0 +1,175 @@
+.text-name-theme {
+  text-align: left;
+  font-family: 'Roboto', serif;
+  font-size: 18px;
+  color: #015249;
+}
+
+.btn-outline-primary {
+  color: black;
+  font-family: 'Roboto', serif;
+  font-size: 18px;
+  background-color: none;
+  border: none;
+  width: 100%;
+  padding: 10px;
+  border-radius: 0px;
+}
+
+.nav-wrapping .btn-outline-primary {
+  font-size: 16px;
+}
+
+.nav-wrapping {
+  border: 2px solid;
+  border-color: #0a3470;
+  width: 80%;
+}
+
+.btn-outline-primary:focus,
+.btn-outline-primary:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.btn-outline-primary:hover {
+  color: #fff;
+  background-color: #587495 !important;
+  border-color: #0a3470 !important;
+  outline: none !important;
+}
+
+.heigh-fix {
+  height: 380px;
+}
+
+
+.jumbotron {
+  padding: 20px 20px;
+  margin: 0;
+}
+
+.prof-img {
+  width: 220px;
+  height: 250px;
+}
+
+.bkg-color {
+  background-color: whitesmoke;
+}
+
+.link-active {
+  background-color: #3C52B4;
+  color: white !important;
+}
+
+
+.nav {
+  margin-bottom: 20px;
+  margin-left: 0;
+  list-style: none;
+}
+
+  .nav a {
+    color: black;
+    text-align: left;
+    font-family: 'Roboto', serif;
+    font-size: 16px;
+    text-shadow: none;
+  }
+
+    .nav a:hover {
+      color: white;
+      background-color: #587495;
+    }
+
+  .nav li {
+    width: 100%;
+  }
+
+.nav-list {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-bottom: 0;
+}
+
+.bs-docs-sidenav {
+  margin: 50px 0 0;
+  padding: 0;
+  border: 1px;
+  background-color: #fff;
+}
+
+.sidebar-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 100%;
+  height: 100%;
+  min-width: 70%;
+}
+
+.sticky {
+  position: sticky;
+  top: 80px;
+}
+
+
+.nav a {
+  display: block;
+  padding: 20px 20px;
+  line-height: 1.2em;
+  text-decoration: solid;
+}
+
+  .nav a:hover {
+    text-decoration: none;
+    color: whitesmoke;
+  }
+
+
+.nav li ul {
+  background: #57BC90;
+}
+
+  .nav li ul li {
+    width: 240px;
+  }
+
+  .nav li ul a {
+    border: none;
+  }
+
+    .nav li ul a:hover {
+      background: rgba(0,0,0,0.2);
+    }
+
+.border-left-labs {
+  border-left: 4px solid #3C52B4;
+  border-collapse: separate;
+  padding-left: 20px;
+}
+
+@media (max-width: 1600.98px) {
+  .sticky {
+    position: static;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .sidebar-item {
+    position: static;
+    padding-bottom: 10%;
+  }
+}
+
+
+@media (max-width: 767.98px) {
+  .sidebar-item {
+    position: static;
+    padding-bottom: 15%;
+  }
+}
+
+@media (max-width: 575.98px) {
+}

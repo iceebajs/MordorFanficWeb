@@ -8,6 +8,7 @@ import { User } from '../interfaces/user.interface';
 import { catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ChangePassword } from '../interfaces/change-password.interface';
+import { UpdateUserStatus } from '../interfaces/update-user-status.interface'
 
 @Injectable()
 export class AccountService {
@@ -39,7 +40,7 @@ export class AccountService {
 
   getUsersList(): Observable<User[]> {
     const headers = this.setUserHeaders();
-    return this.httpClient.get<User[]>(`${this.baseURL}/account`, { headers: headers })
+    return this.httpClient.get<User[]>(`${this.baseURL}/account/get-users-list`, { headers: headers })
       .pipe(catchError(this.handleError<User[]>('getUsersList')));
   }
 
@@ -49,10 +50,34 @@ export class AccountService {
       .pipe(catchError(this.handleError<ChangePassword>('changePassword', userData)));
   }
 
+  updateUserStatus(user: UpdateUserStatus) {
+    const headers = this.setUserHeaders();
+    return this.httpClient.post<UpdateUserStatus>(`${this.baseURL}/account/update-user-status`, user, { headers: headers })
+      .pipe(catchError(this.handleError<UpdateUserStatus>('updateUserStatus', user)));
+  }
+
   deleteUser(id: string) {
     const headers = this.setUserHeaders();
     return this.httpClient.delete(`${this.baseURL}/account/${id}`, { headers: headers })
       .pipe(catchError(this.handleError('deleteUser')));
+  }
+
+  getUserRoles(id: string){
+    const headers = this.setUserHeaders();
+    return this.httpClient.get(`${this.baseURL}/account/get-user-roles/${id}`, { headers: headers })
+      .pipe(catchError(this.handleError('getUserRoles')));
+  }
+
+  setUserAsAdmin(id: string) {
+    const headers = this.setUserHeaders();
+    return this.httpClient.post(`${this.baseURL}/account/set-role/${id}`, { headers: headers })
+      .pipe(catchError(this.handleError('setUserAsAdmin')));
+  }
+
+  unsetUserAsAdmin(id: string) {
+    const headers = this.setUserHeaders();
+    return this.httpClient.post(`${this.baseURL}/account/unset-role/${id}`, { headers: headers })
+      .pipe(catchError(this.handleError('unsetUserAsAdmin')));
   }
 
   getErrorMessage() {

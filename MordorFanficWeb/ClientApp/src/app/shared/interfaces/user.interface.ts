@@ -6,5 +6,5 @@ export interface User {
   lastName?: string;
   creationDate?: string;
   lastVisit?: string;
-  accountStatus?: string;
+  accountStatus?: boolean;
 }

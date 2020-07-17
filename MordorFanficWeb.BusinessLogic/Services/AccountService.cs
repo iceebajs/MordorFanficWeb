@@ -34,11 +34,13 @@ namespace MordorFanficWeb.BusinessLogic.Services
             await userManager.AddToRoleAsync(user, "admin").ConfigureAwait(false);
         }
 
-        public async Task DeleteUser(string email)
+        public async Task<bool> DeleteUser(string id)
         {
-            var user = GetUserByEmail(email).Result;
-            if (user != null)
-                await userManager.DeleteAsync(user).ConfigureAwait(false);
+            var user = GetUserById(id).Result;
+            if (user.IsMasterAdmin == true)
+                return false;
+            await userManager.DeleteAsync(user).ConfigureAwait(false);
+            return true;
         }
 
         public async Task<AppUserModel> GetUserByEmail(string email)
@@ -63,7 +65,13 @@ namespace MordorFanficWeb.BusinessLogic.Services
 
         public async Task<bool> VerifyUserPassowrd(AppUserModel user, string password)
         {
-            return await userManager.CheckPasswordAsync(user, password).ConfigureAwait(false);
+            bool result = await userManager.CheckPasswordAsync(user, password).ConfigureAwait(false);
+            if (result)
+            {
+                user.LastVisit = DateTime.UtcNow.ToString("g");
+                await userManager.UpdateAsync(user).ConfigureAwait(false);
+            }                
+            return result;
         }
         
         public async Task<IdentityResult> ChangeUserPassword(ChangeUserPasswordViewModel userData)
@@ -71,16 +79,20 @@ namespace MordorFanficWeb.BusinessLogic.Services
             var user = await GetUserById(userData.Id).ConfigureAwait(false);
             return await userManager.ChangePasswordAsync(user, userData.OldPassword, userData.NewPassword).ConfigureAwait(false);
         }
-        // Roles
 
+        // Roles
         public async Task SetAsAdmin(string id)
         {
             await userManager.AddToRoleAsync(await userManager.FindByIdAsync(id).ConfigureAwait(false), "admin").ConfigureAwait(false);
         }
 
-        public async Task UnsetAsAdmin(string id)
+        public async Task<bool> UnsetAsAdmin(string id)
         {
-            await userManager.RemoveFromRoleAsync(await userManager.FindByIdAsync(id).ConfigureAwait(false), "admin").ConfigureAwait(false);
+            var userIdentity = await userManager.FindByIdAsync(id).ConfigureAwait(false);
+            if (userIdentity.IsMasterAdmin == true)
+                return false;
+            await userManager.RemoveFromRoleAsync(userIdentity, "admin").ConfigureAwait(false);
+            return true;
         }
 
         public async Task<IList<string>> GetUserRoles(string id)

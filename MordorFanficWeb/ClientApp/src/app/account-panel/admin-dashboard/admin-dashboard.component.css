@@ -1,0 +1,20 @@
+::ng-deep .mat-table th,
+::ng-deep .mat-table td {
+  color: #3C52B4;
+}
+
+
+@media (max-width: 991.98px) {
+  ::ng-deep .mat-table th,
+  ::ng-deep .mat-table td {
+      font-size: 10px;
+  }
+}
+
+
+@media (max-width: 767.98px) {
+  ::ng-deep .mat-table th,
+  ::ng-deep .mat-table td {
+    font-size: 8px;
+  }
+}
