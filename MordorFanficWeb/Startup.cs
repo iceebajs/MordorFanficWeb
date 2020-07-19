@@ -23,6 +23,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MordorFanficWeb.Common.Helper;
 using MordorFanficWeb.BusinessLogic.Policies;
 using Microsoft.AspNetCore.Authorization;
+using MordorFanficWeb.ViewModels.CompositionViewModels;
+using MordorFanficWeb.ViewModels.CompositionViewModels.FluentValidation;
+using MordorFanficWeb.PresentationAdapters.CompositionAdapter;
 
 namespace MordorFanficWeb
 {
@@ -125,11 +128,16 @@ namespace MordorFanficWeb
             services.AddSingleton<IAuthorizationHandler, UserRegisteredHandler>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IAccountAdapter, AccountAdapter>();
+            services.AddScoped<ICompositionService, CompositionService>();
+            services.AddScoped<ICompositionAdapter, CompositionAdapter>();
             services.AddScoped<IAppDbContext, AppDbContext>();
+
             services.AddTransient<IValidator<ChangeUserPasswordViewModel>, ChangeUserPasswordValidator>();
             services.AddTransient<IValidator<RegistrationViewModel>, RegistrationViewModelValidator>();
             services.AddTransient<IValidator<UpdateUserViewModel>, UpdateUserViewModelValidator>();
             services.AddTransient<IValidator<CredentialsViewModel>, CredentialsViewModelValidator>();
+            services.AddTransient<IValidator<CompositionViewModel>, CompositionViewModelValidator>();
+
             services.AddSingleton(Common.AutoMapper.AutoMapper.Configure());
 
             services.AddMvc(

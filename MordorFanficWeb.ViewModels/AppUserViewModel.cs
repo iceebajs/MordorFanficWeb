@@ -1,10 +1,9 @@
-﻿using System;
+﻿using MordorFanficWeb.ViewModels.CompositionViewModels;
 using System.Collections.Generic;
-using System.Text;
 
 namespace MordorFanficWeb.ViewModels
 {
-    public class GetUserViewModel
+    public class AppUserViewModel
     {
         public string Id { get; set; }
         public string UserName { get; set; }
@@ -14,5 +13,7 @@ namespace MordorFanficWeb.ViewModels
         public bool AccountStatus { get; set; }
         public string CreationDate { get; set; }
         public string LastVisit { get; set; }
+
+        public ICollection<CompositionViewModel> Compositions { get; set; }
     }
 }

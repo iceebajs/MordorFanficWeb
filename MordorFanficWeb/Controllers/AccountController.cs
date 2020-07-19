@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using MordorFanficWeb.Common;
 using MordorFanficWeb.Common.Helper;
 using Microsoft.AspNetCore.Authorization;
-using NLog.Fluent;
 
 namespace MordorFanficWeb.Controllers
 {

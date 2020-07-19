@@ -30,14 +30,14 @@ namespace MordorFanficWeb.PresentationAdapters.AccountAdapter
             return await accService.DeleteUser(id).ConfigureAwait(false);
         }
 
-        public async Task<GetUserViewModel> GetUserByEmail(string email)
+        public async Task<AppUserViewModel> GetUserByEmail(string email)
         {
-            return mapper.Map<GetUserViewModel>(await accService.GetUserByEmail(email).ConfigureAwait(false));
+            return mapper.Map<AppUserViewModel>(await accService.GetUserByEmail(email).ConfigureAwait(false));
         }
 
-        public async Task<GetUserViewModel> GetUserById(string id)
+        public async Task<AppUserViewModel> GetUserById(string id)
         {
-            return mapper.Map<GetUserViewModel>(await accService.GetUserById(id).ConfigureAwait(false));
+            return mapper.Map<AppUserViewModel>(await accService.GetUserById(id).ConfigureAwait(false));
         }
 
         public async Task<List<UsersListViewModel>> GetUsersList()
