@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using MordorFanficWeb.Models.BaseModels;
 
 namespace MordorFanficWeb.Models
@@ -14,5 +15,7 @@ namespace MordorFanficWeb.Models
 
         public int UserId { get; set; }
         public virtual AccountUser User { get; set; }
+
+        public virtual ICollection<Chapter> Chapters { get; set; }
     }
 }

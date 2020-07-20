@@ -1,4 +1,7 @@
-﻿namespace MordorFanficWeb.ViewModels.CompositionViewModels
+﻿using System.Collections.Generic;
+using MordorFanficWeb.ViewModels.ChapterViewModels;
+
+namespace MordorFanficWeb.ViewModels.CompositionViewModels
 {
     public class CompositionViewModel
     {
@@ -9,5 +12,6 @@
         public string Tags { get; set; }
 
         public int UserId { get; set; }
+        public ICollection<ChapterViewModel> Chapters { get; set; }
     }
 }

@@ -1,13 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MordorFanficWeb.PresentationAdapters.AccountAdapter;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-using MordorFanficWeb.ViewModels;
 using System;
-using System.Collections.Generic;
-using MordorFanficWeb.Common;
-using MordorFanficWeb.Common.Helper;
-using Microsoft.AspNetCore.Authorization;
 using MordorFanficWeb.PresentationAdapters.CompositionAdapter;
 using MordorFanficWeb.ViewModels.CompositionViewModels;
 

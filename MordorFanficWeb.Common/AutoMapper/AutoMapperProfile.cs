@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MordorFanficWeb.Models;
 using MordorFanficWeb.ViewModels;
+using MordorFanficWeb.ViewModels.ChapterViewModels;
 using MordorFanficWeb.ViewModels.CompositionViewModels;
 
 namespace MordorFanficWeb.Common.AutoMapper
@@ -14,6 +15,8 @@ namespace MordorFanficWeb.Common.AutoMapper
             CreateMap<AppUserViewModel, AppUser>().ReverseMap();
             CreateMap<CompositionViewModel, Composition>();
             CreateMap<CompositionViewModel, Composition>().ReverseMap();
+            CreateMap<ChapterViewModel, Chapter>();
+            CreateMap<ChapterViewModel, Chapter>().ReverseMap();
         }
     }
 }
