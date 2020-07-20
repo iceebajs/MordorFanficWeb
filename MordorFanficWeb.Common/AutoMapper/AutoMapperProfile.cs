@@ -9,11 +9,11 @@ namespace MordorFanficWeb.Common.AutoMapper
     {
         public AutoMapperProfile()
         {
-            CreateMap<RegistrationViewModel, AppUserModel>();
-            CreateMap<UsersListViewModel, AppUserModel>().ReverseMap();
-            CreateMap<AppUserViewModel, AppUserModel>().ReverseMap();
-            CreateMap<CompositionViewModel, CompositionModel>();
-            CreateMap<CompositionViewModel, CompositionModel>().ReverseMap();
+            CreateMap<RegistrationViewModel, AppUser>();
+            CreateMap<UsersListViewModel, AppUser>().ReverseMap();
+            CreateMap<AppUserViewModel, AppUser>().ReverseMap();
+            CreateMap<CompositionViewModel, Composition>();
+            CreateMap<CompositionViewModel, Composition>().ReverseMap();
         }
     }
 }

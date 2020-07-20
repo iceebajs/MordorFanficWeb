@@ -19,7 +19,7 @@ namespace MordorFanficWeb.BusinessLogic.Helpers
                 await roleManager.CreateAsync(new IdentityRole("user")).ConfigureAwait(false);
             if(await accountService.GetUserByEmail(adminEmail).ConfigureAwait(false) == null)
             {
-                AppUserModel admin = new AppUserModel
+                AppUser admin = new AppUser
                 {
                     UserName = "admin",
                     Email = adminEmail,

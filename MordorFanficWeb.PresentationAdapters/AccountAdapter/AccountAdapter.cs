@@ -22,7 +22,7 @@ namespace MordorFanficWeb.PresentationAdapters.AccountAdapter
         //Users
         public async Task<IdentityResult> CreateUser(RegistrationViewModel user, string password)
         {
-            return await accService.CreateUser(mapper.Map<AppUserModel>(user), password).ConfigureAwait(false);
+            return await accService.CreateUser(mapper.Map<AppUser>(user), password).ConfigureAwait(false);
         }
 
         public async Task<bool> DeleteUser(string id)
@@ -51,7 +51,7 @@ namespace MordorFanficWeb.PresentationAdapters.AccountAdapter
             await accService.UpdateUser(userIdentity).ConfigureAwait(false);
         }
 
-        public async Task<AppUserModel> AssignUpdatedUserFields(UpdateUserViewModel user)
+        public async Task<AppUser> AssignUpdatedUserFields(UpdateUserViewModel user)
         {
             var userIdentity = await accService.GetUserByEmail(user.Email).ConfigureAwait(false);
             userIdentity.UserName = user.UserName;
@@ -70,12 +70,12 @@ namespace MordorFanficWeb.PresentationAdapters.AccountAdapter
             return true;
         }
 
-        public async Task<bool> VerifyUserPassword(AppUserModel user, string password)
+        public async Task<bool> VerifyUserPassword(AppUser user, string password)
         {
             return await accService.VerifyUserPassowrd(user, password).ConfigureAwait(false);
         }
 
-        public async Task<AppUserModel> GetUserIdentity(string email)
+        public async Task<AppUser> GetUserIdentity(string email)
         {
             return await accService.GetUserByEmail(email).ConfigureAwait(false);
         }

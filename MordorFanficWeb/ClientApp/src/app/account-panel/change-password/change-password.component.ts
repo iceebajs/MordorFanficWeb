@@ -38,7 +38,7 @@ export class ChangePasswordComponent implements OnInit {
         .subscribe(
           result => {
             if (result)
-              this.router.navigate(['/profile'])
+              this.router.navigate(['/account/profile'])
           },
           () => {
             this.setErrors();

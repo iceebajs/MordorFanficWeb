@@ -9,14 +9,14 @@ namespace MordorFanficWeb.BusinessLogic.Interfaces
     public interface IAccountService
     {
         //Users
-        Task<IdentityResult> CreateUser(AppUserModel user, string password);
-        Task CreateAdminOnInit(AppUserModel user, string password);
+        Task<IdentityResult> CreateUser(AppUser user, string password);
+        Task CreateAdminOnInit(AppUser user, string password);
         Task<bool> DeleteUser(string id);
-        Task<AppUserModel> GetUserByEmail(string email);
-        Task<AppUserModel> GetUserById(string id);
-        Task<List<AppUserModel>> GetUsersList();
-        Task UpdateUser(AppUserModel user);
-        Task<bool> VerifyUserPassowrd(AppUserModel user, string password);
+        Task<AppUser> GetUserByEmail(string email);
+        Task<AppUser> GetUserById(string id);
+        Task<List<AppUser>> GetUsersList();
+        Task UpdateUser(AppUser user);
+        Task<bool> VerifyUserPassowrd(AppUser user, string password);
         Task<IdentityResult> ChangeUserPassword(ChangeUserPasswordViewModel userData);
 
         //Roles

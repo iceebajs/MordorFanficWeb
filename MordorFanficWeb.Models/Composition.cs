@@ -3,7 +3,7 @@ using MordorFanficWeb.Models.BaseModels;
 
 namespace MordorFanficWeb.Models
 {
-    public class CompositionModel : BaseEntity
+    public class Composition : BaseEntity
     {
         [Key]
         public int CompositionId { get; set; }
@@ -12,7 +12,7 @@ namespace MordorFanficWeb.Models
         public string Genre { get; set; }
         public string Tags { get; set; }
 
-        public string UserId { get; set; }
-        public virtual AppUserModel User { get; set; }
+        public int UserId { get; set; }
+        public virtual AccountUser User { get; set; }
     }
 }

@@ -21,28 +21,28 @@ namespace MordorFanficWeb.PresentationAdapters.CompositionAdapter
 
         public async Task CreateComposition(CompositionViewModel composition)
         {
-            await compositionService.CreateAsync(mapper.Map<CompositionModel>(composition)).ConfigureAwait(false);
+            await compositionService.CreateAsync(mapper.Map<Composition>(composition)).ConfigureAwait(false);
         }
 
         public async Task DeleteComposition(int id)
         {
-            var composition = await compositionService.GetAsync<CompositionModel>(x => x.CompositionId == id).ConfigureAwait(false);
+            var composition = await compositionService.GetAsync<Composition>(x => x.CompositionId == id).ConfigureAwait(false);
             await compositionService.DeleteAsync(composition).ConfigureAwait(false);
         }
 
         public async Task<List<CompositionViewModel>> GetAllCompositions()
         {
-            return mapper.Map<List<CompositionViewModel>>(await compositionService.GetAllAsync<CompositionModel>().ConfigureAwait(false));
+            return mapper.Map<List<CompositionViewModel>>(await compositionService.GetAllAsync<Composition>().ConfigureAwait(false));
         }
 
         public async Task<CompositionViewModel> GetComposition(int id)
         {
-            return mapper.Map<CompositionViewModel>(await compositionService.GetAsync<CompositionModel>(x => x.CompositionId == id).ConfigureAwait(false));
+            return mapper.Map<CompositionViewModel>(await compositionService.GetAsync<Composition>(x => x.CompositionId == id).ConfigureAwait(false));
         }
 
         public async Task UpdateComposition(CompositionViewModel composition)
         {
-            var updatedComposition = mapper.Map<CompositionModel>(composition);
+            var updatedComposition = mapper.Map<Composition>(composition);
             await compositionService.UpdateAsync(updatedComposition).ConfigureAwait(false);
         }
     }

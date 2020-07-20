@@ -67,7 +67,7 @@ namespace MordorFanficWeb.Controllers
             return new OkObjectResult(json);
         }
 
-        private async Task<string> SetUserRole(AppUserModel user)
+        private async Task<string> SetUserRole(AppUser user)
         {
             if (user != null)
             {
@@ -77,7 +77,7 @@ namespace MordorFanficWeb.Controllers
             return null;
         }
 
-        private async Task<ClaimsIdentity> GetClaimsIdentity(AppUserModel userToVerify, string password, string role)
+        private async Task<ClaimsIdentity> GetClaimsIdentity(AppUser userToVerify, string password, string role)
         {
             if (userToVerify != null && userToVerify.AccountStatus == true)
             {

@@ -104,7 +104,7 @@ namespace MordorFanficWeb
                 };
             });
 
-            services.AddIdentity<AppUserModel, IdentityRole>(
+            services.AddIdentity<AppUser, IdentityRole>(
                  options =>
                  {
                      options.Password.RequireDigit = true;
