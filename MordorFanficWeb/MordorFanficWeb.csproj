@@ -38,8 +38,11 @@
     <TypeScriptCompile Remove="ClientApp\src\app\shared\common\route.guard.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\helpers\auth-interceptor.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\helpers\message.service.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\helpers\safe-html.module.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\auth-responce.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\change-password.interface.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\chapter\chapter.interface.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\composition\composition.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\credentials.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\registration.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\update-profile.interface.ts" />
@@ -47,12 +50,17 @@
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\user.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\services\account.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\services\authorization.service.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\services\composition.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\services\http-error-hander.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\services\registratoin.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MordorFanficWeb.PresentationAdapters\MordorFanficWeb.PresentationAdapters.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\src\app\shared\pipes\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

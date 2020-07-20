@@ -8,11 +8,15 @@ import { ProfileComponent } from './profile/profile.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AccountPanelComponent } from './account-panel/account-panel.component';
+import { CreateCompositionComponent } from './create-composition/create-composition.component';
+import { CreateChapterComponent } from './create-chapter/create-chapter.component';
 
 const childRoutes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'change-password', component: ChangePasswordComponent },
-  { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [AdminRouteGuard] }
+  { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [AdminRouteGuard] },
+  { path: 'create-composition', component: CreateCompositionComponent },
+  { path: 'create-chapter', component: CreateChapterComponent }
 ];
 
 const routes: Routes = [

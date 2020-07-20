@@ -18,6 +18,7 @@ namespace MordorFanficWeb.BusinessLogic.Interfaces
         Task UpdateUser(AppUser user);
         Task<bool> VerifyUserPassowrd(AppUser user, string password);
         Task<IdentityResult> ChangeUserPassword(ChangeUserPasswordViewModel userData);
+        Task<int> GetAccountId(string id);
 
         //Roles
         Task SetAsAdmin(string id);

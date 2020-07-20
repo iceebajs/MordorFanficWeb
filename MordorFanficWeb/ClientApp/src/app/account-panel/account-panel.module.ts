@@ -7,16 +7,21 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { EditorModule } from '@progress/kendo-angular-editor';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { AccountPanelRoutingModule } from './account-panel-routing.module';
 import { ProfileComponent } from './profile/profile.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AccountPanelComponent } from './account-panel/account-panel.component';
+import { CreateCompositionComponent } from './create-composition/create-composition.component';
+import { CreateChapterComponent } from './create-chapter/create-chapter.component';
 
 
 @NgModule({
-  declarations: [ProfileComponent, ChangePasswordComponent, AdminDashboardComponent, AccountPanelComponent],
+  declarations: [ProfileComponent, ChangePasswordComponent, AdminDashboardComponent, AccountPanelComponent, CreateCompositionComponent, CreateChapterComponent],
   imports: [
     CommonModule,
     AccountPanelRoutingModule,
@@ -27,7 +32,10 @@ import { AccountPanelComponent } from './account-panel/account-panel.component';
     MatButtonModule,
     MatTableModule,
     MatPaginatorModule,
-    NgbModule
+    NgbModule,
+    EditorModule,
+    MatChipsModule,
+    MatAutocompleteModule
   ]
 })
 export class AccountPanelModule { }

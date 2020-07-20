@@ -4,15 +4,9 @@
   </button>
   <div [ngbCollapse]="isMenuCollapsed"
        class="collapse navbar-collapse">
-    <ul class="navbar-nav margin-nav"
-        style="margin-left: 15%">
+    <ul class="navbar-nav margin-nav" style="margin-left: 15%">
       <li>
-        <a>Home</a>
-        <ul>
-          <li class="rounded-top rounded-bottom">
-            <a (click)="goTo('/'); isMenuCollapsed = true;">Home</a>
-          </li>
-        </ul>
+        <a (click)="goTo('/'); isMenuCollapsed = true;">Home</a>
       </li>
     </ul>
     <ul class="navbar-nav margin-nav account-panel" *ngIf="!isLoggedIn">

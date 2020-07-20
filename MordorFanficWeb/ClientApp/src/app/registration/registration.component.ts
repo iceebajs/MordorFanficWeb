@@ -78,13 +78,13 @@ export class RegistrationComponent implements OnInit {
 
   firstName = new FormControl('', [Validators.required]);
   errorFirstName() {
-    if (this.userName.hasError('required'))
+    if (this.firstName.hasError('required'))
       return 'You must enter a value';
   }
 
   lastName = new FormControl('', [Validators.required]);
   errorLastName() {
-    if (this.userName.hasError('required'))
+    if (this.lastName.hasError('required'))
       return 'You must enter a value';
   }
 

@@ -80,6 +80,12 @@ export class AccountService {
       .pipe(catchError(this.handleError('unsetUserAsAdmin')));
   }
 
+  getUserAccountId(id: string): Observable<number> {
+    const headers = this.setUserHeaders();
+    return this.httpClient.get<number>(`${this.baseURL}/account/get-account-id/${id}`, { headers: headers })
+      .pipe(catchError(this.handleError<number>('getUserAccountId')));
+  }
+
   getErrorMessage() {
     return this.httpErrorHandler.getError();
   }

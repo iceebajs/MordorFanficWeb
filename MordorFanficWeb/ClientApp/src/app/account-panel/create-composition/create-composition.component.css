@@ -11,3 +11,8 @@
   width: 100%;
   background-color: none;
 }
+
+::ng-deep .mat-chip-input::placeholder {
+  color: lightgrey;
+  background: none !important;
+}

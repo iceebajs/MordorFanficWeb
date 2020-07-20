@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using MordorFanficWeb.BusinessLogic.Interfaces;
 using MordorFanficWeb.ViewModels;
 using MordorFanficWeb.Persistence.AppDbContext;
-using System.Security.Cryptography.X509Certificates;
 
 namespace MordorFanficWeb.BusinessLogic.Services
 {
@@ -92,6 +91,12 @@ namespace MordorFanficWeb.BusinessLogic.Services
         {
             var user = await GetUserById(userData.Id).ConfigureAwait(false);
             return await userManager.ChangePasswordAsync(user, userData.OldPassword, userData.NewPassword).ConfigureAwait(false);
+        }
+
+        public async Task<int> GetAccountId(string id)
+        {
+            var user = await appDbContext.AccountUsers.FirstAsync(x => x.IdentityId == id).ConfigureAwait(false);
+            return user.AccountUserId;
         }
 
         // Roles

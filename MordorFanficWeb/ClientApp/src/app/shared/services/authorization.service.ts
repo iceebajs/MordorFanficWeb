@@ -59,7 +59,8 @@ export class AuthorizationService {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('id');
     localStorage.removeItem('role');
-    localStorage.removeItem('asUser');
+    localStorage.removeItem('asUserEmail');
+    localStorage.removeItem('asUserId');
   }
 
   isSignedIn() {

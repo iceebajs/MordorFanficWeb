@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthorizationService } from './../../shared/services/authorization.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private authService: AuthorizationService) { }
 
   ngOnInit(): void {
   }

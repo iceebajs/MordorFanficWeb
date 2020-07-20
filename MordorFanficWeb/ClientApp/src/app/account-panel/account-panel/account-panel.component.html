@@ -25,6 +25,16 @@
               </button>
             </div>
 
+            <div class="shadow mb-2">
+              <button type="button"
+                      class="btn btn-outline-primary"
+                      [routerLink]="['/account/create-composition']"
+                      routerLinkActive="link-active"
+                      [routerLinkActiveOptions]="{exact:true}">
+                Create composition
+              </button>
+            </div>
+
             <div class="shadow mb-2" *ngIf="isAdmin()">
               <button type="button"
                       class="btn btn-outline-primary"

@@ -1,0 +1,62 @@
+<title>Create composition</title>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-8 col-lg-8 col-md-10 col-sm-11">
+      <h1 class="text-center">Create composition form</h1>
+      <mat-form-field appearance="fill">
+        <mat-label>Composition title</mat-label>
+        <input matInput placeholder="Composition title" [formControl]="compositionTitle" required>
+        <mat-error *ngIf="compositionTitle.invalid">{{errorCompositionTitle()}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Genre</mat-label>
+        <input matInput placeholder="Composition genre" [formControl]="compositionGenre" required>
+        <mat-error *ngIf="compositionGenre.invalid">{{errorCompositionGenre()}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-chip-list #tagList aria-label="Composition tags selection">
+          <mat-chip *ngFor="let tag of tags" [selectable]="selectable"
+                    [removable]="removable" (removed)="removeTag(tag)">
+            {{tag}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input placeholder="New tag..."
+                 #tagInput
+                 [formControl]="tagControl"
+                 [matAutocomplete]="auto"
+                 [matChipInputFor]="tagList"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 (matChipInputTokenEnd)="addTag($event)">
+        </mat-chip-list>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedTags($event)">
+          <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+            {{tag}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <div class="w-100 pb-2"></div>
+
+      <h2 class="text-center">Composition preview context</h2>
+      <kendo-editor [(ngModel)]="previewContext" style="height: 370px;"></kendo-editor>
+
+      <div class="w-100"></div>
+
+      <div class="button-container">
+        <button mat-raised-button color="primary" class="align-button" (click)="createComposition();"> Submit composition</button>
+      </div>
+
+      <div class="col mt-4">
+        <div *ngIf="isSuccessfull" class="alert alert-success" role="alert">
+          Composition successfully added.
+        </div>
+        <div *ngIf="hasError" class="alert alert-danger" role="alert">
+          Error occured. Fields of composition should not be empty.<br />
+          Error message: {{errorMessage}}.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

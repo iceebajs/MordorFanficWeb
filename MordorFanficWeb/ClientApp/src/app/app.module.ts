@@ -23,6 +23,8 @@ import { HttpErrorHandler } from './shared/helpers/http-error-hander.service';
 import { MessageService } from './shared/helpers/message.service';
 import { AuthorizationService } from './shared/services/authorization.service';
 import { AuthInterceptor } from './shared/helpers/auth-interceptor';
+import { EditorModule } from '@progress/kendo-angular-editor';
+
 
 @NgModule({
   declarations: [
@@ -45,7 +47,8 @@ import { AuthInterceptor } from './shared/helpers/auth-interceptor';
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
-    MatIconModule    
+    MatIconModule,
+    EditorModule    
   ],
   providers: [
     ConfigService,

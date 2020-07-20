@@ -319,6 +319,27 @@ namespace MordorFanficWeb.Controllers
         }
 
         [Authorize(Policy = "RegisteredUsers")]
+        [HttpGet("get-account-id/{id}")]
+        public async Task<ActionResult<int>> GetAccountId(string id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    logger.LogError("User id object sent from client is null");
+                    return BadRequest("User id object is null");
+                }
+
+                return await accountAdapter.GetAccountId(id).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong inside GetAccountId action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [Authorize(Policy = "RegisteredUsers")]
         [HttpGet]
         public ActionResult TokenCheck()
         {

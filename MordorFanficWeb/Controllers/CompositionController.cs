@@ -91,7 +91,7 @@ namespace MordorFanficWeb.Controllers
         }
 
         [Authorize(Policy = "RegisteredUsers")]
-        [HttpPost("{id}")]
+        [HttpPost("update")]
         public async Task<ActionResult> UpdateComposition([FromBody] CompositionViewModel composition)
         {
             try

@@ -1,8 +1,12 @@
 ::ng-deep .mat-table th,
 ::ng-deep .mat-table td {
   color: #3C52B4;
+  background-color: gainsboro;
 }
 
+::ng-deep .mat-paginator-container{
+    background-color: gainsboro;
+}
 
 @media (max-width: 991.98px) {
   ::ng-deep .mat-table th,
