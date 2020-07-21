@@ -29,6 +29,8 @@ using MordorFanficWeb.PresentationAdapters.CompositionAdapter;
 using MordorFanficWeb.ViewModels.ChapterViewModels;
 using MordorFanficWeb.ViewModels.ChapterViewModels.FluentValidation;
 using MordorFanficWeb.PresentationAdapters.ChapterAdapter;
+using MordorFanficWeb.PresentationAdapters.TagsAdapter;
+using MordorFanficWeb.PresentationAdapters.CompositionTagsAdapter;
 
 namespace MordorFanficWeb
 {
@@ -135,6 +137,10 @@ namespace MordorFanficWeb
             services.AddScoped<ICompositionAdapter, CompositionAdapter>();
             services.AddScoped<IChapterService, ChapterService>();
             services.AddScoped<IChapterAdapter, ChapterAdapter>();
+            services.AddScoped<ITagsService, TagsService>();
+            services.AddScoped<ITagsAdapter, TagsAdapter>();
+            services.AddScoped<ICompositionTagsService, CompositionTagsService>();
+            services.AddScoped<ICompositionTagsAdapter, CompositionTagsAdapter>();
             services.AddScoped<IAppDbContext, AppDbContext>();
 
             services.AddTransient<IValidator<ChangeUserPasswordViewModel>, ChangeUserPasswordValidator>();

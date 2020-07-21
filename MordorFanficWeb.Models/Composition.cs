@@ -6,6 +6,11 @@ namespace MordorFanficWeb.Models
 {
     public class Composition : BaseEntity
     {
+        public Composition()
+        {
+            Chapters = new HashSet<Chapter>();
+            CompositionTags = new HashSet<CompositionTags>();
+        }
         [Key]
         public int CompositionId { get; set; }
         public string Title { get; set; }
@@ -17,5 +22,6 @@ namespace MordorFanficWeb.Models
         public virtual AccountUser User { get; set; }
 
         public virtual ICollection<Chapter> Chapters { get; set; }
+        public virtual ICollection<CompositionTags> CompositionTags { get; set; }
     }
 }

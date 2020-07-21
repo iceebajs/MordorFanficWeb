@@ -17,6 +17,5 @@ namespace MordorFanficWeb.Models
         public virtual AppUser Identity { get; set; }
 
         public virtual ICollection<Composition> Compositions { get; set; }
-
     }
 }

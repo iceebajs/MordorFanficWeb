@@ -14,10 +14,13 @@ namespace MordorFanficWeb.Persistence.AppDbContext
 
         public DbSet<AccountUser> AccountUsers { get; set; }
         public DbSet<Composition> Compositions { get; set; }
+        public DbSet<CompositionTags> CompositionTags { get; set; }
+        public DbSet<Tags> Tags { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            optionsBuilder.UseLazyLoadingProxies();
+            base.OnModelCreating(builder);
+            builder.Entity<Tags>().HasIndex(t => t.Tag).IsUnique();
         }
 
         public async Task SaveAsync()
