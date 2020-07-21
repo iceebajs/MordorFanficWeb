@@ -18,7 +18,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private authService: AuthorizationService) { }
 
   ngOnInit(): void {
-    this.authService.tokenExpirationCheck().pipe(take(1)).subscribe();
+    if (this.authService.isSignedIn())
+      this.authService.tokenExpirationCheck().pipe(take(1)).subscribe();
     this.subscription = this.authService.authStatusSubject.
       asObservable().
       subscribe(isLoggedIn => {

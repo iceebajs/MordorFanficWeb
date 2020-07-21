@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
 using MordorFanficWeb.Models.BaseModels;
+using MordorFanficWeb.Models;
 
 namespace MordorFanficWeb.BusinessLogic.Interfaces
 {
@@ -13,5 +14,6 @@ namespace MordorFanficWeb.BusinessLogic.Interfaces
         Task UpdateAsync<T>(T entity) where T : BaseEntity;
         Task CreateAsync<T>(T entity) where T : BaseEntity;
         Task<List<T>> GetAllAsync<T>() where T : BaseEntity;
+        Task<List<Composition>> GetAllCompositionsOfAccount(int id);
     }
 }

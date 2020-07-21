@@ -3,7 +3,6 @@
 }
 
 ::ng-deep .mat-input-element::placeholder {
-  color: lightgrey;
   background: none !important;
 }
 

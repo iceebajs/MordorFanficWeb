@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using MordorFanficWeb.Models.BaseModels;
 
 namespace MordorFanficWeb.Models
 {
-    public class AccountUser
+    public class AccountUser : BaseEntity
     {
         public AccountUser()
         {

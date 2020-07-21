@@ -1,6 +1,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-8 mx-auto">
+      <button mat-raised-button (click)="getUserById()">Get user by id</button>
     </div>
     <div class="col-4 mx-auto shadow-lg shadow-wrapping" *ngIf="dataLoaded | async">
       <h2 class="text-center">{{currentUser.userName}}</h2>

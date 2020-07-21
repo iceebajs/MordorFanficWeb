@@ -12,5 +12,6 @@ namespace MordorFanficWeb.PresentationAdapters.CompositionAdapter
         Task UpdateComposition(CompositionViewModel composition);
         Task CreateComposition(CompositionViewModel composition);
         Task<List<CompositionViewModel>> GetAllCompositions();
+        Task<List<CompositionViewModel>> GetAllCompositionsOfAccount(int id);
     }
 }

@@ -26,6 +26,11 @@ export class CompositionService {
       .pipe(catchError(this.handleError<Composition>('getCompositionById')));
   }
 
+  getAccountCompositions(id: number): Observable<Composition[]> {
+    return this.httpClient.get<Composition[]>(`${this.baseURL}/composition/get-account-compositions/${id}`)
+      .pipe(catchError(this.handleError<Composition[]>('getAccountCompositions')));
+  }
+
   createComposition(composition: Composition) {
     const headers = this.setUserHeaders();
     return this.httpClient.post<Composition>(`${this.baseURL}/composition`, composition, { headers: headers })

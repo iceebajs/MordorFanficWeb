@@ -67,6 +67,29 @@ namespace MordorFanficWeb.Controllers
             }
         }
 
+        [HttpGet("get-account-compositions/{id}")]
+        public async Task<ActionResult<List<CompositionViewModel>>> GetAllCompositionsOfAccount(int id)
+        {
+            try
+            {
+                var compositions = await compositionAdapter.GetAllCompositionsOfAccount(id).ConfigureAwait(false);
+
+                if (compositions == null)
+                {
+                    logger.LogError($"Compositions of account with id: {id}, hasn't been found in db.");
+                    return NotFound(id);
+                }
+
+                logger.LogInformation($"Returned compositions of account with id: {id}");
+                return compositions;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong inside GetAllCompositionsOfAccount action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
         [Authorize(Policy = "RegisteredUsers")]
         [HttpPost]
         public async Task<ActionResult> CreateComposition([FromBody] CompositionViewModel composition)

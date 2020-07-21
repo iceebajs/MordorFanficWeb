@@ -12,6 +12,8 @@ export class HomeComponent implements OnInit {
   constructor(private authService: AuthorizationService) { }
 
   ngOnInit(): void {
+    if (this.authService.isSignedIn())
+      this.authService.tokenExpirationCheck().pipe(take(1)).subscribe();
   }
 
 }
