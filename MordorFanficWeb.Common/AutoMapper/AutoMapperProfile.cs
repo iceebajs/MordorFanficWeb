@@ -32,10 +32,13 @@ namespace MordorFanficWeb.Common.AutoMapper
             CreateMap<CompositionTagsViewModel, CompositionTags>().ReverseMap();
 
             CreateMap<CompositionRatingViewModel, CompositionRatings>();
+            CreateMap<CompositionRatingViewModel, CompositionRatings>().ReverseMap();
 
             CreateMap<CompositionCommentsViewModel, CompositionComments>();
+            CreateMap<CompositionCommentsViewModel, CompositionComments>().ReverseMap();
 
             CreateMap<ChapterLikeViewModel, ChapterLike>();
+            CreateMap<ChapterLikeViewModel, ChapterLike>().ReverseMap();
         }
     }
 }

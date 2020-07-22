@@ -22,7 +22,10 @@ namespace MordorFanficWeb.BusinessLogic.Services
         {
             return await dbContext.DbSet<Composition>()
                 .Include(c => c.Chapters)
+                .ThenInclude(l => l.ChapterLikes)
                 .Include(t => t.CompositionTags)
+                .Include(c => c.CompositionComments)
+                .Include(r => r.CompositionRatings)
                 .FirstOrDefaultAsync(x => x.CompositionId == id).ConfigureAwait(false);
         }
     }

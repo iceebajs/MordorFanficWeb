@@ -6,6 +6,10 @@ using MordorFanficWeb.PresentationAdapters.CompositionAdapter;
 using MordorFanficWeb.ViewModels.CompositionViewModels;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
+using MordorFanficWeb.PresentationAdapters.CompositionRatingsAdapter;
+using MordorFanficWeb.PresentationAdapters.CommentsAdapter;
+using MordorFanficWeb.ViewModels.CompositionCommentsViewModels;
+using MordorFanficWeb.ViewModels.CompositionRatingsViewModels;
 
 namespace MordorFanficWeb.Controllers
 {
@@ -14,11 +18,16 @@ namespace MordorFanficWeb.Controllers
     public class CompositionController : Controller
     {
         private readonly ICompositionAdapter compositionAdapter;
+        private readonly ICompositionRatingsAdapter ratingsAdapter;
+        private readonly ICommentsAdapter commentsAdapter;
         private readonly ILogger<CompositionController> logger;
 
-        public CompositionController(ICompositionAdapter compositionAdapter, ILogger<CompositionController> logger)
+        public CompositionController(ICompositionAdapter compositionAdapter, ICompositionRatingsAdapter ratingsAdapter, 
+            ICommentsAdapter commentsAdapter, ILogger<CompositionController> logger)
         {
             this.compositionAdapter = compositionAdapter;
+            this.ratingsAdapter = ratingsAdapter;
+            this.commentsAdapter = commentsAdapter;
             this.logger = logger;
         }
 
@@ -149,6 +158,52 @@ namespace MordorFanficWeb.Controllers
             catch (Exception ex)
             {
                 logger.LogError($"Something went wrong inside DeleteComposition action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [Authorize(Policy = "RegisteredUsers")]
+        [HttpPost("add-comment")]
+        public async Task<ActionResult> CreateComment([FromBody] CompositionCommentsViewModel comment)
+        {
+            try
+            {
+                if (comment == null)
+                {
+                    logger.LogError($"Comment object sent from client is null");
+                    return BadRequest("Comment object is null");
+                }
+
+                await commentsAdapter.AddComent(comment).ConfigureAwait(false);
+                logger.LogInformation($"{comment.UserName} commentary is successfully added");
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong inside CreateComment action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [Authorize(Policy = "RegisteredUsers")]
+        [HttpPost("add-rating")]
+        public async Task<ActionResult> CreateRating([FromBody] CompositionRatingViewModel rating)
+        {
+            try
+            {
+                if (rating == null)
+                {
+                    logger.LogError($"Rating object sent from client is null");
+                    return BadRequest("Rating object is null");
+                }
+
+                await ratingsAdapter.AddRating(rating).ConfigureAwait(false);
+                logger.LogInformation($"Rating for composition with id: {rating.CompositionId} is successfully added");
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong inside CreateRating action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }

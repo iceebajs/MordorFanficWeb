@@ -4,8 +4,8 @@ using MordorFanficWeb.Persistence.AppDbContext;
 
 namespace MordorFanficWeb.BusinessLogic.Services
 {
-    public class ChapterLikes : BaseService, IChapterLikesService
+    public class ChapterLikesService : BaseService, IChapterLikesService
     {
-        public ChapterLikes(IAppDbContext dbContext) : base(dbContext) { }
+        public ChapterLikesService(IAppDbContext dbContext) : base(dbContext) { }
     }
 }

@@ -6,6 +6,8 @@ using MordorFanficWeb.PresentationAdapters.ChapterAdapter;
 using MordorFanficWeb.ViewModels.ChapterViewModels;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
+using MordorFanficWeb.PresentationAdapters.ChapterLikesAdapter;
+using MordorFanficWeb.ViewModels.ChapterLikesViewModels;
 
 namespace MordorFanficWeb.Controllers
 {
@@ -14,11 +16,13 @@ namespace MordorFanficWeb.Controllers
     public class ChapterController : Controller
     {
         private readonly IChapterAdapter chapterAdapter;
+        private readonly IChapterLikesAdapter likesAdapter;
         private readonly ILogger<ChapterController> logger;
 
-        public ChapterController(IChapterAdapter chapterAdapter, ILogger<ChapterController> logger)
+        public ChapterController(IChapterAdapter chapterAdapter, IChapterLikesAdapter likesAdapter, ILogger<ChapterController> logger)
         {
             this.chapterAdapter = chapterAdapter;
+            this.likesAdapter = likesAdapter;
             this.logger = logger;
         }
 
@@ -126,6 +130,29 @@ namespace MordorFanficWeb.Controllers
             catch (Exception ex)
             {
                 logger.LogError($"Something went wrong inside DeleteChapter action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [Authorize(Policy = "RegisteredUsers")]
+        [HttpPost("add-like")]
+        public async Task<ActionResult> AddLike([FromBody] ChapterLikeViewModel like)
+        {
+            try
+            {
+                if (like == null)
+                {
+                    logger.LogError($"Like object sent from client is null");
+                    return BadRequest("Like object is null");
+                }
+
+                await likesAdapter.AddLike(like).ConfigureAwait(false);
+                logger.LogInformation($"Like added to the chapter with id: {like.ChapterId} is successfully added");
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong inside AddLike action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }

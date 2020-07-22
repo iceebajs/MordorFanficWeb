@@ -148,7 +148,7 @@ namespace MordorFanficWeb
             services.AddScoped<ICommentsAdapter, CommentsAdapter>();
             services.AddScoped<ICompositionRatingsService, CompositionRatingsService>();
             services.AddScoped<ICompositionRatingsAdapter, CompositionRatingsAdapter>();
-            services.AddScoped<IChapterLikesService, IChapterLikesService>();
+            services.AddScoped<IChapterLikesService, ChapterLikesService>();
             services.AddScoped<IChapterLikesAdapter, ChapterLikesAdapter>();
             services.AddScoped<IAppDbContext, AppDbContext>();
 
