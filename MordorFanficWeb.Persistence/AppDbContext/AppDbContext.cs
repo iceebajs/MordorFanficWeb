@@ -16,11 +16,16 @@ namespace MordorFanficWeb.Persistence.AppDbContext
         public DbSet<Composition> Compositions { get; set; }
         public DbSet<CompositionTags> CompositionTags { get; set; }
         public DbSet<Tags> Tags { get; set; }
+        public DbSet<CompositionComments> Comments { get; set; }
+        public DbSet<CompositionRatings> CompositionRatings { get; set; }
+        public DbSet<ChapterLike> ChapterLikes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             builder.Entity<Tags>().HasIndex(t => t.Tag).IsUnique();
+            builder.Entity<CompositionRatings>().HasIndex(i => i.AccountId).IsUnique();
+            builder.Entity<ChapterLike>().HasIndex(i => i.AccountId).IsUnique();
         }
 
         public async Task SaveAsync()

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MordorFanficWeb.Persistence.AppDbContext;
 
 namespace MordorFanficWeb.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200722113042_composition_ratings")]
+    partial class composition_ratings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -279,29 +281,6 @@ namespace MordorFanficWeb.Migrations
                     b.ToTable("Chapter");
                 });
 
-            modelBuilder.Entity("MordorFanficWeb.Models.ChapterLike", b =>
-                {
-                    b.Property<int>("ChapterLikeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ChapterId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ChapterLikeId");
-
-                    b.HasIndex("AccountId")
-                        .IsUnique();
-
-                    b.HasIndex("ChapterId");
-
-                    b.ToTable("ChapterLikes");
-                });
-
             modelBuilder.Entity("MordorFanficWeb.Models.Composition", b =>
                 {
                     b.Property<int>("CompositionId")
@@ -358,7 +337,7 @@ namespace MordorFanficWeb.Migrations
                     b.Property<int>("AccountId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CompositionId")
+                    b.Property<int?>("CompositionId")
                         .HasColumnType("int");
 
                     b.Property<int>("Rating")
@@ -482,15 +461,6 @@ namespace MordorFanficWeb.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MordorFanficWeb.Models.ChapterLike", b =>
-                {
-                    b.HasOne("MordorFanficWeb.Models.Chapter", "Chapter")
-                        .WithMany("ChapterLikes")
-                        .HasForeignKey("ChapterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("MordorFanficWeb.Models.Composition", b =>
                 {
                     b.HasOne("MordorFanficWeb.Models.AccountUser", "User")
@@ -511,11 +481,9 @@ namespace MordorFanficWeb.Migrations
 
             modelBuilder.Entity("MordorFanficWeb.Models.CompositionRatings", b =>
                 {
-                    b.HasOne("MordorFanficWeb.Models.Composition", "Composition")
+                    b.HasOne("MordorFanficWeb.Models.Composition", null)
                         .WithMany("CompositionRatings")
-                        .HasForeignKey("CompositionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CompositionId");
                 });
 
             modelBuilder.Entity("MordorFanficWeb.Models.CompositionTags", b =>

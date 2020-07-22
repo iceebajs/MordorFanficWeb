@@ -1,10 +1,16 @@
 ﻿using MordorFanficWeb.Models.BaseModels;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace MordorFanficWeb.Models
 {
     public class Chapter : BaseEntity
     {
+        public Chapter()
+        {
+            ChapterLikes = new HashSet<ChapterLike>();
+        }
+
         [Key]
         public int ChapterId { get; set; }
         public int ChapterNumber { get; set; }
@@ -14,5 +20,6 @@ namespace MordorFanficWeb.Models
 
         public int CompositionId { get; set; }
         public virtual Composition Composition { get; set; }
+        public ICollection<ChapterLike> ChapterLikes { get; set; }
     }
 }

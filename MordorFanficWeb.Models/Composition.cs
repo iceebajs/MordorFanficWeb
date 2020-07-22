@@ -10,6 +10,8 @@ namespace MordorFanficWeb.Models
         {
             Chapters = new HashSet<Chapter>();
             CompositionTags = new HashSet<CompositionTags>();
+            CompositionComments = new HashSet<CompositionComments>();
+            CompositionRatings = new HashSet<CompositionRatings>();
         }
         [Key]
         public int CompositionId { get; set; }
@@ -22,5 +24,7 @@ namespace MordorFanficWeb.Models
 
         public virtual ICollection<Chapter> Chapters { get; set; }
         public virtual ICollection<CompositionTags> CompositionTags { get; set; }
+        public virtual ICollection<CompositionComments> CompositionComments { get; set; }
+        public virtual ICollection<CompositionRatings> CompositionRatings { get; set; }
     }
 }
