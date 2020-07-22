@@ -6,7 +6,7 @@ namespace MordorFanficWeb.Models
     public class Tags : BaseEntity
     {
         [Key]
-        public int TagId { get; set; }
+        public int Id { get; set; }
         public string Tag { get; set; }
     }
 }

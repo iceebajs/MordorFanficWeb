@@ -49,5 +49,10 @@ export class ProfileComponent implements OnInit {
         this.accountCompositions = response;
         console.log(this.accountCompositions);
       });
+    this.compositionService.getCompositionById(14)
+      .pipe(take(1))
+      .subscribe((response: Composition) => {
+        console.log(response);
+      });
   }
 }

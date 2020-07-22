@@ -8,6 +8,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
 import { Observable } from 'rxjs';
 import { map, startWith, take } from 'rxjs/operators';
+import { CompositionTag } from '../../shared/interfaces/composition-tags/composition-tag.interface';
 
 @Component({
   selector: 'app-create-composition',
@@ -40,8 +41,8 @@ export class CreateCompositionComponent implements OnInit {
       title: this.compositionTitle.value,
       previewContext: this.previewContext,
       genre: this.compositionGenre.value,
-      tags: 'test',
-      userId: this.currentAccountId
+      userId: this.currentAccountId,
+      compositionTags: this.compositionTags
     } as Composition;
 
     this.compositionService.createComposition(composition)
@@ -76,6 +77,7 @@ export class CreateCompositionComponent implements OnInit {
   filteredTags: Observable<string[]>;
   tags: string[] = [
   ];
+  compositionTags: CompositionTag[];
   allTags: string[] = ['fantasy', 'fantastic', 'dungeon'];
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;

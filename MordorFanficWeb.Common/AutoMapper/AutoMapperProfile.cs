@@ -2,7 +2,7 @@
 using MordorFanficWeb.Models;
 using MordorFanficWeb.ViewModels;
 using MordorFanficWeb.ViewModels.ChapterViewModels;
-using MordorFanficWeb.ViewModels.CompositionTagsViewModel;
+using MordorFanficWeb.ViewModels.CompositionTagsViewModels;
 using MordorFanficWeb.ViewModels.CompositionViewModels;
 using MordorFanficWeb.ViewModels.TagsViewModels;
 

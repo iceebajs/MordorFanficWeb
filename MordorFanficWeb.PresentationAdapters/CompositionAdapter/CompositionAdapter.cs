@@ -37,7 +37,7 @@ namespace MordorFanficWeb.PresentationAdapters.CompositionAdapter
 
         public async Task<CompositionViewModel> GetComposition(int id)
         {
-            return mapper.Map<CompositionViewModel>(await compositionService.GetAsync<Composition>(x => x.CompositionId == id).ConfigureAwait(false));
+            return mapper.Map<CompositionViewModel>(await compositionService.GetCompositionById(id).ConfigureAwait(false));
         }
 
         public async Task UpdateComposition(CompositionViewModel composition)

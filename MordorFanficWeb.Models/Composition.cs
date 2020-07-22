@@ -16,7 +16,6 @@ namespace MordorFanficWeb.Models
         public string Title { get; set; }
         public string PreviewContext { get; set; }
         public string Genre { get; set; }
-        public string Tags { get; set; }
 
         public int UserId { get; set; }
         public virtual AccountUser User { get; set; }

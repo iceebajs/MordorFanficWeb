@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MordorFanficWeb.BusinessLogic.Interfaces;
 using MordorFanficWeb.Models;
-using MordorFanficWeb.ViewModels.CompositionTagsViewModel;
+using MordorFanficWeb.ViewModels.CompositionTagsViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

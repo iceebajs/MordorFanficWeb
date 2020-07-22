@@ -1,4 +1,5 @@
-﻿using MordorFanficWeb.BusinessLogic.Base;
+﻿using Microsoft.EntityFrameworkCore;
+using MordorFanficWeb.BusinessLogic.Base;
 using MordorFanficWeb.BusinessLogic.Interfaces;
 using MordorFanficWeb.Models;
 using MordorFanficWeb.Persistence.AppDbContext;
@@ -14,9 +15,15 @@ namespace MordorFanficWeb.BusinessLogic.Services
 
         public async Task<List<Composition>> GetAllCompositionsOfAccount(int id)
         {
-            var account = await GetAsync<AccountUser>(x => x.AccountUserId == id).ConfigureAwait(false);
-            List<Composition> compositions = await Task.Run(() => account.Compositions.ToList());
-            return compositions;
+            return await dbContext.DbSet<Composition>().Where(x => x.UserId == id).ToListAsync().ConfigureAwait(false);
+        }
+
+        public async Task<Composition> GetCompositionById(int id)
+        {
+            return await dbContext.DbSet<Composition>()
+                .Include(c => c.Chapters)
+                .Include(t => t.CompositionTags)
+                .FirstOrDefaultAsync(x => x.CompositionId == id).ConfigureAwait(false);
         }
     }
 }

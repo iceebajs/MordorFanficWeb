@@ -15,5 +15,6 @@ namespace MordorFanficWeb.BusinessLogic.Interfaces
         Task CreateAsync<T>(T entity) where T : BaseEntity;
         Task<List<T>> GetAllAsync<T>() where T : BaseEntity;
         Task<List<Composition>> GetAllCompositionsOfAccount(int id);
+        Task<Composition> GetCompositionById(int id);
     }
 }

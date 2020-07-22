@@ -20,7 +20,7 @@ namespace MordorFanficWeb.PresentationAdapters.TagsAdapter
 
         public async Task CreateRangeOfTags(List<TagsViewModel> tags)
         {
-            await tagsService.CreateAsync(mapper.Map<Tags>(tags)).ConfigureAwait(false);
+            await tagsService.CreateRangeOfTagsAsync(mapper.Map<List<Tags>>(tags)).ConfigureAwait(false);
         }
 
         public async Task<List<TagsViewModel>> GetAllTags()

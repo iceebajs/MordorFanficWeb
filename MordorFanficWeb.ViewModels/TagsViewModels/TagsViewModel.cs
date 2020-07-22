@@ -6,7 +6,7 @@ namespace MordorFanficWeb.ViewModels.TagsViewModels
 {
     public class TagsViewModel
     {
-        public int TagId { get; set; }
+        public int Id { get; set; }
         public string Tag { get; set; }
     }
 }

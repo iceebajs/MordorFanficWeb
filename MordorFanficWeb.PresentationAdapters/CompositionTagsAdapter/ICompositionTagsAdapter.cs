@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using MordorFanficWeb.ViewModels.CompositionTagsViewModel;
+using MordorFanficWeb.ViewModels.CompositionTagsViewModels;
 
 namespace MordorFanficWeb.PresentationAdapters.CompositionTagsAdapter
 {

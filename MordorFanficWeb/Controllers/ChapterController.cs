@@ -14,9 +14,9 @@ namespace MordorFanficWeb.Controllers
     public class ChapterController : Controller
     {
         private readonly IChapterAdapter chapterAdapter;
-        private readonly ILogger<CompositionController> logger;
+        private readonly ILogger<ChapterController> logger;
 
-        public ChapterController(IChapterAdapter chapterAdapter, ILogger<CompositionController> logger)
+        public ChapterController(IChapterAdapter chapterAdapter, ILogger<ChapterController> logger)
         {
             this.chapterAdapter = chapterAdapter;
             this.logger = logger;
@@ -57,7 +57,7 @@ namespace MordorFanficWeb.Controllers
                     return NotFound();
                 }
 
-                logger.LogInformation("Returned all compositions from db");
+                logger.LogInformation("Returned all chapters from db");
                 return chapters;
             }
             catch (Exception ex)
