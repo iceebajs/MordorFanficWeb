@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MordorFanficWeb.ViewModels.ChapterLikesViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,5 +14,6 @@ namespace MordorFanficWeb.ViewModels.ChapterViewModels
         public string ImgSource { get; set; }
 
         public int CompositionId { get; set; }
+        public ICollection<ChapterLikeViewModel> ChapterLikes { get; set; }
     }
 }

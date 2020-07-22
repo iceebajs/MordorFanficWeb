@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using MordorFanficWeb.Models;
 using MordorFanficWeb.ViewModels;
+using MordorFanficWeb.ViewModels.ChapterLikesViewModels;
 using MordorFanficWeb.ViewModels.ChapterViewModels;
+using MordorFanficWeb.ViewModels.CompositionCommentsViewModels;
+using MordorFanficWeb.ViewModels.CompositionRatingsViewModels;
 using MordorFanficWeb.ViewModels.CompositionTagsViewModels;
 using MordorFanficWeb.ViewModels.CompositionViewModels;
 using MordorFanficWeb.ViewModels.TagsViewModels;
@@ -27,6 +30,12 @@ namespace MordorFanficWeb.Common.AutoMapper
 
             CreateMap<CompositionTagsViewModel, CompositionTags>();
             CreateMap<CompositionTagsViewModel, CompositionTags>().ReverseMap();
+
+            CreateMap<CompositionRatingViewModel, CompositionRatings>();
+
+            CreateMap<CompositionCommentsViewModel, CompositionComments>();
+
+            CreateMap<ChapterLikeViewModel, ChapterLike>();
         }
     }
 }
