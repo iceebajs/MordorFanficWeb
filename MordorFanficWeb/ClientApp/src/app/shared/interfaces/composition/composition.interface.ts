@@ -1,5 +1,6 @@
 import { Chapter } from './../chapter/chapter.interface';
 import { CompositionTag } from './../composition-tags/composition-tag.interface'
+import { Rating } from './rating.interface';
 
 export interface Composition{
   compositionId: number;
@@ -9,4 +10,6 @@ export interface Composition{
   userId: number;
   chapters?: Chapter[];
   compositionTags: CompositionTag[];
+  compositionRatings?: Rating[];
+  compositionComments?: Comment[];
 }
