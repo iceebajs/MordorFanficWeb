@@ -3,15 +3,6 @@
   <div class="row mt-3 p-3">
     <div class="col-lg-11 col-md-11 col-sm-12 mx-auto">
       <h2 class="text-center">User control panel</h2>
-      <div *ngIf="deleteModalHasError" class="alert alert-danger" role="alert">
-        Cannot delete master administrator
-      </div>
-      <div *ngIf="roleModalHasError" class="alert alert-danger" role="alert">
-        Cannot change role of master administrator
-      </div>
-      <div *ngIf="setUserStatusHasError" class="alert alert-danger" role="alert">
-        Cannot block master administrator
-      </div>
       <table mat-table *ngIf="dataLoaded | async"
              [dataSource]="dataSource"
              class="mat-table-styling">
@@ -84,6 +75,16 @@
       </table>
 
       <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+      <div *ngIf="deleteModalHasError" class="alert alert-danger mt-3" role="alert">
+        Cannot delete master administrator
+      </div>
+      <div *ngIf="roleModalHasError" class="alert alert-danger mt-3" role="alert">
+        Cannot change role of master administrator
+      </div>
+      <div *ngIf="setUserStatusHasError" class="alert alert-danger mt-3" role="alert">
+        Cannot block master administrator
+      </div>
     </div>
   </div>
 </div>

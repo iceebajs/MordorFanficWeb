@@ -32,7 +32,7 @@ export class ProfileComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  displayedColumns: string[] = ['title', 'genre', 'read', 'update', 'delete'];
+  displayedColumns: string[] = ['title', 'genre', 'read', 'manage', 'delete'];
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -78,12 +78,27 @@ export class ProfileComponent implements OnInit {
     console.log(composition.compositionId);
   }
 
-  updateComposition(composition: Composition) {
-    console.log(composition.compositionId);
+  manageComposition(composition: Composition) {
+    this.router.navigate(['account/manage-composition'],
+      { queryParams: { uId: composition.userId, id: composition.compositionId } });
   }
 
+  deleteSuccessfull: boolean = false;
   deleteComposition(composition: Composition) {
-    console.log(composition.compositionId);
+    this.compositionService.deleteComposition(composition.compositionId)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.removeSelectedComposition(composition);
+        this.selection = new SelectionModel<Composition>(true, []);
+        this.deleteSuccessfull = true;
+        setTimeout(() => this.deleteSuccessfull = false, 3000);
+      });
+  }
+
+  private removeSelectedComposition(composition: Composition) {
+    let index: number = this.accountCompositions.findIndex(c => c === composition);
+    this.accountCompositions.splice(index, 1);
+    this.dataSource.data = this.accountCompositions;
   }
 
   sortedData: Composition[];

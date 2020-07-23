@@ -14,11 +14,15 @@
 }
 
 .main-column {
-  width: 40%;
+  width: 50%;
 }
 
 .second-column {
   width: 20%;
+}
+
+.icon-column {
+  width: 10%;
 }
 
 @media (max-width: 991.98px) {

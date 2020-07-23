@@ -12,6 +12,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AccountPanelRoutingModule } from './account-panel-routing.module';
 import { ProfileComponent } from './profile/profile.component';
@@ -19,11 +20,11 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AccountPanelComponent } from './account-panel/account-panel.component';
 import { CreateCompositionComponent } from './create-composition/create-composition.component';
-import { CreateChapterComponent } from './create-chapter/create-chapter.component';
+import { ManageCompositionComponent } from './manage-composition/manage-composition.component';
 
 
 @NgModule({
-  declarations: [ProfileComponent, ChangePasswordComponent, AdminDashboardComponent, AccountPanelComponent, CreateCompositionComponent, CreateChapterComponent],
+  declarations: [ProfileComponent, ChangePasswordComponent, AdminDashboardComponent, AccountPanelComponent, CreateCompositionComponent, ManageCompositionComponent],
   imports: [
     CommonModule,
     AccountPanelRoutingModule,
@@ -39,7 +40,8 @@ import { CreateChapterComponent } from './create-chapter/create-chapter.componen
     MatChipsModule,
     MatAutocompleteModule,
     MatSortModule,
-    MatSelectModule
+    MatSelectModule,
+    DragDropModule
   ]
 })
 export class AccountPanelModule { }

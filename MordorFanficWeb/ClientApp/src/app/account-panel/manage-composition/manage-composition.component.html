@@ -1,0 +1,123 @@
+<title>Manage compositons</title>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-11 mx-auto">
+      <p>
+        <button mat-button
+                (click)="showEditComposition();"
+                class="ml-3">
+          <mat-icon class="mat-18 mat_icon">build</mat-icon> Edit composition
+        </button>
+
+        <button mat-button
+                (click)="showCreateChapter();">
+          <mat-icon class="mat-18 mat_icon">create</mat-icon> Create chapter
+        </button>
+
+        <button mat-button
+                (click)="showChangeNumeration();">
+          <mat-icon class="mat-18 mat_icon">shuffle</mat-icon> Change chapter sequence
+        </button>
+      </p>
+
+      <div *ngIf="editComposition; then editComp">
+      </div>
+
+      <div *ngIf="createChapter; then createChapt">
+      </div>
+
+
+      <div *ngIf="editChapter; then editChapt">
+      </div>
+
+      <div *ngIf="changeChapterNumeration; then changeChaptNum">
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #editComp>
+  <mat-form-field>
+    <mat-label>Composition title</mat-label>
+    <input matInput placeholder="Composition title" [formControl]="compositionTitle" required>
+    <mat-error *ngIf="compositionTitle.invalid">{{errorCompositionTitle()}}</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Select genre of composition</mat-label>
+    <mat-select [formControl]="selectedGenre" required name="genre">
+      <mat-option *ngFor="let item of genres" [value]="item.genre">
+        {{item.viewGenre}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="selectedGenre.invalid">{{errorSelectedGenre()}}</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-chip-list #tagList aria-label="Composition tags selection">
+      <mat-chip *ngFor="let tag of tags" [selectable]="selectable"
+                [removable]="removable" (removed)="removeTag(tag)">
+        {{tag}}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+      <input placeholder="New tag..."
+             #tagInput
+             [formControl]="tagControl"
+             [matAutocomplete]="auto"
+             [matChipInputFor]="tagList"
+             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+             (matChipInputTokenEnd)="addTag($event)">
+    </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedTags($event)">
+      <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+        {{tag}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <div class="w-100 pb-2"></div>
+
+  <h2 class="text-center">Composition preview context</h2>
+  <kendo-editor [(ngModel)]="previewContext" style="height: 370px;"></kendo-editor>
+
+  <div class="w-100"></div>
+
+  <div class="button-container">
+    <button mat-raised-button color="primary" class="align-button" (click)="updateComposition();"> Submit composition</button>
+  </div>
+
+  <div class="col mt-4">
+    <div *ngIf="isSuccessfull" class="alert alert-success" role="alert">
+      Composition successfully added.
+    </div>
+    <div *ngIf="hasError" class="alert alert-danger" role="alert">
+      Error occured. Fields of composition should not be empty.
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      Error message: {{errorMessage}}.
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #createChapt>
+  createCha
+</ng-template>
+
+<ng-template #editChapt>
+  editCha
+</ng-template>
+
+<ng-template #changeChaptNum>
+  <div class="col-lg-7 col-md-8 col-sm-10 mx-auto">
+    <div cdkDropList class="sequence-list" (cdkDropListDropped)="drop($event)">
+      <div class="sequence-box" *ngFor="let movie of movies" cdkDrag>
+        {{movie}}
+        <button mat-button
+                (click)="showEditChapter(movie);"
+                class="ml-3">
+          <mat-icon class="mat-18 mat_icon">build</mat-icon> Edit chapter
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
