@@ -15,7 +15,7 @@
 
       <div class="col-xl-6 col-lg-6 col-md-8 col-xm-10 mx-auto">
 
-        <mat-form-field appearance="fill">
+        <mat-form-field>
           <mat-label>Enter first name</mat-label>
           <input matInput placeholder="Forsaan" [formControl]="firstName" required>
           <mat-error *ngIf="firstName.invalid">{{errorFirstName()}}</mat-error>
@@ -23,7 +23,7 @@
       </div>
 
       <div class="col-xl-6 col-lg-6 col-md-8 col-xm-10 mx-auto">
-        <mat-form-field appearance="fill">
+        <mat-form-field>
           <mat-label>Enter last name</mat-label>
           <input matInput placeholder="Dogtamer" [formControl]="lastName" required>
           <mat-error *ngIf="lastName.invalid">{{errorLastName()}}</mat-error>
@@ -31,7 +31,7 @@
       </div>
 
       <div class="col-xl-6 col-lg-6 col-md-8 col-xm-10 mx-auto">
-        <mat-form-field appearance="fill">
+        <mat-form-field>
           <mat-label>Enter user name</mat-label>
           <input matInput placeholder="forsenJoy" [formControl]="userName" required>
           <mat-error *ngIf="userName.invalid">{{errorUserName()}}</mat-error>
@@ -41,7 +41,7 @@
       <div class="w-100 mb-2"></div>
 
       <div class="col-xl-6 col-lg-6 col-md-8 col-xm-10 mx-auto">
-        <mat-form-field appearance="fill">
+        <mat-form-field>
           <mat-label>Enter email</mat-label>
           <input matInput placeholder="example@example.com" [formControl]="email" required>
           <mat-error *ngIf="email.invalid">{{errorEmail()}}</mat-error>
@@ -51,7 +51,7 @@
       <div class="w-100 mb-2"></div>
 
       <div class="col-xl-6 col-lg-6 col-md-8 col-xm-10 mx-auto">
-        <mat-form-field appearance="fill">
+        <mat-form-field>
           <mat-label>Confirm email</mat-label>
           <input matInput placeholder="example@example.com" [formControl]="emailConfirm" required>
           <mat-error *ngIf="emailConfirm.invalid">{{errorEmailConfirm()}}</mat-error>
@@ -61,7 +61,7 @@
       <div class="w-100 mb-2"></div>
 
       <div class="col-xl-6 col-lg-6 col-md-8 col-xm-10 mx-auto">
-        <mat-form-field appearance="fill">
+        <mat-form-field>
           <mat-label>Enter password</mat-label>
           <input matInput [type]="hide ? 'password' : 'text'" [formControl]="password" required>
           <mat-error *ngIf="password.invalid">{{errorPassword()}}</mat-error>
@@ -74,7 +74,7 @@
       <div class="w-100 mb-2"></div>
 
       <div class="col-xl-6 col-lg-6 col-md-8 col-xm-10 mx-auto">
-        <mat-form-field appearance="fill">
+        <mat-form-field>
           <mat-label>Confirm password</mat-label>
           <input matInput [type]="hideConf ? 'password' : 'text'" [formControl]="passwordConfirm" required>
           <mat-error *ngIf="passwordConfirm.invalid">{{errorPasswordConfirm()}}</mat-error>

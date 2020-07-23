@@ -2,3 +2,36 @@
   width: 100%;
   background-color: none;
 }
+
+::ng-deep .mat-table th,
+::ng-deep .mat-table td {
+  color: #3C52B4;
+  background-color: gainsboro;
+}
+
+::ng-deep .mat-paginator-container {
+  background-color: gainsboro;
+}
+
+.main-column {
+  width: 40%;
+}
+
+.second-column {
+  width: 20%;
+}
+
+@media (max-width: 991.98px) {
+  ::ng-deep .mat-table th,
+  ::ng-deep .mat-table td {
+    font-size: 10px;
+  }
+}
+
+
+@media (max-width: 767.98px) {
+  ::ng-deep .mat-table th,
+  ::ng-deep .mat-table td {
+    font-size: 8px;
+  }
+}

@@ -19,6 +19,7 @@ import { CompositionTag } from '../../shared/interfaces/composition-tags/composi
 export class CreateCompositionComponent implements OnInit {
 
   previewContext: string;
+
   currentAccountId: number;
   hasError: boolean = false;
   errorMessage: string = '';
@@ -33,39 +34,55 @@ export class CreateCompositionComponent implements OnInit {
 
   ngOnInit(): void {
     let identity = localStorage.getItem('id');
-    this.accountService.getUserAccountId(identity).pipe(take(1)).subscribe(response => this.currentAccountId = response);    
+    this.accountService.getUserAccountId(identity)
+      .pipe(take(1))
+      .subscribe(response => this.currentAccountId = response);    
   }
 
-  createComposition() {    
-    const composition: Composition = {
-      title: this.compositionTitle.value,
-      previewContext: this.previewContext,
-      genre: this.compositionGenre.value,
-      userId: this.currentAccountId,
-      compositionTags: this.compositionTags
-    } as Composition;
+  createComposition() {
+    if (this.dataIsValid()) {
+      const composition: Composition = {
+        title: this.compositionTitle.value,
+        previewContext: this.previewContext,
+        genre: this.selectedGenre.value,
+        userId: this.currentAccountId,
+        compositionTags: this.compositionTags
+      } as Composition;
 
-    this.compositionService.createComposition(composition)
-      .pipe(take(1))
-      .subscribe(() => {
-        this.isSuccessfull = true;
-        setTimeout(() => this.isSuccessfull = false, 3000);
-      }, error => {
+      this.compositionService.createComposition(composition)
+        .pipe(take(1))
+        .subscribe(() => {
+          this.isSuccessfull = true;
+          setTimeout(() => this.isSuccessfull = false, 3000);
+        }, error => {
           this.hasError = true;
           this.errorMessage = error;
           setTimeout(() => this.hasError = false, 3000);
-      });
+        });
+    }
+    else {
+      this.hasError = true;
+      setTimeout(() => this.hasError = false, 3000);
+    }
+  }
+
+  dataIsValid(): boolean {
+    if (this.selectedGenre.valid
+      && this.compositionTitle.valid
+      && this.tags.length > 0)
+      return true;
+    return false;
+  }
+
+  selectedGenre = new FormControl('', [Validators.required]);
+  errorSelectedGenre() {
+    if (this.compositionTitle.hasError('required'))
+      return 'You must enter a value';
   }
 
   compositionTitle = new FormControl('', [Validators.required]);
   errorCompositionTitle() {
     if (this.compositionTitle.hasError('required'))
-      return 'You must enter a value';
-  }
-
-  compositionGenre = new FormControl('', [Validators.required]);
-  errorCompositionGenre() {
-    if (this.compositionGenre.hasError('required'))
       return 'You must enter a value';
   }
 
@@ -115,4 +132,22 @@ export class CreateCompositionComponent implements OnInit {
     const filterValue = value.toLowerCase();
     return this.allTags.filter(tag => tag.toLowerCase().indexOf(filterValue) === 0);
   }
+
+  genres: Genre[] = [
+    { genre: 'action', viewGenre: 'Action' },
+    { genre: 'adventure', viewGenre: 'Adventure' },
+    { genre: 'comedy', viewGenre: 'Comedy' },
+    { genre: 'drama', viewGenre: 'Drama' },
+    { genre: 'fantasy', viewGenre: 'Fantasy' },
+    { genre: 'magic', viewGenre: 'Magic' },
+    { genre: 'horror', viewGenre: 'Horror' },
+    { genre: 'mystery', viewGenre: 'Mystery' },
+    { genre: 'psychological', viewGenre: 'Psychological' },
+    { genre: 'romance', viewGenre: 'Romance' }
+  ];
+}
+
+interface Genre {
+  genre: string;
+  viewGenre: string;
 }

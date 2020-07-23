@@ -1,9 +1,66 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-8 mx-auto">
-      <button mat-raised-button (click)="getUserById()">Get user by id</button>
+      <h2 class="text-center">Your compositions table</h2>
+      <button mat-button (click)="goTo('/account/create-composition')">
+        <mat-icon class="mat-18 mat_icon">create</mat-icon> Create composition
+      </button>
+      <div class="w-100 pb-2"></div>
+      <table mat-table *ngIf="accountDataLoaded | async"
+             [dataSource]="dataSource"
+             matSort (matSortChange)="sortData($event)"
+             class="mat-table-styling">
+
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="main-column"> Title </th>
+          <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="genre">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="second-column"> Genre </th>
+          <td mat-cell *matCellDef="let element"> {{element.genre}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="read">
+          <th mat-header-cell *matHeaderCellDef>
+            Read
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="openComposition(element)">
+              <mat-icon class="mat-18 mat_icon">menu_book</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="update">
+          <th mat-header-cell *matHeaderCellDef>
+            Update
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="updateComposition(element)">
+              <mat-icon class="mat-18 mat_icon">view_headline</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="delete">
+          <th mat-header-cell *matHeaderCellDef>
+            Delete
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button color="warn" (click)="deleteComposition(element)">
+              <mat-icon class="mat-18 mat_icon">delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </div>
-    <div class="col-4 mx-auto shadow-lg shadow-wrapping" *ngIf="dataLoaded | async">
+    <div class="col-4 mx-auto shadow-lg shadow-wrapping" *ngIf="userDataLoaded | async">
       <h2 class="text-center">{{currentUser.userName}}</h2>
       <div class="col mx-auto">
         <mat-form-field appearance="fill">

@@ -13,6 +13,7 @@ import { take } from 'rxjs/operators';
 })
 export class ChangePasswordComponent implements OnInit {
 
+  hideOld = true;
   hide = true;
   hideConf = true;
   hasError: boolean = false;

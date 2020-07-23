@@ -1,18 +1,22 @@
 <title>Create composition</title>
 <div class="container-fluid">
   <div class="row">
-    <div class="col-xl-8 col-lg-8 col-md-10 col-sm-11">
+    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-11">
       <h1 class="text-center">Create composition form</h1>
-      <mat-form-field appearance="fill">
+      <mat-form-field>
         <mat-label>Composition title</mat-label>
         <input matInput placeholder="Composition title" [formControl]="compositionTitle" required>
         <mat-error *ngIf="compositionTitle.invalid">{{errorCompositionTitle()}}</mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Genre</mat-label>
-        <input matInput placeholder="Composition genre" [formControl]="compositionGenre" required>
-        <mat-error *ngIf="compositionGenre.invalid">{{errorCompositionGenre()}}</mat-error>
+      <mat-form-field>
+        <mat-label>Select genre of composition</mat-label>
+        <mat-select [formControl]="selectedGenre" required name="genre">
+          <mat-option *ngFor="let item of genres" [value]="item.genre">
+            {{item.viewGenre}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="selectedGenre.invalid">{{errorSelectedGenre()}}</mat-error>
       </mat-form-field>
 
       <mat-form-field>
@@ -53,7 +57,9 @@
           Composition successfully added.
         </div>
         <div *ngIf="hasError" class="alert alert-danger" role="alert">
-          Error occured. Fields of composition should not be empty.<br />
+          Error occured. Fields of composition should not be empty.
+        </div>
+        <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
           Error message: {{errorMessage}}.
         </div>
       </div>

@@ -10,6 +10,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { EditorModule } from '@progress/kendo-angular-editor';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSortModule } from '@angular/material/sort';
+import { MatSelectModule } from '@angular/material/select';
 
 import { AccountPanelRoutingModule } from './account-panel-routing.module';
 import { ProfileComponent } from './profile/profile.component';
@@ -35,7 +37,9 @@ import { CreateChapterComponent } from './create-chapter/create-chapter.componen
     NgbModule,
     EditorModule,
     MatChipsModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSortModule,
+    MatSelectModule
   ]
 })
 export class AccountPanelModule { }
