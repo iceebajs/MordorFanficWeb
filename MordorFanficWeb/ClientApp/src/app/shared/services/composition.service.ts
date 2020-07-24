@@ -61,6 +61,7 @@ export class CompositionService {
     const headers = this.setUserHeaders();
     return this.httpClient.post<Tag[]>(`${this.baseURL}/tags/add-tags`, tags, { headers: headers })
       .pipe(catchError(this.handleError<Tag[]>('addTags', tags)));
+
   }
 
   addCompositionTags(compTags: CompositionTag[]) {

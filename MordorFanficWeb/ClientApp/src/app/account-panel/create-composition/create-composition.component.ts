@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { map, startWith, take } from 'rxjs/operators';
 import { CompositionTag } from '../../shared/interfaces/composition-tags/composition-tag.interface';
 import { Tag } from '../../shared/interfaces/tags/tag.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-composition',
@@ -19,14 +20,15 @@ import { Tag } from '../../shared/interfaces/tags/tag.interface';
 })
 export class CreateCompositionComponent implements OnInit {
 
-  previewContext: string;
+  previewContext: string = '';
 
   currentAccountId: number;
   hasError: boolean = false;
   errorMessage: string = '';
   isSuccessfull: boolean = false;
+  submitButtonStatus = false;
 
-  constructor(private compositionService: CompositionService, private accountService: AccountService) {
+  constructor(private compositionService: CompositionService, private accountService: AccountService, private router: Router) {
     this.filteredTags = this.tagControl.valueChanges.pipe(
       startWith(null),
       map((tag: string | null) => tag ? this._filter(tag) : this.allTags.slice())
@@ -48,13 +50,15 @@ export class CreateCompositionComponent implements OnInit {
 
   createComposition() {
     if (this.dataIsValid()) {
+      this.submitButtonStatus = true;
       const composition: Composition = this.mapComposition();
       this.mapTags();
       this.tagsArray === [] ? this.addCompositionTags(composition) : this.addTags(composition);
     }
     else {
       this.hasError = true;
-      setTimeout(() => this.hasError = false, 3000);
+      this.submitButtonStatus = false;
+      setTimeout(() => this.hasError = false, 1000);
     }
   }
 
@@ -87,7 +91,8 @@ export class CreateCompositionComponent implements OnInit {
         setTimeout(() => this.isSuccessfull = false, 3000);
       }, error => {
         this.hasError = true;
-        this.errorMessage = error;
+          this.errorMessage = error;
+          this.submitButtonStatus = false;
         setTimeout(() => this.hasError = false, 3000);
       });
   }
@@ -104,7 +109,7 @@ export class CreateCompositionComponent implements OnInit {
     }
     this.compositionService.addCompositionTags(this.compositionTags)
       .pipe(take(1))
-      .subscribe();
+      .subscribe(() => setTimeout(() => this.router.navigate(['account/profile']), 2000));
   }
 
   mapComposition() {
@@ -132,7 +137,8 @@ export class CreateCompositionComponent implements OnInit {
   dataIsValid(): boolean {
     if (this.selectedGenre.valid
       && this.compositionTitle.valid
-      && this.tags.length > 0)
+      && this.tags.length > 0
+      && this.previewContext.length > 0)
       return true;
     return false;
   }
@@ -208,6 +214,11 @@ export class CreateCompositionComponent implements OnInit {
     { genre: 'psychological', viewGenre: 'Psychological' },
     { genre: 'romance', viewGenre: 'Romance' }
   ];
+
+  showErrorMessage(message) {
+    this.errorMessage = message;
+    setTimeout(() => this.errorMessage = '', 3000);
+  }
 }
 
 interface Genre {

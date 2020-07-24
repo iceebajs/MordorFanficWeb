@@ -2,7 +2,7 @@
   color: grey;
 }
 
-::ng-deep .mat-input-element::placeholder {
+::ng-deep .mat-input-element::placeholder{
   background: none !important;
 }
 

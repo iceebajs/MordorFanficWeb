@@ -16,7 +16,7 @@
 
         <button mat-button
                 (click)="showChangeNumeration();">
-          <mat-icon class="mat-18 mat_icon">shuffle</mat-icon> Change chapter sequence
+          <mat-icon class="mat-18 mat_icon">shuffle</mat-icon> Change chapters sequence / Edit chapters
         </button>
       </p>
 
@@ -83,17 +83,17 @@
   <div class="w-100"></div>
 
   <div class="button-container">
-    <button mat-raised-button color="primary" class="align-button" (click)="updateComposition();"> Submit composition</button>
+    <button mat-raised-button color="primary" class="align-button" (click)="updateComposition();"> Update composition</button>
   </div>
 
   <div class="col mt-4">
     <div *ngIf="isSuccessfull" class="alert alert-success" role="alert">
-      Composition successfully added.
+      Composition successfully updated.
     </div>
     <div *ngIf="hasError" class="alert alert-danger" role="alert">
       Error occured. Fields of composition should not be empty.
     </div>
-    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    <div *ngIf="errorMessage && hasError" class="alert alert-danger" role="alert">
       Error message: {{errorMessage}}.
     </div>
   </div>
@@ -109,6 +109,7 @@
 
 <ng-template #changeChaptNum>
   <div class="col-lg-7 col-md-8 col-sm-10 mx-auto">
+    <h3 class="text-center mt-2"><strong>*Drag and drop plates to change chapter sequence*</strong></h3>
     <div cdkDropList class="sequence-list" (cdkDropListDropped)="drop($event)">
       <div class="sequence-box" *ngFor="let movie of movies" cdkDrag>
         {{movie}}
