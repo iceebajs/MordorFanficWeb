@@ -42,8 +42,11 @@
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\auth-responce.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\change-password.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\chapter\chapter.interface.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\chapter\like.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\composition-tags\composition-tag.interface.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\composition\comment.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\composition\composition.interface.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\composition\rating.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\credentials.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\registration.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\tags\tag.interface.ts" />
@@ -52,6 +55,7 @@
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\user.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\services\account.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\services\authorization.service.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\services\chapter.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\services\composition.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\services\http-error-hander.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\services\registratoin.service.ts" />

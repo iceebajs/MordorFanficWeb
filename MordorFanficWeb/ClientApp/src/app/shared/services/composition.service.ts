@@ -5,6 +5,9 @@ import { ConfigService } from '../common/config.service';
 import { Composition } from '../interfaces/composition/composition.interface';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { Rating } from '../interfaces/composition/rating.interface';
+import { Tag } from '../interfaces/tags/tag.interface';
+import { CompositionTag } from '../interfaces/composition-tags/composition-tag.interface';
 
 @Injectable()
 export class CompositionService {
@@ -47,6 +50,35 @@ export class CompositionService {
     const headers = this.setUserHeaders();
     return this.httpClient.delete(`${this.baseURL}/composition/${id}`, { headers: headers })
       .pipe(catchError(this.handleError('deleteComposition')));
+  }
+
+  getAllTags(): Observable<Tag[]> {
+    return this.httpClient.get<Tag[]>(`${this.baseURL}/tags`)
+      .pipe(catchError(this.handleError<Tag[]>('getAllTags')));
+  }
+
+  addTags(tags: Tag[]) {
+    const headers = this.setUserHeaders();
+    return this.httpClient.post<Tag[]>(`${this.baseURL}/tags/add-tags`, tags, { headers: headers })
+      .pipe(catchError(this.handleError<Tag[]>('addTags', tags)));
+  }
+
+  addCompositionTags(compTags: CompositionTag[]) {
+    const headers = this.setUserHeaders();
+    return this.httpClient.post<CompositionTag[]>(`${this.baseURL}/tags`, compTags, { headers: headers })
+      .pipe(catchError(this.handleError<CompositionTag[]>('addCompositionTags', compTags)));
+  }
+
+  addRating(rating: Rating) {
+    const headers = this.setUserHeaders();
+    return this.httpClient.post<Rating>(`${this.baseURL}/composition/add-rating`, rating, { headers: headers })
+      .pipe(catchError(this.handleError<Rating>('addRating', rating)));
+  }
+
+  addComment(comment: Comment) {
+    const headers = this.setUserHeaders();
+    return this.httpClient.post<Comment>(`${this.baseURL}/composition/add-comment`, comment, { headers: headers })
+      .pipe(catchError(this.handleError<Comment>('addComment', comment)));
   }
 
   getErrorMessage() {

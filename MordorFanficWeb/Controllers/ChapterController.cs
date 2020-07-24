@@ -26,51 +26,6 @@ namespace MordorFanficWeb.Controllers
             this.logger = logger;
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ChapterViewModel>> GetChapterById(int id)
-        {
-            try
-            {
-                var chapter = await chapterAdapter.GetChapter(id).ConfigureAwait(false);
-
-                if (chapter == null)
-                {
-                    logger.LogError($"Chapter with id: {id}, hasn't been found in db.");
-                    return NotFound(id);
-                }
-
-                logger.LogInformation($"Returned chapter with id: {id}");
-                return chapter;
-            }
-            catch (Exception ex)
-            {
-                logger.LogError($"Something went wrong inside GetChapterById action: {ex.Message}");
-                return StatusCode(500, "Internal server error");
-            }
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<List<ChapterViewModel>>> GetAllChapters()
-        {
-            try
-            {
-                var chapters = await chapterAdapter.GetAllChapters().ConfigureAwait(false);
-                if (chapters == null)
-                {
-                    logger.LogError($"Chapters list cannot be found.");
-                    return NotFound();
-                }
-
-                logger.LogInformation("Returned all chapters from db");
-                return chapters;
-            }
-            catch (Exception ex)
-            {
-                logger.LogError($"Something went wrong inside GetAllChapters action: {ex.Message}");
-                return StatusCode(500, "Internal server error");
-            }
-        }
-
         [Authorize(Policy = "RegisteredUsers")]
         [HttpPost]
         public async Task<ActionResult> CreateChapter([FromBody] ChapterViewModel chapter)
@@ -95,7 +50,7 @@ namespace MordorFanficWeb.Controllers
         }
 
         [Authorize(Policy = "RegisteredUsers")]
-        [HttpPost("{id}")]
+        [HttpPost("update")]
         public async Task<ActionResult> UpdateChapter([FromBody] ChapterViewModel chapter)
         {
             try
