@@ -4,11 +4,12 @@ import { CompositionService } from './../../shared/services/composition.service'
 import { AccountService } from './../../shared/services/account.service';
 import { FormControl, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { COMMA, ENTER, SPACE } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
 import { Observable } from 'rxjs';
 import { map, startWith, take } from 'rxjs/operators';
 import { CompositionTag } from '../../shared/interfaces/composition-tags/composition-tag.interface';
+import { Tag } from '../../shared/interfaces/tags/tag.interface';
 
 @Component({
   selector: 'app-create-composition',
@@ -36,33 +37,95 @@ export class CreateCompositionComponent implements OnInit {
     let identity = localStorage.getItem('id');
     this.accountService.getUserAccountId(identity)
       .pipe(take(1))
-      .subscribe(response => this.currentAccountId = response);    
+      .subscribe(response => this.currentAccountId = response);
+    this.compositionService.getAllTags()
+      .pipe(take(1))
+      .subscribe((response: Tag[]) => {
+        for (let t of response)
+          this.allTags.push(t.tag);
+      });
   }
 
   createComposition() {
     if (this.dataIsValid()) {
-      const composition: Composition = {
-        title: this.compositionTitle.value,
-        previewContext: this.previewContext,
-        genre: this.selectedGenre.value,
-        userId: this.currentAccountId,
-        compositionTags: this.compositionTags
-      } as Composition;
-
-      this.compositionService.createComposition(composition)
-        .pipe(take(1))
-        .subscribe(() => {
-          this.isSuccessfull = true;
-          setTimeout(() => this.isSuccessfull = false, 3000);
-        }, error => {
-          this.hasError = true;
-          this.errorMessage = error;
-          setTimeout(() => this.hasError = false, 3000);
-        });
+      const composition: Composition = this.mapComposition();
+      this.mapTags();
+      this.tagsArray === [] ? this.addCompositionTags(composition) : this.addTags(composition);
     }
     else {
       this.hasError = true;
       setTimeout(() => this.hasError = false, 3000);
+    }
+  }
+
+  private addTags(composition: Composition) {
+    this.compositionService.addTags(this.tagsArray)
+      .pipe(take(1))
+      .subscribe(() => this.addCompositionTags(composition));
+  }
+
+  private addCompositionTags(composition: Composition) {
+    this.allTags = [];
+    let tagsId = [];
+    this.compositionService.getAllTags()
+      .pipe(take(1))
+      .subscribe((response: Tag[]) => {
+        for (let t of response) {
+          tagsId.push(t.id);
+          this.allTags.push(t.tag);
+        }
+        this.createCompositionStep(composition, tagsId);
+      });
+  }
+
+  private createCompositionStep(composition: Composition, tagsId) {
+    this.compositionService.createComposition(composition)
+      .pipe(take(1))
+      .subscribe((response: number) => {
+        this.mapCompositionTags(response, tagsId);
+        this.isSuccessfull = true;
+        setTimeout(() => this.isSuccessfull = false, 3000);
+      }, error => {
+        this.hasError = true;
+        this.errorMessage = error;
+        setTimeout(() => this.hasError = false, 3000);
+      });
+  }
+
+  compositionTags: CompositionTag[] = [];
+  private mapCompositionTags(compositionId: number, tagsId) {
+    this.compositionTags = [];
+    for (let t of this.tags) {
+      const compTag: CompositionTag = {
+        tagId: tagsId[this.allTags.indexOf(t)],
+        compositionId: compositionId
+      } as CompositionTag;
+      this.compositionTags.push(compTag);
+    }
+    this.compositionService.addCompositionTags(this.compositionTags)
+      .pipe(take(1))
+      .subscribe();
+  }
+
+  mapComposition() {
+    const composition: Composition = {
+      title: this.compositionTitle.value,
+      previewContext: this.previewContext,
+      genre: this.selectedGenre.value,
+      userId: this.currentAccountId
+    } as Composition;
+
+    return composition;
+  }
+
+  tagsArray: Tag[] = [];
+  mapTags() {
+    this.tagsArray = [];
+    for (let t of this.tags) {
+      if (this.allTags.indexOf(t) === -1) {
+        const tag: Tag = { tag: t } as Tag;
+        this.tagsArray.push(tag);
+      }
     }
   }
 
@@ -89,13 +152,11 @@ export class CreateCompositionComponent implements OnInit {
   visible = true;
   selectable = true;
   removable = true;
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE];
   tagControl = new FormControl();
   filteredTags: Observable<string[]>;
-  tags: string[] = [
-  ];
-  compositionTags: CompositionTag[];
-  allTags: string[] = ['fantasy', 'fantastic', 'dungeon'];
+  tags: string[] = [];
+  allTags: string[] = [];
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
@@ -104,9 +165,10 @@ export class CreateCompositionComponent implements OnInit {
     const input = event.input;
     const value = event.value;
 
-    if ((value || '').trim()) {
-      this.tags.push(value.trim());
-    }
+    if (this.tags.indexOf(value) === -1)
+      if ((value || '').trim()) {
+        this.tags.push(value.trim());
+      }
 
     if (input) {
       input.value = '';
@@ -123,7 +185,8 @@ export class CreateCompositionComponent implements OnInit {
   }
 
   selectedTags(event: MatAutocompleteSelectedEvent): void {
-    this.tags.push(event.option.viewValue);
+    if (this.tags.indexOf(event.option.viewValue) === -1)
+      this.tags.push(event.option.viewValue);
     this.tagInput.nativeElement.value = '';
     this.tagControl.setValue(null);
   }

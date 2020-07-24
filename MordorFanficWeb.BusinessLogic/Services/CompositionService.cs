@@ -28,5 +28,11 @@ namespace MordorFanficWeb.BusinessLogic.Services
                 .Include(r => r.CompositionRatings)
                 .FirstOrDefaultAsync(x => x.CompositionId == id).ConfigureAwait(false);
         }
+
+        public async Task<int> CreateComposition(Composition composition)
+        {
+            await CreateAsync(composition).ConfigureAwait(false);
+            return composition.CompositionId;
+        }
     }
 }

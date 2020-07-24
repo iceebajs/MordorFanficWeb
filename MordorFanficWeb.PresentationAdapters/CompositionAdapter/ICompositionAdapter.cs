@@ -10,7 +10,7 @@ namespace MordorFanficWeb.PresentationAdapters.CompositionAdapter
         Task<CompositionViewModel> GetComposition(int id);
         Task DeleteComposition(int id);
         Task UpdateComposition(CompositionViewModel composition);
-        Task CreateComposition(CompositionViewModel composition);
+        Task<int> CreateComposition(CompositionViewModel composition);
         Task<List<CompositionViewModel>> GetAllCompositions();
         Task<List<CompositionViewModel>> GetAllCompositionsOfAccount(int id);
     }

@@ -34,10 +34,10 @@ export class CompositionService {
       .pipe(catchError(this.handleError<Composition[]>('getAccountCompositions')));
   }
 
-  createComposition(composition: Composition) {
+  createComposition(composition: Composition): Observable<number> {
     const headers = this.setUserHeaders();
-    return this.httpClient.post<Composition>(`${this.baseURL}/composition`, composition, { headers: headers })
-      .pipe(catchError(this.handleError<Composition>('createComposition', composition)));
+    return this.httpClient.post<number>(`${this.baseURL}/composition`, composition, { headers: headers })
+      .pipe(catchError(this.handleError<number>('createComposition')));
   }
 
   updateComposition(composition: Composition) {

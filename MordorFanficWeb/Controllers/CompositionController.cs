@@ -111,9 +111,9 @@ namespace MordorFanficWeb.Controllers
                     return BadRequest("Composition object is null");
                 }
 
-                await compositionAdapter.CreateComposition(composition).ConfigureAwait(false);
+                int id = await compositionAdapter.CreateComposition(composition).ConfigureAwait(false);
                 logger.LogInformation($"Composition {composition.Title} is successfully added");
-                return Ok();
+                return Ok(id);
             }
             catch (Exception ex)
             {

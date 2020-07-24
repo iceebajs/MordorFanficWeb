@@ -19,9 +19,9 @@ namespace MordorFanficWeb.PresentationAdapters.CompositionAdapter
             this.mapper = mapper;
         }
 
-        public async Task CreateComposition(CompositionViewModel composition)
+        public async Task<int> CreateComposition(CompositionViewModel composition)
         {
-            await compositionService.CreateAsync(mapper.Map<Composition>(composition)).ConfigureAwait(false);
+            return await compositionService.CreateComposition(mapper.Map<Composition>(composition)).ConfigureAwait(false);
         }
 
         public async Task DeleteComposition(int id)
