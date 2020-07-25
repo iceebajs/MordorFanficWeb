@@ -306,6 +306,7 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
   editChapterButton: boolean = false;
   showEditChapter(chapter: Chapter) {
     this.setEditChapterState();
+    this.setEditChapterFields(chapter);
   }
 
   setEditChapterState() {
@@ -314,6 +315,15 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
     this.editComposition = false;
     this.createChapter = false;
     this.changeChapterNumeration = false;
+  }
+
+  setEditChapterFields(chapter: Chapter) {
+    this.chapterToUpdate = chapter;
+    this.chapterTitleEdit.setValue(chapter.chapterTitle);
+    this.chapterContextEdit = chapter.context
+    if (this.filesEdit.length > 0)
+      this.filesEdit.splice(0, 1);
+    this.filesEdit.push(chapter.imgSource);
   }
 
   deleteChapter(chapter: Chapter) {
@@ -448,8 +458,43 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
   }
 
   chapterContextEdit: string = '';
+  chapterToUpdate: Chapter;
   submitUpdateChapter() {
+    if (this.isChapterEditDataValid()) {
+      this.submitButtonStatus = true;
 
+      this.chapterToUpdate.chapterTitle = this.chapterTitleEdit.value;
+      this.chapterToUpdate.context = this.chapterContextEdit;
+      this.chapterToUpdate.imgSource = this.filesEdit[0];
+      this.chapterService.updateChapter(this.chapterToUpdate).pipe(take(1)).subscribe(() => {
+        this.isSuccessfull = true;
+        this.getCompositionForCurrentId();
+        setTimeout(() => {
+          this.isSuccessfull = false;
+          this.submitButtonStatus = false;
+        }, 3000);
+      }, error => {
+        this.hasError = true;
+        this.errorMessage = error;
+        setTimeout(() => {
+          this.hasError = false;
+          this.submitButtonStatus = false;
+        }, 3000);
+      });
+    }
+    else {
+      this.hasError = true;
+      setTimeout(() => {
+        this.hasError = false;
+      }, 3000);
+    }
+  }
+
+  isChapterEditDataValid() {
+    if (this.chapterContextEdit.length > 0
+      && this.chapterTitleEdit.valid)
+      return true;
+    return false;
   }
 
   //dragNdrop
@@ -473,14 +518,14 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
   uploadFileEdit(event) {
     for (let index = 0; index < event.length; index++) {
       const element = event[index];
-      if (this.files.length > 0)
-        this.deleteAttachment(0);
-      this.files.push(element.name)
+      if (this.filesEdit.length > 0)
+        this.deleteAttachmentEdit(0);
+      this.filesEdit.push(element.name)
     }
   }
 
   deleteAttachmentEdit(index) {
-    this.files.splice(index, 1)
+    this.filesEdit.splice(index, 1)
   }
 }
 
