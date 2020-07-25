@@ -1,4 +1,5 @@
 ﻿using MordorFanficWeb.Models.BaseModels;
+using MordorFanficWeb.ViewModels.ChapterViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -13,5 +14,7 @@ namespace MordorFanficWeb.BusinessLogic.Interfaces
         Task UpdateAsync<T>(T entity) where T : BaseEntity;
         Task CreateAsync<T>(T entity) where T : BaseEntity;
         Task<List<T>> GetAllAsync<T>() where T : BaseEntity;
+        Task UpdateChapterNumeration(ChapterNumerationViewModel[] chapterNumeration);
+
     }
 }

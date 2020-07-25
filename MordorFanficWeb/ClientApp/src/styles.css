@@ -255,14 +255,14 @@ table{
   margin: 0;
   position: absolute;
   top: 50%;
-  left: 80%;
+  left: 87%;
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
 
 @media (max-width: 991.98px) {
   .align-button {
-    left: 70%;
+    left: 77%;
   }
   .margin-nav {
     margin-left: 0;
@@ -271,7 +271,7 @@ table{
 
 @media (max-width: 767.98px) {
   .align-button {
-    left: 60%;
+    left: 67%;
   }
 }
 

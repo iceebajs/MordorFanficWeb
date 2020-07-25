@@ -44,5 +44,10 @@ namespace MordorFanficWeb.PresentationAdapters.ChapterAdapter
             var updatedChapter = mapper.Map<Chapter>(chapter);
             await chapterService.UpdateAsync(updatedChapter).ConfigureAwait(false);
         }
+
+        public async Task UpdateChapterNumeration(ChapterNumerationViewModel[] chapterNumeration)
+        {
+            await chapterService.UpdateChapterNumeration(chapterNumeration).ConfigureAwait(false);
+        }
     }
 }

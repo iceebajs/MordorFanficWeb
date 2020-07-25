@@ -12,21 +12,25 @@ import { Observable } from 'rxjs';
 import { map, startWith, take } from 'rxjs/operators';
 import { CompositionTag } from '../../shared/interfaces/composition-tags/composition-tag.interface';
 import { Tag } from '../../shared/interfaces/tags/tag.interface';
+import { ChapterService } from './../../shared/services/chapter.service';
+import { Chapter } from '../../shared/interfaces/chapter/chapter.interface';
+import { ChapterNumeration } from '../../shared/interfaces/chapter/chapter-numeration.interface';
 
 @Component({
   selector: 'app-manage-composition',
   templateUrl: './manage-composition.component.html',
   styleUrls: ['./manage-composition.component.css'],
-  providers: [CompositionService]
+  providers: [CompositionService, ChapterService]
 })
 export class ManageCompositionComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
   accountId: number;
   compositionId: number;
+  submitButtonStatus = false;
 
   constructor(private activatedRoute: ActivatedRoute,
-    private compositionService: CompositionService) {
+    private compositionService: CompositionService, private chapterService: ChapterService) {
     this.filteredTags = this.tagControl.valueChanges.pipe(
       startWith(null),
       map((tag: string | null) => tag ? this._filter(tag) : this.allTags.slice())
@@ -42,6 +46,10 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
         this.compositionId = Number(params['id']);
       });
 
+    this.getCompositionForCurrentId();
+  }
+
+  getCompositionForCurrentId() {
     this.compositionService.getCompositionById(this.compositionId)
       .pipe(take(1))
       .subscribe((response: Composition) => {
@@ -270,7 +278,7 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
 
   editComposition: boolean = true;
   showEditComposition() {
-    this.editComposition === true ? this.editComposition = false : this.setEditCompositionState();
+    this.setEditCompositionState();
   }
   setEditCompositionState() {
     this.editComposition = true;
@@ -281,7 +289,7 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
 
   createChapter: boolean = false;
   showCreateChapter() {
-    this.createChapter === true ? this.createChapter = false : this.setCreateChapterState();
+    this.setCreateChapterState();
   }
   setCreateChapterState() {
     this.createChapter = true;
@@ -292,7 +300,7 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
 
   editChapter: boolean = false;
   showEditChapter(chapter) {
-    this.editChapter === true ? this.editChapter = false : this.setEditChapterState();
+    this.setEditChapterState();
     console.log(chapter);
   }
   setEditChapterState() {
@@ -304,7 +312,15 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
 
   changeChapterNumeration: boolean = false;
   showChangeNumeration() {
-    this.changeChapterNumeration == true ? this.changeChapterNumeration = false : this.setChangeNumeration();
+    this.setChangeNumeration();
+    this.chaptersArray = this.currentComposition.chapters;
+    this.chaptersArray.sort(function(a, b) {
+      if (a.chapterNumber > b.chapterNumber)
+        return 1;
+      if (a.chapterNumber < b.chapterNumber)
+        return -1;
+      return 0;
+    });
   }
   setChangeNumeration() {
     this.changeChapterNumeration = true;
@@ -313,21 +329,75 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
     this.createChapter = false;
   }
 
-  movies = [
-    'Episode I - The Phantom Menace',
-    'Episode II - Attack of the Clones',
-    'Episode III - Revenge of the Sith',
-    'Episode IV - A New Hope',
-    'Episode V - The Empire Strikes Back',
-    'Episode VI - Return of the Jedi',
-    'Episode VII - The Force Awakens',
-    'Episode VIII - The Last Jedi',
-    'Episode IX – The Rise of Skywalker'
+  // Chapter block
+  chapterTitle = new FormControl('', [Validators.required]);
+  errorChapterTitle() {
+    if (this.compositionTitle.hasError('required'))
+      return 'You must enter a value';
+  }
+
+  chapterContext: string = '';
+  chapterImgSrc: string = '';
+
+  addChapterToDb() {
+    if (this.isChapterDataValid()) {
+      let addChapterNumber = this.currentComposition.chapters.length + 1;
+      this.submitButtonStatus = true;
+
+      const chapterToAdd: Chapter = {
+        chapterNumber: addChapterNumber,
+        chapterTitle: this.chapterTitle.value,
+        context: this.chapterContext,
+        imgSource: this.chapterImgSrc,
+        compositionId: this.compositionId
+      } as Chapter;
+      this.chapterService.createChapter(chapterToAdd).
+        pipe(take(1))
+        .subscribe(() => {
+          this.isSuccessfull = true;
+          this.getCompositionForCurrentId();
+          setTimeout(() => {
+            this.isSuccessfull = false;
+            this.submitButtonStatus = false;
+          }, 3000);
+        }, error => {
+            this.hasError = true;
+            this.errorMessage = error;
+            setTimeout(() => {
+              this.hasError = false;
+              this.submitButtonStatus = false;
+            }, 3000);
+        });
+    }
+  }
+
+  isChapterDataValid() {
+    if (this.chapterContext.length > 0
+      && this.chapterTitle.valid)
+      return true;
+    return false;
+  }
+
+  //Chapter sequence
+  chaptersArray: Chapter[] = [
   ];
 
+  chaptersNumeration: ChapterNumeration[] = [];
+
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
-    console.log(this.movies);
+    this.chaptersNumeration.length = 0;
+    moveItemInArray(this.chaptersArray, event.previousIndex, event.currentIndex);
+    this.chaptersArray.forEach((item, index) => {
+      const chaptNumObj: ChapterNumeration = {
+        currentNumber: index + 1,
+        chapterId: item.chapterId,
+        compositionId: this.compositionId
+      } as ChapterNumeration;
+      this.chaptersNumeration.push(chaptNumObj);
+    });
+    this.chapterService.updateNumeration(this.chaptersNumeration)
+      .pipe(take(1))
+      .subscribe();
   }
 }
 

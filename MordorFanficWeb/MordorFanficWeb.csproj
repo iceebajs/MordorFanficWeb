@@ -41,6 +41,7 @@
     <TypeScriptCompile Remove="ClientApp\src\app\shared\helpers\safe-html.module.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\auth-responce.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\change-password.interface.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\chapter\chapter-numeration.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\chapter\chapter.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\chapter\like.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\composition-tags\composition-tag.interface.ts" />

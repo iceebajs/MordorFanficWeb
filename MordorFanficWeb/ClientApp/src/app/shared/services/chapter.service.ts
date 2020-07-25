@@ -6,6 +6,7 @@ import { Chapter } from '../interfaces/chapter/chapter.interface';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Like } from '../interfaces/chapter/like.interface';
+import { ChapterNumeration } from '../interfaces/chapter/chapter-numeration.interface';
 
 @Injectable()
 export class ChapterService {
@@ -28,6 +29,12 @@ export class ChapterService {
     const headers = this.setUserHeaders();
     return this.httpClient.post<Chapter>(`${this.baseURL}/chapter/update`, chapter, { headers: headers })
       .pipe(catchError(this.handleError<Chapter>('updateChapter', chapter)));
+  }
+
+  updateNumeration(numeration: ChapterNumeration[]) {
+    const headers = this.setUserHeaders();
+    return this.httpClient.post<ChapterNumeration[]>(`${this.baseURL}/chapter/update-numeration`, numeration, { headers: headers })
+      .pipe(catchError(this.handleError<ChapterNumeration[]>('updateNumeration', numeration)));
   }
 
   deleteChapter(id: number) {

@@ -100,7 +100,39 @@
 </ng-template>
 
 <ng-template #createChapt>
-  createCha
+  <mat-form-field>
+    <mat-label>Composition title</mat-label>
+    <input matInput placeholder="Chapter title" [formControl]="chapterTitle" required>
+    <mat-error *ngIf="chapterTitle.invalid">{{errorChapterTitle()}}</mat-error>
+  </mat-form-field>
+
+  <div class="w-100 pb-2"></div>
+
+  chapterImgSrc
+
+  <div class="w-100"></div>
+
+  <h2 class="text-center">Chapter context</h2>
+  <kendo-editor [(ngModel)]="chapterContext" style="height: 370px;"></kendo-editor>
+
+  <div class="button-container">
+    <button mat-raised-button color="primary"
+            class="align-button"
+            (click)="addChapterToDb();"
+            [disabled]="submitButtonStatus"> Create chapter </button>
+  </div>
+
+  <div class="col mt-4">
+    <div *ngIf="isSuccessfull" class="alert alert-success" role="alert">
+      Chapter successfully added.
+    </div>
+    <div *ngIf="hasError" class="alert alert-danger" role="alert">
+      Error occured. Fields of chapter should not be empty.
+    </div>
+    <div *ngIf="errorMessage && hasError" class="alert alert-danger" role="alert">
+      Error message: {{errorMessage}}.
+    </div>
+  </div>
 </ng-template>
 
 <ng-template #editChapt>
@@ -111,10 +143,10 @@
   <div class="col-lg-7 col-md-8 col-sm-10 mx-auto">
     <h3 class="text-center mt-2"><strong>*Drag and drop plates to change chapter sequence*</strong></h3>
     <div cdkDropList class="sequence-list" (cdkDropListDropped)="drop($event)">
-      <div class="sequence-box" *ngFor="let movie of movies" cdkDrag>
-        {{movie}}
+      <div class="sequence-box" *ngFor="let chapterItem of chaptersArray; index as i" cdkDrag>
+        <h2>{{chapterItem.chapterTitle}}</h2>
         <button mat-button
-                (click)="showEditChapter(movie);"
+                (click)="showEditChapter(chapterItem);"
                 class="ml-3">
           <mat-icon class="mat-18 mat_icon">build</mat-icon> Edit chapter
         </button>

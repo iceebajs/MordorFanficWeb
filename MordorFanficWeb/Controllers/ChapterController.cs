@@ -111,5 +111,27 @@ namespace MordorFanficWeb.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        [Authorize(Policy = "RegisteredUsers")]
+        [HttpPost("update-numeration")]
+        public async Task<ActionResult> UpdateNumeration([FromBody] ChapterNumerationViewModel[] numeration)
+        {
+            try
+            {
+                if (numeration == null)
+                {
+                    logger.LogError($"Numeration object sent from client is null");
+                    return BadRequest("Numeration object is null");
+                }
+
+                await chapterAdapter.UpdateChapterNumeration(numeration).ConfigureAwait(false);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong inside UpdateChapter action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
     }
 }

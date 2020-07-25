@@ -11,5 +11,6 @@ namespace MordorFanficWeb.PresentationAdapters.ChapterAdapter
         Task UpdateChapter(ChapterViewModel composition);
         Task CreateChapter(ChapterViewModel composition);
         Task<List<ChapterViewModel>> GetAllChapters();
+        Task UpdateChapterNumeration(ChapterNumerationViewModel[] chapterNumeration);
     }
 }
