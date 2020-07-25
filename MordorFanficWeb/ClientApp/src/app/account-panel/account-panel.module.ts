@@ -21,10 +21,18 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { AccountPanelComponent } from './account-panel/account-panel.component';
 import { CreateCompositionComponent } from './create-composition/create-composition.component';
 import { ManageCompositionComponent } from './manage-composition/manage-composition.component';
-
+import { DragDropDirective } from './../shared/common/dnd-upload.directive';
 
 @NgModule({
-  declarations: [ProfileComponent, ChangePasswordComponent, AdminDashboardComponent, AccountPanelComponent, CreateCompositionComponent, ManageCompositionComponent],
+  declarations: [
+    DragDropDirective,
+    ProfileComponent,
+    ChangePasswordComponent,
+    AdminDashboardComponent,
+    AccountPanelComponent,
+    CreateCompositionComponent,
+    ManageCompositionComponent
+  ],
   imports: [
     CommonModule,
     AccountPanelRoutingModule,
@@ -41,7 +49,7 @@ import { ManageCompositionComponent } from './manage-composition/manage-composit
     MatAutocompleteModule,
     MatSortModule,
     MatSelectModule,
-    DragDropModule
+    DragDropModule    
   ]
 })
 export class AccountPanelModule { }

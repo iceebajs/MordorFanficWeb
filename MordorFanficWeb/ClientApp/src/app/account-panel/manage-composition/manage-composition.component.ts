@@ -353,12 +353,11 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
   // Chapter block
   chapterTitle = new FormControl('', [Validators.required]);
   errorChapterTitle() {
-    if (this.compositionTitle.hasError('required'))
+    if (this.chapterTitle.hasError('required'))
       return 'You must enter a value';
   }
 
   chapterContext: string = '';
-  chapterImgSrc: string = '';
 
   addChapterToDb() {
     if (this.isChapterDataValid()) {
@@ -369,7 +368,7 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
         chapterNumber: addChapterNumber,
         chapterTitle: this.chapterTitle.value,
         context: this.chapterContext,
-        imgSource: this.chapterImgSrc,
+        imgSource: this.files[0],
         compositionId: this.compositionId
       } as Chapter;
       this.chapterService.createChapter(chapterToAdd).
@@ -439,6 +438,49 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
     this.chapterService.updateNumeration(this.chaptersNumeration)
       .pipe(take(1))
       .subscribe();
+  }
+  //Update chapter
+
+  chapterTitleEdit = new FormControl('', [Validators.required]);
+  errorChapterTitleEdit() {
+    if (this.chapterTitleEdit.hasError('required'))
+      return 'You must enter a value';
+  }
+
+  chapterContextEdit: string = '';
+  submitUpdateChapter() {
+
+  }
+
+  //dragNdrop
+  files: any = [];
+
+  uploadFile(event) {
+    for (let index = 0; index < event.length; index++) {
+      const element = event[index];
+      if (this.files.length > 0)
+        this.deleteAttachment(0);
+      this.files.push(element.name)
+    }
+  }
+
+  deleteAttachment(index) {
+    this.files.splice(index, 1)
+  }
+
+  filesEdit: any = [];
+
+  uploadFileEdit(event) {
+    for (let index = 0; index < event.length; index++) {
+      const element = event[index];
+      if (this.files.length > 0)
+        this.deleteAttachment(0);
+      this.files.push(element.name)
+    }
+  }
+
+  deleteAttachmentEdit(index) {
+    this.files.splice(index, 1)
   }
 }
 

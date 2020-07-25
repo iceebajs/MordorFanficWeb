@@ -104,14 +104,22 @@
 
 <ng-template #createChapt>
   <mat-form-field>
-    <mat-label>Composition title</mat-label>
+    <mat-label>Chapter title</mat-label>
     <input matInput placeholder="Chapter title" [formControl]="chapterTitle" required>
     <mat-error *ngIf="chapterTitle.invalid">{{errorChapterTitle()}}</mat-error>
   </mat-form-field>
 
   <div class="w-100 pb-2"></div>
-
-  chapterImgSrc
+  <h2 class="text-center">Drag/click to upload image</h2>
+  <div class="uploadfilecontainer" style="background-color: transparent;" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
+    <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
+  </div>
+  <div class="files-list" *ngFor="let file of files;let i= index">
+    <p> {{ file }} </p>
+    <button mat-button class="delete-file" (click)="deleteAttachment(i)" color="warn">
+      <mat-icon class="mat-18 mat_icon">delete_forever</mat-icon>
+    </button>
+  </div>
 
   <div class="w-100"></div>
 
@@ -141,7 +149,53 @@
 </ng-template>
 
 <ng-template #editChapt>
-  editCha
+  <mat-form-field>
+    <mat-label>Chapter title</mat-label>
+    <input matInput placeholder="Chapter title" [formControl]="chapterTitleEdit" required>
+    <mat-error *ngIf="chapterTitleEdit.invalid">{{errorChapterTitleEdit()}}</mat-error>
+  </mat-form-field>
+
+  <div class="w-100 pb-2"></div>
+  <h2 class="text-center">Drag/click to upload image</h2>
+  <div class="uploadfilecontainer"
+       style="background-color: transparent;"
+       (click)="fileInput.click()"
+       appDragDrop
+       (onFileDropped)="uploadFile($event)">
+    <input hidden type="file" #fileInput (change)="uploadFileEdit($event.target.files)">
+  </div>
+  <div class="files-list" *ngFor="let fileEdit of filesEdit;let i= index">
+    <p> {{ fileEdit }} </p>
+    <button mat-button class="delete-file" (click)="deleteAttachmentEdit(i)" color="warn">
+      <mat-icon class="mat-18 mat_icon">delete_forever</mat-icon>
+    </button>
+  </div>
+
+  <div class="w-100"></div>
+
+  <h2 class="text-center">Chapter context</h2>
+  <kendo-editor [(ngModel)]="chapterContextEdit" style="height: 370px;"></kendo-editor>
+
+  <div class="button-container">
+    <button mat-raised-button color="primary"
+            class="align-button"
+            (click)="submitUpdateChapter();"
+            [disabled]="submitButtonStatus">
+      Update chapter
+    </button>
+  </div>
+
+  <div class="col mt-4">
+    <div *ngIf="isSuccessfull" class="alert alert-success" role="alert">
+      Chapter successfully updated.
+    </div>
+    <div *ngIf="hasError" class="alert alert-danger" role="alert">
+      Error occured. Fields of chapter should not be empty.
+    </div>
+    <div *ngIf="errorMessage && hasError" class="alert alert-danger" role="alert">
+      Error message: {{errorMessage}}.
+    </div>
+  </div>
 </ng-template>
 
 <ng-template #changeChaptNum>
