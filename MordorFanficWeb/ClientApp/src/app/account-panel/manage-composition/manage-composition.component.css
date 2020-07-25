@@ -60,3 +60,20 @@
   color: lightgrey;
   background: none !important;
 }
+
+
+.currentButton{
+    color: whitesmoke;
+    border: 1.5px solid;
+    border-color: black;
+    border-radius: 5px;
+}
+
+.notCurrentButton {
+  color: black;
+  border: none;
+}
+
+.mat-button-focus-overlay {
+  background-color: transparent !important;
+}

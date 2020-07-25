@@ -5,17 +5,20 @@
       <p>
         <button mat-button
                 (click)="showEditComposition();"
-                class="ml-3">
+                class="ml-3"
+                [ngClass]="editComposition ? 'currentButton' : 'notCurrentButton'">
           <mat-icon class="mat-18 mat_icon">build</mat-icon> Edit composition
         </button>
 
         <button mat-button
-                (click)="showCreateChapter();">
+                (click)="showCreateChapter();"
+                [ngClass]="createChapter ? 'currentButton' : 'notCurrentButton'">
           <mat-icon class="mat-18 mat_icon">create</mat-icon> Create chapter
         </button>
 
         <button mat-button
-                (click)="showChangeNumeration();">
+                (click)="showChangeNumeration();"
+                [ngClass]="editChapterButton ? 'currentButton' : 'notCurrentButton'">
           <mat-icon class="mat-18 mat_icon">shuffle</mat-icon> Change chapters sequence / Edit chapters
         </button>
       </p>
@@ -119,7 +122,9 @@
     <button mat-raised-button color="primary"
             class="align-button"
             (click)="addChapterToDb();"
-            [disabled]="submitButtonStatus"> Create chapter </button>
+            [disabled]="submitButtonStatus">
+      Create chapter
+    </button>
   </div>
 
   <div class="col mt-4">
@@ -145,11 +150,19 @@
     <div cdkDropList class="sequence-list" (cdkDropListDropped)="drop($event)">
       <div class="sequence-box" *ngFor="let chapterItem of chaptersArray; index as i" cdkDrag>
         <h2>{{chapterItem.chapterTitle}}</h2>
-        <button mat-button
-                (click)="showEditChapter(chapterItem);"
-                class="ml-3">
-          <mat-icon class="mat-18 mat_icon">build</mat-icon> Edit chapter
-        </button>
+        <p>
+          <button mat-button
+                  (click)="showEditChapter(chapterItem);"
+                  class="ml-3">
+            <mat-icon class="mat-18 mat_icon">build</mat-icon> Edit
+          </button>
+          <button mat-button
+                  color="warn"
+                  (click)="deleteChapter(chapterItem);"
+                  class="ml-3">
+            <mat-icon class="mat-18 mat_icon">delete</mat-icon> Delete
+          </button>
+        </p>
       </div>
     </div>
   </div>

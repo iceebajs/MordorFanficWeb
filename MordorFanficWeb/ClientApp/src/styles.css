@@ -260,6 +260,13 @@ table{
   transform: translateY(-50%);
 }
 
+button:focus,
+button:active:focus,
+button.active:focus {
+  outline: none !important;
+  outline-style: none !important;
+}
+
 @media (max-width: 991.98px) {
   .align-button {
     left: 77%;

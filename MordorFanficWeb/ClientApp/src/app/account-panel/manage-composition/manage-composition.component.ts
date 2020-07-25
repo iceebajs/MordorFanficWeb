@@ -28,6 +28,7 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
   accountId: number;
   compositionId: number;
   submitButtonStatus = false;
+  onInitSort: boolean = true;
 
   constructor(private activatedRoute: ActivatedRoute,
     private compositionService: CompositionService, private chapterService: ChapterService) {
@@ -56,6 +57,7 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
         this.currentComposition = response;
         this.setCompositonsEditFields();
         this.setTagsAndTagsForComposition();
+        this.onInitSort = true;
       });
   }
 
@@ -285,6 +287,7 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
     this.createChapter = false;
     this.editChapter = false;
     this.changeChapterNumeration = false;
+    this.editChapterButton = false;
   }
 
   createChapter: boolean = false;
@@ -296,34 +299,52 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
     this.editComposition = false;
     this.editChapter = false;
     this.changeChapterNumeration = false;
+    this.editChapterButton = false;
   }
 
   editChapter: boolean = false;
-  showEditChapter(chapter) {
+  editChapterButton: boolean = false;
+  showEditChapter(chapter: Chapter) {
     this.setEditChapterState();
-    console.log(chapter);
   }
+
   setEditChapterState() {
     this.editChapter = true;
+    this.editChapterButton = true;
     this.editComposition = false;
     this.createChapter = false;
     this.changeChapterNumeration = false;
   }
 
+  deleteChapter(chapter: Chapter) {
+    this.chapterService.deleteChapter(chapter.chapterId)
+      .pipe(take(1))
+      .subscribe(() => {
+        let i = this.chaptersArray.indexOf(chapter);
+        this.chaptersArray.splice(i, 1);
+        this.updateNumerationAfterDelete();
+      });
+  }
+
   changeChapterNumeration: boolean = false;
   showChangeNumeration() {
     this.setChangeNumeration();
-    this.chaptersArray = this.currentComposition.chapters;
-    this.chaptersArray.sort(function(a, b) {
-      if (a.chapterNumber > b.chapterNumber)
-        return 1;
-      if (a.chapterNumber < b.chapterNumber)
-        return -1;
-      return 0;
-    });
+    if (this.onInitSort) {
+      this.chaptersArray = this.currentComposition.chapters;
+      this.chaptersArray.sort(function (a, b) {
+        if (a.chapterNumber > b.chapterNumber)
+          return 1;
+        if (a.chapterNumber < b.chapterNumber)
+          return -1;
+        return 0;
+      });
+      this.onInitSort = false;
+    }
+
   }
   setChangeNumeration() {
     this.changeChapterNumeration = true;
+    this.editChapterButton = true;
     this.editChapter = false;
     this.editComposition = false;
     this.createChapter = false;
@@ -387,6 +408,26 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
   drop(event: CdkDragDrop<string[]>) {
     this.chaptersNumeration.length = 0;
     moveItemInArray(this.chaptersArray, event.previousIndex, event.currentIndex);
+    this.updateNumeration();
+  }
+
+  private updateNumeration() {
+    this.chaptersArray.forEach((item, index) => {
+      const chaptNumObj: ChapterNumeration = {
+        currentNumber: index + 1,
+        chapterId: item.chapterId,
+        compositionId: this.compositionId
+      } as ChapterNumeration;
+      this.chaptersNumeration.push(chaptNumObj);
+    });
+    this.chapterService.updateNumeration(this.chaptersNumeration)
+      .pipe(take(1))
+      .subscribe();
+  }
+
+  private updateNumerationAfterDelete() {
+    this.chaptersNumeration.length = 0;
+    moveItemInArray(this.chaptersArray, 1, 1);
     this.chaptersArray.forEach((item, index) => {
       const chaptNumObj: ChapterNumeration = {
         currentNumber: index + 1,
