@@ -2,6 +2,10 @@
   <div class="row">
     <div class="col-xl-8 col-lg-10 col-md-10 col-sm-12 mb-4 mx-auto">
       <h2 class="text-center">Your compositions table</h2>
+      <mat-form-field style="width: 40%;" class="mr-3">
+        <mat-label><mat-icon class="mat-18 mat_icon">search</mat-icon> Search</mat-label>
+        <input matInput type="text" (keyup)="doFilter($event.target.value)">
+      </mat-form-field>
       <button mat-button (click)="goTo('/account/create-composition')">
         <mat-icon class="mat-18 mat_icon">create</mat-icon> Create composition
       </button>
@@ -68,23 +72,70 @@
     <div class="col-xl-4 col-lg-6 col-md-8 col-sm-10 mx-auto"
          *ngIf="userDataLoaded | async">
       <div class="shadow-lg shadow-wrapping">
-        <h2 class="text-center">{{currentUser.userName}}</h2>
-        <div class="col mx-auto">
-          <mat-form-field appearance="fill">
-            <mat-label>Email</mat-label>
-            <input matInput placeholder="forsenJoy" [(ngModel)]="currentUser.email" required>
-          </mat-form-field>
+        <div class="col-lg-8 col-md-8 col-sm-10 mx-auto p-2">
+          <label class="text-center font-weight-bold">
+            User name:
+          </label>
+          <h2 *ngIf="!editModeUserName"
+              (click)="editModeUserName = true"
+              class="inplace-edit text-center mx-auto">
+            {{ currentUser.userName }}
+          </h2>
+          <div class="col-lg-6 col-md-8 col-sm-10 mx-auto">
+            <input *ngIf="editModeUserName"
+                   (focusout)="onOutUserName(); editModeUserName = false;"
+                   (keydown.enter)="$event.target.blur()"
+                   appAutofocus
+                   placeholder="User name"
+                   class="edit-inplace-cell mx-auto"
+                   [(ngModel)]="currentUser.userName" required>
+          </div>
         </div>
 
-        <div class="col mx-auto">
-          <mat-form-field appearance="fill">
-            <mat-label>Email</mat-label>
-            <input matInput placeholder="forsenJoy" [(ngModel)]="currentUser.firstName" required>
-          </mat-form-field>
-
-          <h1>ToDo: edit-in-place</h1>
-
+        <div class="col-lg-8 col-md-8 col-sm-10 mx-auto p-2">
+          <label class="text-center font-weight-bold">
+            First name:
+          </label>
+          <h2 *ngIf="!editModeFirstName"
+                                (click)="editModeFirstName = true"
+                                class="inplace-edit text-center mx-auto">
+            {{ currentUser.firstName }}
+          </h2>
+          <div class="col-lg-6 col-md-8 col-sm-10 mx-auto">
+            <input *ngIf="editModeFirstName"
+                   (focusout)="onOutUserName(); editModeFirstName = false;"
+                   (keydown.enter)="$event.target.blur()"
+                   appAutofocus
+                   placeholder="First name"
+                   class="edit-inplace-cell mx-auto"
+                   [(ngModel)]="currentUser.firstName" required>
+          </div>
         </div>
+
+        <div class="col-lg-8 col-md-8 col-sm-10 mx-auto p-2">
+          <label class="text-center font-weight-bold">
+            Last name:
+          </label>
+          <h2 *ngIf="!editModeLastName"
+              (click)='editModeLastName = true'
+              class="inplace-edit text-center mx-auto">
+            {{ currentUser.lastName }}
+          </h2>
+          <div class="col-lg-6 col-md-8 col-sm-10 mx-auto">
+            <input *ngIf="editModeLastName"
+                   (focusout)="onOutLastName(); editModeLastName = false;"
+                   (keydown.enter)="$event.target.blur()"
+                   appAutofocus
+                   placeholder="Last name"
+                   class="edit-inplace-cell mx-auto"
+                   [(ngModel)]="currentUser.lastName" required>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="alert alert-danger mt-2" *ngIf="showEditError">
+        {{editErrorMessage}}
       </div>
     </div>
   </div>

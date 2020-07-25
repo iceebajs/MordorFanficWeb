@@ -22,10 +22,12 @@ import { AccountPanelComponent } from './account-panel/account-panel.component';
 import { CreateCompositionComponent } from './create-composition/create-composition.component';
 import { ManageCompositionComponent } from './manage-composition/manage-composition.component';
 import { DragDropDirective } from './../shared/common/dnd-upload.directive';
+import { AutofocusDirective } from './../shared/common/autofocus.directive';
 
 @NgModule({
   declarations: [
     DragDropDirective,
+    AutofocusDirective,
     ProfileComponent,
     ChangePasswordComponent,
     AdminDashboardComponent,

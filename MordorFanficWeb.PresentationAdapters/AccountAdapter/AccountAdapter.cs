@@ -53,10 +53,11 @@ namespace MordorFanficWeb.PresentationAdapters.AccountAdapter
 
         public async Task<AppUser> AssignUpdatedUserFields(UpdateUserViewModel user)
         {
-            var userIdentity = await accService.GetUserByEmail(user.Email).ConfigureAwait(false);
+            var userIdentity = await accService.GetUserById(user.UserId).ConfigureAwait(false);
             userIdentity.UserName = user.UserName;
             userIdentity.FirstName = user.FirstName;
             userIdentity.LastName = user.LastName;
+            await accService.UpdateUser(userIdentity).ConfigureAwait(false);
             return userIdentity;
         }
 

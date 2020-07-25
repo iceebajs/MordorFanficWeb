@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Remove="ClientApp\src\app\shared\common\admin-route.guard.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\common\autofocus.directive.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\common\config.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\common\dnd-upload.directive.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\common\route.guard.ts" />

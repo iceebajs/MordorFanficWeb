@@ -22,7 +22,7 @@ export class AccountService {
 
   updateProfileInfo(user: UpdateProfile) {
     const headers = this.setUserHeaders();
-    return this.httpClient.post<UpdateProfile>(`${this.baseURL}/account/update-user-informtaion`, user, { headers: headers })
+    return this.httpClient.post<UpdateProfile>(`${this.baseURL}/account/update-user-information`, user, { headers: headers })
       .pipe(catchError(this.handleError('updateProfileInfo', user)));
   }
 

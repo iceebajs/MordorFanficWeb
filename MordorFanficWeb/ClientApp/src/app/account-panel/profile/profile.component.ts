@@ -9,6 +9,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatSort, Sort } from '@angular/material/sort';
+import { UpdateProfile } from '../../shared/interfaces/update-profile.interface';
 
 @Component({
   selector: 'app-profile',
@@ -44,6 +45,7 @@ export class ProfileComponent implements OnInit {
       .pipe(take(1))
       .subscribe((response: User) => {
         this.currentUser = response;
+        this.setUserData(response);
         this.userDataLoaded = Promise.resolve(true);
         this.getAccountData();
       },
@@ -123,6 +125,77 @@ export class ProfileComponent implements OnInit {
     }
     this.paginator.firstPage();
     this.dataSource.data = this.sortedData;
+  }
+
+  public doFilter = (value: string) => {
+    this.dataSource.filter = value.trim().toLocaleLowerCase();
+  }
+
+  // edit-in-place
+  setUserData(user: User) {
+    this.oldUserName = user.userName;
+    this.oldFirstName = user.firstName;
+    this.oldLastName = user.lastName;
+  }
+
+  showEditError: boolean = false;
+  editErrorMessage: string = '';
+
+  editModeUserName: boolean = false;
+  oldUserName: string;
+  onOutUserName() {
+    if (this.currentUser.userName.length < 1) {
+      this.currentUser.userName = this.oldUserName;
+      this.showEditError = true;
+      this.editErrorMessage = "User name cannot be empty";
+      setTimeout(() => {
+        this.showEditError = false;
+      }, 2000);
+    }
+    else
+      this.updateUserInfo();
+  }
+
+  editModeFirstName: boolean = false;
+  oldFirstName: string;
+  onOutFirstName() {
+    if (this.currentUser.firstName.length < 1) {
+      this.currentUser.firstName = this.oldFirstName;
+      this.showEditError = true;
+      this.editErrorMessage = "First name cannot be empty";
+      setTimeout(() => {
+        this.showEditError = false;
+      }, 2000);
+    }
+    else
+      this.updateUserInfo();
+  }
+
+  editModeLastName: boolean = false;
+  oldLastName: string;
+  onOutLastName() {
+    if (this.currentUser.lastName.length < 1) {
+      this.currentUser.lastName = this.oldLastName;
+      this.showEditError = true;
+      this.editErrorMessage = "Last name cannot be empty";
+      setTimeout(() => {
+        this.showEditError = false;
+      }, 2000);
+    }
+    else
+      this.updateUserInfo();
+  }
+
+  updateUserInfo() {
+    const updatedUser: UpdateProfile = {
+      userId: this.currentUser.id,
+      userName: this.currentUser.userName,
+      lastName: this.currentUser.lastName,
+      firstName: this.currentUser.firstName
+    } as UpdateProfile;
+    this.accountService.updateProfileInfo(updatedUser)
+      .pipe(take(1))
+      .subscribe();
   }
 }
 
