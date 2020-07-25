@@ -8,6 +8,7 @@ import { catchError } from 'rxjs/operators';
 import { Rating } from '../interfaces/composition/rating.interface';
 import { Tag } from '../interfaces/tags/tag.interface';
 import { CompositionTag } from '../interfaces/composition-tags/composition-tag.interface';
+import { UploadImage } from '../interfaces/chapter/upload-image.interface';
 
 @Injectable()
 export class CompositionService {
@@ -80,6 +81,12 @@ export class CompositionService {
     const headers = this.setUserHeaders();
     return this.httpClient.post<Comment>(`${this.baseURL}/composition/add-comment`, comment, { headers: headers })
       .pipe(catchError(this.handleError<Comment>('addComment', comment)));
+  }
+
+  deleteImages(images: UploadImage[]) {
+    const headers = this.setUserHeaders();
+    return this.httpClient.post(`${this.baseURL}/composition/delete-images`, images, { headers: headers })
+      .pipe(catchError(this.handleError<File>('deleteImages')));
   }
 
   getErrorMessage() {

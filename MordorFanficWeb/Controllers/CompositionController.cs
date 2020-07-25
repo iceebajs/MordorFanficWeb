@@ -10,6 +10,8 @@ using MordorFanficWeb.PresentationAdapters.CompositionRatingsAdapter;
 using MordorFanficWeb.PresentationAdapters.CommentsAdapter;
 using MordorFanficWeb.ViewModels.CompositionCommentsViewModels;
 using MordorFanficWeb.ViewModels.CompositionRatingsViewModels;
+using MordorFanficWeb.ViewModels.ChapterViewModels;
+using MordorFanficWeb.BusinessLogic.Interfaces;
 
 namespace MordorFanficWeb.Controllers
 {
@@ -21,14 +23,16 @@ namespace MordorFanficWeb.Controllers
         private readonly ICompositionRatingsAdapter ratingsAdapter;
         private readonly ICommentsAdapter commentsAdapter;
         private readonly ILogger<CompositionController> logger;
+        private readonly ICloudStorageService storageService;
 
         public CompositionController(ICompositionAdapter compositionAdapter, ICompositionRatingsAdapter ratingsAdapter, 
-            ICommentsAdapter commentsAdapter, ILogger<CompositionController> logger)
+            ICommentsAdapter commentsAdapter, ILogger<CompositionController> logger, ICloudStorageService storageService)
         {
             this.compositionAdapter = compositionAdapter;
             this.ratingsAdapter = ratingsAdapter;
             this.commentsAdapter = commentsAdapter;
             this.logger = logger;
+            this.storageService = storageService;
         }
 
         [HttpGet("{id}")]
@@ -206,6 +210,29 @@ namespace MordorFanficWeb.Controllers
                 logger.LogError($"Something went wrong inside CreateRating action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
+        }
+
+        [Authorize(Policy = "RegisteredUsers")]
+        [HttpPost("delete-images")]
+        public async Task<ActionResult> DeleteImages(CloudImageViewModel[] images)
+        {
+            try
+            {
+                if (images == null)
+                {
+                    logger.LogError($"Images object sent from client is null");
+                    return BadRequest("Images object is null");
+                }
+
+                await storageService.DeleteImagesRange(images).ConfigureAwait(false);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong inside DeleteImages action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+
         }
     }
 }

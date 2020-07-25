@@ -27,6 +27,18 @@ namespace MordorFanficWeb.BusinessLogic.Services
             await blob.DeleteIfExistsAsync().ConfigureAwait(false);
         }
 
+        public async Task DeleteImagesRange(CloudImageViewModel[] names)
+        {
+            foreach(var name in names)
+            {
+                Uri uri = new Uri(name.Url);
+                string filename = Path.GetFileName(uri.LocalPath);
+                var blobContainer = await storageConnectionFactory.GetContainer().ConfigureAwait(false);
+                var blob = blobContainer.GetBlockBlobReference(filename);
+                await blob.DeleteIfExistsAsync().ConfigureAwait(false);
+            }
+        }
+
         public async Task<CloudImageViewModel> UploadAsync(IFormFile file)  
         {
             var blobContainer = await storageConnectionFactory.GetContainer().ConfigureAwait(false);

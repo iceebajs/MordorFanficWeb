@@ -10,6 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatSort, Sort } from '@angular/material/sort';
 import { UpdateProfile } from '../../shared/interfaces/update-profile.interface';
+import { UploadImage } from '../../shared/interfaces/chapter/upload-image.interface';
 
 @Component({
   selector: 'app-profile',
@@ -85,8 +86,20 @@ export class ProfileComponent implements OnInit {
       { queryParams: { uId: composition.userId, id: composition.compositionId } });
   }
 
+  chapterImages: UploadImage[] = [];
   deleteSuccessfull: boolean = false;
   deleteComposition(composition: Composition) {
+    this.compositionService.getCompositionById(composition.compositionId)
+      .pipe(take(1))
+      .subscribe((response: Composition) => {
+        for (let chapter of response.chapters) {
+          const imageToDelete: UploadImage = { url: chapter.imgSource } as UploadImage;
+          this.chapterImages.push(imageToDelete);
+        }
+        this.compositionService.deleteImages(this.chapterImages)
+          .pipe(take(1))
+          .subscribe(() => this.chapterImages.length = 0, () => this.chapterImages.length = 0);
+      })
     this.compositionService.deleteComposition(composition.compositionId)
       .pipe(take(1))
       .subscribe(() => {

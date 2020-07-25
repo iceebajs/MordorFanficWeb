@@ -63,7 +63,7 @@ export class ChapterService {
   deleteImage(image: UploadImage) {
     const headers = this.setUserHeaders();
     return this.httpClient.post(`${this.baseURL}/chapter/delete-image`, image, { headers: headers })
-      .pipe(catchError(this.handleError<File>('uploadImage')));
+      .pipe(catchError(this.handleError<File>('deleteImage')));
   }
 
   getErrorMessage() {

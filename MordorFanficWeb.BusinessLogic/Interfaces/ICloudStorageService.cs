@@ -8,5 +8,6 @@ namespace MordorFanficWeb.BusinessLogic.Interfaces
     {
         Task<CloudImageViewModel> UploadAsync(IFormFile file);
         Task DeleteImage(string name);
+        Task DeleteImagesRange(CloudImageViewModel[] names);
     }
 }
