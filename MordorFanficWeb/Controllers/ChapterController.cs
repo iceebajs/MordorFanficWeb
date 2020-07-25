@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using MordorFanficWeb.PresentationAdapters.ChapterLikesAdapter;
 using MordorFanficWeb.ViewModels.ChapterLikesViewModels;
+using MordorFanficWeb.BusinessLogic.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace MordorFanficWeb.Controllers
 {
@@ -18,12 +20,14 @@ namespace MordorFanficWeb.Controllers
         private readonly IChapterAdapter chapterAdapter;
         private readonly IChapterLikesAdapter likesAdapter;
         private readonly ILogger<ChapterController> logger;
+        private readonly ICloudStorageService storageService;
 
-        public ChapterController(IChapterAdapter chapterAdapter, IChapterLikesAdapter likesAdapter, ILogger<ChapterController> logger)
+        public ChapterController(IChapterAdapter chapterAdapter, IChapterLikesAdapter likesAdapter, ILogger<ChapterController> logger, ICloudStorageService storageService)
         {
             this.chapterAdapter = chapterAdapter;
             this.likesAdapter = likesAdapter;
             this.logger = logger;
+            this.storageService = storageService;
         }
 
         [Authorize(Policy = "RegisteredUsers")]
@@ -129,9 +133,54 @@ namespace MordorFanficWeb.Controllers
             }
             catch (Exception ex)
             {
-                logger.LogError($"Something went wrong inside UpdateChapter action: {ex.Message}");
+                logger.LogError($"Something went wrong inside UpdateNumeration action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
+        }
+
+        [Authorize(Policy = "RegisteredUsers"), DisableRequestSizeLimit]
+        [HttpPost("upload-image")]
+        public async Task<ActionResult<CloudImageViewModel>> UploadImage()
+        {
+            try
+            {
+                var file = Request.Form.Files[0];
+                if (file == null)
+                {
+                    logger.LogError($"File object sent from client is null");
+                    return BadRequest("File object is null");
+                }
+                 
+                return await storageService.UploadAsync(file).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong inside UploadImage action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [Authorize(Policy = "RegisteredUsers")]
+        [HttpPost("delete-image")]
+        public async Task<ActionResult> DeleteImage(CloudImageViewModel image)
+        {
+            try
+            {
+                if (image == null)
+                {
+                    logger.LogError($"Image object sent from client is null");
+                    return BadRequest("Image object is null");
+                }
+
+                await storageService.DeleteImage(image.Url).ConfigureAwait(false);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong inside DeleteImage action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+
         }
     }
 }

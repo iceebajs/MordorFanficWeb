@@ -15,6 +15,7 @@ import { Tag } from '../../shared/interfaces/tags/tag.interface';
 import { ChapterService } from './../../shared/services/chapter.service';
 import { Chapter } from '../../shared/interfaces/chapter/chapter.interface';
 import { ChapterNumeration } from '../../shared/interfaces/chapter/chapter-numeration.interface';
+import { UploadImage } from '../../shared/interfaces/chapter/upload-image.interface';
 
 @Component({
   selector: 'app-manage-composition',
@@ -327,6 +328,8 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
   }
 
   deleteChapter(chapter: Chapter) {
+    const imageToDelete: UploadImage = { url: chapter.imgSource } as UploadImage;
+    this.deleteImage(imageToDelete);
     this.chapterService.deleteChapter(chapter.chapterId)
       .pipe(take(1))
       .subscribe(() => {
@@ -371,34 +374,39 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
 
   addChapterToDb() {
     if (this.isChapterDataValid()) {
-      let addChapterNumber = this.currentComposition.chapters.length + 1;
       this.submitButtonStatus = true;
-
-      const chapterToAdd: Chapter = {
-        chapterNumber: addChapterNumber,
-        chapterTitle: this.chapterTitle.value,
-        context: this.chapterContext,
-        imgSource: this.files[0],
-        compositionId: this.compositionId
-      } as Chapter;
-      this.chapterService.createChapter(chapterToAdd).
-        pipe(take(1))
-        .subscribe(() => {
-          this.isSuccessfull = true;
-          this.getCompositionForCurrentId();
-          setTimeout(() => {
-            this.isSuccessfull = false;
-            this.submitButtonStatus = false;
-          }, 3000);
-        }, error => {
-            this.hasError = true;
-            this.errorMessage = error;
-            setTimeout(() => {
-              this.hasError = false;
-              this.submitButtonStatus = false;
-            }, 3000);
-        });
+      this.uploadImage(this.file);
     }
+  }
+
+  addChapterAfterImgLoaded(imgUrl: UploadImage) {
+    let addChapterNumber = this.currentComposition.chapters.length + 1;
+    const chapterToAdd: Chapter = {
+      chapterNumber: addChapterNumber,
+      chapterTitle: this.chapterTitle.value,
+      context: this.chapterContext,
+      imgSource: imgUrl.url,
+      compositionId: this.compositionId
+    } as Chapter;
+    this.file = undefined;
+
+    this.chapterService.createChapter(chapterToAdd).
+      pipe(take(1))
+      .subscribe(() => {
+        this.isSuccessfull = true;
+        this.getCompositionForCurrentId();
+        setTimeout(() => {
+          this.isSuccessfull = false;
+          this.submitButtonStatus = false;
+        }, 3000);
+      }, error => {
+        this.hasError = true;
+        this.errorMessage = error;
+        setTimeout(() => {
+          this.hasError = false;
+          this.submitButtonStatus = false;
+        }, 3000);
+      });
   }
 
   isChapterDataValid() {
@@ -445,9 +453,10 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
       } as ChapterNumeration;
       this.chaptersNumeration.push(chaptNumObj);
     });
-    this.chapterService.updateNumeration(this.chaptersNumeration)
-      .pipe(take(1))
-      .subscribe();
+    if (this.chaptersNumeration.length > 0)
+      this.chapterService.updateNumeration(this.chaptersNumeration)
+        .pipe(take(1))
+        .subscribe();
   }
   //Update chapter
 
@@ -462,25 +471,7 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
   submitUpdateChapter() {
     if (this.isChapterEditDataValid()) {
       this.submitButtonStatus = true;
-
-      this.chapterToUpdate.chapterTitle = this.chapterTitleEdit.value;
-      this.chapterToUpdate.context = this.chapterContextEdit;
-      this.chapterToUpdate.imgSource = this.filesEdit[0];
-      this.chapterService.updateChapter(this.chapterToUpdate).pipe(take(1)).subscribe(() => {
-        this.isSuccessfull = true;
-        this.getCompositionForCurrentId();
-        setTimeout(() => {
-          this.isSuccessfull = false;
-          this.submitButtonStatus = false;
-        }, 3000);
-      }, error => {
-        this.hasError = true;
-        this.errorMessage = error;
-        setTimeout(() => {
-          this.hasError = false;
-          this.submitButtonStatus = false;
-        }, 3000);
-      });
+      this.uploadImageEdit(this.fileEdit);
     }
     else {
       this.hasError = true;
@@ -488,6 +479,30 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
         this.hasError = false;
       }, 3000);
     }
+  }
+
+  updateChapterAfterImgLoaded(imgUrl: UploadImage) {
+    this.chapterToUpdate.chapterTitle = this.chapterTitleEdit.value;
+    this.chapterToUpdate.context = this.chapterContextEdit;
+    if (imgUrl !== null)
+      this.chapterToUpdate.imgSource = imgUrl.url;
+    this.fileEdit = undefined;
+
+    this.chapterService.updateChapter(this.chapterToUpdate).pipe(take(1)).subscribe(() => {
+      this.isSuccessfull = true;
+      this.getCompositionForCurrentId();
+      setTimeout(() => {
+        this.isSuccessfull = false;
+        this.submitButtonStatus = false;
+      }, 3000);
+    }, error => {
+      this.hasError = true;
+      this.errorMessage = error;
+      setTimeout(() => {
+        this.hasError = false;
+        this.submitButtonStatus = false;
+      }, 3000);
+    });
   }
 
   isChapterEditDataValid() {
@@ -499,12 +514,14 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
 
   //dragNdrop
   files: any = [];
+  file: File;
 
   uploadFile(event) {
     for (let index = 0; index < event.length; index++) {
       const element = event[index];
       if (this.files.length > 0)
         this.deleteAttachment(0);
+      this.file = element;
       this.files.push(element.name)
     }
   }
@@ -514,18 +531,51 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
   }
 
   filesEdit: any = [];
+  fileEdit: File;
 
   uploadFileEdit(event) {
     for (let index = 0; index < event.length; index++) {
       const element = event[index];
       if (this.filesEdit.length > 0)
         this.deleteAttachmentEdit(0);
+      this.fileEdit = element;
       this.filesEdit.push(element.name)
     }
   }
 
   deleteAttachmentEdit(index) {
     this.filesEdit.splice(index, 1)
+  }
+
+  //azure image download
+  uploadImage(fileToUpload: File) {
+    if (fileToUpload !== undefined)
+      this.chapterService.uploadImage(fileToUpload)
+        .pipe(take(1))
+        .subscribe((imgUrl: UploadImage) => {
+          this.addChapterAfterImgLoaded(imgUrl);
+        });
+    else
+      this.addChapterAfterImgLoaded(null);
+  }
+
+  uploadImageEdit(fileToUpload: File) {
+    if (fileToUpload !== undefined) {
+      const imageToDelete: UploadImage = { url: this.chapterToUpdate.imgSource } as UploadImage;
+      this.deleteImage(imageToDelete);
+      this.chapterToUpdate.imgSource = this.filesEdit[0];
+      this.chapterService.uploadImage(fileToUpload)
+        .pipe(take(1))
+        .subscribe((imgUrl: UploadImage) => {
+          this.updateChapterAfterImgLoaded(imgUrl);
+        });
+    }
+    else
+      this.updateChapterAfterImgLoaded(null);
+  }
+
+  deleteImage(fileToDelete: UploadImage) {
+    this.chapterService.deleteImage(fileToDelete).pipe(take(1)).subscribe();
   }
 }
 

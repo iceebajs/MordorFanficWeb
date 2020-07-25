@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Like } from '../interfaces/chapter/like.interface';
 import { ChapterNumeration } from '../interfaces/chapter/chapter-numeration.interface';
+import { UploadImage } from '../interfaces/chapter/upload-image.interface';
 
 @Injectable()
 export class ChapterService {
@@ -47,6 +48,22 @@ export class ChapterService {
     const headers = this.setUserHeaders();
     return this.httpClient.post<Like>(`${this.baseURL}/chapter/add-like`, like, { headers: headers })
       .pipe(catchError(this.handleError<Like>('addLike', like)));
+  }
+
+  uploadImage(file: File): Observable<UploadImage> {
+    const headers = this.setUserHeaders();
+
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+
+    return this.httpClient.post<UploadImage>(`${this.baseURL}/chapter/upload-image`, formData, { headers: headers })
+      .pipe(catchError(this.handleError<UploadImage>('uploadImage')));
+  }
+
+  deleteImage(image: UploadImage) {
+    const headers = this.setUserHeaders();
+    return this.httpClient.post(`${this.baseURL}/chapter/delete-image`, image, { headers: headers })
+      .pipe(catchError(this.handleError<File>('uploadImage')));
   }
 
   getErrorMessage() {

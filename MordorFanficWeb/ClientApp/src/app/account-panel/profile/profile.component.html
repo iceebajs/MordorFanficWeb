@@ -73,23 +73,9 @@
          *ngIf="userDataLoaded | async">
       <div class="shadow-lg shadow-wrapping">
         <div class="col-lg-8 col-md-8 col-sm-10 mx-auto p-2">
-          <label class="text-center font-weight-bold">
-            User name:
-          </label>
-          <h2 *ngIf="!editModeUserName"
-              (click)="editModeUserName = true"
-              class="inplace-edit text-center mx-auto">
+          <h2 class="text-center mx-auto">
             {{ currentUser.userName }}
           </h2>
-          <div class="col-lg-6 col-md-8 col-sm-10 mx-auto">
-            <input *ngIf="editModeUserName"
-                   (focusout)="onOutUserName(); editModeUserName = false;"
-                   (keydown.enter)="$event.target.blur()"
-                   appAutofocus
-                   placeholder="User name"
-                   class="edit-inplace-cell mx-auto"
-                   [(ngModel)]="currentUser.userName" required>
-          </div>
         </div>
 
         <div class="col-lg-8 col-md-8 col-sm-10 mx-auto p-2">

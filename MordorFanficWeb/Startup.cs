@@ -34,6 +34,7 @@ using MordorFanficWeb.PresentationAdapters.CompositionTagsAdapter;
 using MordorFanficWeb.PresentationAdapters.CommentsAdapter;
 using MordorFanficWeb.PresentationAdapters.CompositionRatingsAdapter;
 using MordorFanficWeb.PresentationAdapters.ChapterLikesAdapter;
+using MordorFanficWeb.BusinessLogic.Helpers;
 
 namespace MordorFanficWeb
 {
@@ -158,6 +159,14 @@ namespace MordorFanficWeb
             services.AddTransient<IValidator<CredentialsViewModel>, CredentialsViewModelValidator>();
             services.AddTransient<IValidator<CompositionViewModel>, CompositionViewModelValidator>();
             services.AddTransient<IValidator<ChapterViewModel>, ChapterViewModelValidator>();
+
+            services.AddSingleton<IStorageConnectionFactory, StorageConnectionFactory>(sp => {
+                CloudStorageOptions cloudStorageOptions = new CloudStorageOptions();
+                cloudStorageOptions.ConnectionString = Configuration["AzureBlobStorage:ConnectionString"];
+                cloudStorageOptions.ImagesContainerName = Configuration["AzureBlobStorage:BlobContainer"];
+                return new StorageConnectionFactory(cloudStorageOptions);
+            });
+            services.AddSingleton<ICloudStorageService, CloudStorageService>();
 
             services.AddSingleton(Common.AutoMapper.AutoMapper.Configure());
 
