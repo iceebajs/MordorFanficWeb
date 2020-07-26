@@ -9,7 +9,7 @@ import { SafeHtmlModule } from './../shared/helpers/safe-html.module';
 import { MatChipsModule } from '@angular/material/chips';
 import { ReadCompositionComponent } from './read-composition/read-composition.component';
 import { MatButtonModule } from '@angular/material/button';
-
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [HomeComponent, ReadCompositionComponent],
@@ -19,7 +19,8 @@ import { MatButtonModule } from '@angular/material/button';
     SafeHtmlModule,
     MatChipsModule,
     MatButtonModule,
-    NgbModule
+    NgbModule,
+    MatIconModule
   ]
 })
 export class ContentPanelModule { }

@@ -2,7 +2,13 @@
 <div class="container-fluid mt-4 mb-4" *ngIf="!hasError">
   <div class="row" *ngIf="dataLoaded | async">
     <div class="col-xl-6 col-lg-8 col-md-10 col-sm-12 mx-auto shadow shadow-wrapping" *ngIf="isRead">
-      <h1 class="text-center">{{currentChapter.chapterTitle}}</h1>
+      <h1 class="text-center">
+        {{currentChapter.chapterTitle}}
+        <button mat-button (click)="likeChapter();" [disabled]="!likeButtonDisabled">
+          <mat-icon class="mat-18 mat_icon">{{isAlreadyLiked ? 'favorite' : 'favorite_border'}}</mat-icon>
+          {{likesCount}}
+        </button>
+      </h1>
       <img class="rounded img-fluid d-block shadow-lg mx-auto"
            [src]="currentChapter.imgSource" />
 
@@ -33,7 +39,22 @@
         <div class="col-lg-3 col-md-10 col-sm-10 mx-auto">
           <p><strong>Genre: </strong>{{currentComposition.genre}}</p>
           <p><strong>Chapters count: </strong>{{currentComposition.chapters.length}}</p>
-          <p><strong>Composition rating: </strong>{{compositionRating}}</p>
+          <p><strong>{{voted ? 'You rated this with' : 'Rate composition'}}:</strong></p>
+          <p *ngIf="isLoggedIn" class="button-container-compositon justify-content-start d-flex">
+            <ngb-rating [(rate)]="userRate" [max]="5" class="no-outline" (click)="setRating();" [readonly]="voted">
+              <ng-template let-fill="fill" let-index="index">
+                <span class="star" [class.filled]="fill === 100" [class.bad]="index < 2">&#9733;</span>
+              </ng-template>
+            </ngb-rating>
+          </p>
+          <p><strong>Composition rating: </strong></p>
+          <p>
+            <ngb-rating [(rate)]="compositionRating" [max]="5" class="no-outline" [readonly]="true">
+              <ng-template let-fill="fill" let-index="index">
+                <span class="star" [class.filled]="fill === 100" [class.bad]="index < 2">&#9733;</span>
+              </ng-template>
+            </ngb-rating>
+          </p>
           <p>
             <strong>Tags: </strong>
             <mat-chip-list>
@@ -43,7 +64,7 @@
             </mat-chip-list>
           </p>
         </div>
-        <div class="col-lg-6 col-md-10 col-sm-10 mx-auto"
+        <div class="col-lg-8 col-md-10 col-sm-10 mx-auto"
              style="word-wrap: break-word;"
              [innerHTML]="currentComposition.previewContext | safeHtml">
         </div>
@@ -51,6 +72,17 @@
         <div class="button-container pb-2">
           <button mat-raised-button color="primary" class="align-button" (click)="readComposition()"> Read </button>
         </div>
+      </div>
+    </div>
+
+    <div class="w-100"></div>
+
+    <div class="col-xl-6 col-lg-8 col-md-10 col-sm-12 mx-auto" *ngIf="!isRead">
+      <div class="row" *ngIf="isLoggedIn">
+        addComment
+      </div>
+      <div class="row pb-3 mb-4">
+        Comments section
       </div>
     </div>
   </div>

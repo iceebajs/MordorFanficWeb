@@ -1,0 +1,21 @@
+.no-outline {
+  outline: none !important;
+  outline-style: none !important;
+}
+
+.star {
+  font-size: 2rem;
+  color: #b0c4de;
+}
+
+.filled {
+  color: gold;
+}
+
+.bad {
+  color: #deb0b0;
+}
+
+.filled.bad {
+  color: #ff1e1e;
+}

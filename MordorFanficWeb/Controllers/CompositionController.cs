@@ -223,6 +223,8 @@ namespace MordorFanficWeb.Controllers
                     return BadRequest("Rating object is null");
                 }
 
+                if (rating.Rating > 5 || rating.Rating < 0) return BadRequest("Rating out of bounds");
+
                 await ratingsAdapter.AddRating(rating).ConfigureAwait(false);
                 logger.LogInformation($"Rating for composition with id: {rating.CompositionId} is successfully added");
                 return Ok();

@@ -13,7 +13,7 @@
 
     <div class="w-100"></div>
 
-    <div class="col-xl-8 col-lg-10 col-md-10 col-sm-12 mx-auto mb-2">
+    <div class="col-xl-7 col-lg-8 col-md-10 col-sm-12 mx-auto mb-2">
       <div class="row shadow shadow-wrapping pb-3 mb-4" *ngFor="let composition of compositionsList; index as i">
         <div class="col">
           <h2 class="text-center mt-3">{{composition.title}}</h2>
@@ -22,7 +22,14 @@
         <div class="col-lg-3 col-md-10 col-sm-10 mx-auto">
           <p><strong>Genre: </strong>{{composition.genre}}</p>
           <p><strong>Chapters count: </strong>{{composition.chapters.length}}</p>
-          <p><strong>Composition rating: </strong>{{compositionRating[i]}}</p>
+          <p><strong>Composition rating: </strong></p>
+          <p>
+            <ngb-rating [(rate)]="compositionRating[i]" [max]="5" class="no-outline" [readonly]="true">
+              <ng-template let-fill="fill" let-index="index">
+                <span class="star" [class.filled]="fill === 100" [class.bad]="index < 2">&#9733;</span>
+              </ng-template>
+            </ngb-rating>
+          </p>
           <p>
             <strong>Tags: </strong>
             <mat-chip-list>
@@ -32,7 +39,7 @@
             </mat-chip-list>
           </p>
         </div>
-        <div class="col-lg-6 col-md-10 col-sm-10 mx-auto"
+        <div class="col-lg-8 col-md-10 col-sm-10 mx-auto"
              style="word-wrap: break-word;"
              [innerHTML]="composition.previewContext | safeHtml">
         </div>

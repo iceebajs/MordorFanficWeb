@@ -2,29 +2,39 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Composition } from '../../shared/interfaces/composition/composition.interface';
 import { CompositionService } from '../../shared/services/composition.service';
+import { AuthorizationService } from '../../shared/services/authorization.service';
+import { AccountService } from '../../shared/services/account.service';
+import { ChapterService } from '../../shared/services/chapter.service';
 import { take } from 'rxjs/operators';
 import { Chapter } from '../../shared/interfaces/chapter/chapter.interface';
 import { Tag } from '../../shared/interfaces/tags/tag.interface';
 import { Rating } from '../../shared/interfaces/composition/rating.interface';
+import { Like } from '../../shared/interfaces/chapter/like.interface';
 
 @Component({
   selector: 'app-read-composition',
   templateUrl: './read-composition.component.html',
   styleUrls: ['./read-composition.component.css'],
-  providers: [CompositionService]
+  providers: [CompositionService, AccountService, ChapterService]
 })
 export class ReadCompositionComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private compositionService: CompositionService) { }
+  constructor(private route: ActivatedRoute, private compositionService: CompositionService,
+    private authService: AuthorizationService, private accountService: AccountService,
+    private chapterService: ChapterService) { }
 
   ngOnInit(): void {
-    this.prevPage = this.page;
+    this.accountService.getUserAccountId(localStorage.getItem('id')).pipe(take(1)).subscribe((response) => {
+      this.currentAccountId = response;
+    });
     this.compositionId = Number(this.route.snapshot.paramMap.get('id'));
     this.compositionService.getAllTags()
       .pipe(take(1))
       .subscribe((response: Tag[]) => { this.tagsList = response; this.getComposition(); });
-
+    this.isLoggedIn = this.authService.isSignedIn();
+    this.setLikeButtonStatus();
   }
+
   getComposition() {
     this.compositionService.getCompositionById(this.compositionId)
       .pipe(take(1))
@@ -32,16 +42,20 @@ export class ReadCompositionComponent implements OnInit {
         this.currentComposition = response;
         this.dataLoaded = Promise.resolve(true);
         this.calculateRatings(response.compositionRatings);
+        this.checkVote();
         this.currentComposition.chapters.length < 1 ? this.setChapterError() : this.setChapter();
       },
         () => { this.hasError = true; this.errorMessage = 'Composition not found.' });
   }
 
+  currentAccountId: number;
+  isLoggedIn: boolean = false;
+  userRate = 0;
+
   hasError: boolean = false;
   errorMessage: string = '';
   dataLoaded: Promise<boolean>;
   page: number = 1;
-  prevPage: number;
 
   compositionId: number;
   currentComposition: Composition;
@@ -71,6 +85,7 @@ export class ReadCompositionComponent implements OnInit {
   isRead: boolean = false;
   readComposition() {
     this.isRead = true;
+    this.checkLike();
   }
 
   searchByTag(index) {
@@ -92,5 +107,65 @@ export class ReadCompositionComponent implements OnInit {
 
   switchChapter(p: number) {
     this.currentChapter = this.currentComposition.chapters[p - 1];
+    this.checkLike();
+  }
+
+  voted: boolean = false;
+  setRating() {
+    this.voted = true;
+    setTimeout(() => {
+      const rating: Rating = {
+        accountId: this.currentAccountId,
+        rating: this.userRate,
+        compositionId: this.currentComposition.compositionId
+      } as Rating;
+      this.compositionService.addRating(rating).pipe(take(1)).subscribe();
+    }, 1000);
+  }
+
+  checkVote() {
+    for (let v of this.currentComposition.compositionRatings) {
+      if (v.accountId == this.currentAccountId) {
+        this.voted = true;
+        this.userRate = v.rating;
+      }
+    }
+  }
+
+  likeButtonDisabled: boolean = true;
+  isAlreadyLiked: boolean = false;
+  currentUserLiked: boolean = false;
+  likesCount: number = 0;
+
+  setLikeButtonStatus() {
+    this.likeButtonDisabled = this.isLoggedIn;
+  }
+
+  likeChapter() {
+    this.isAlreadyLiked = true;
+    if (!this.currentUserLiked) {
+      this.likesCount += 1;
+      const like: Like = {
+        accountId: this.currentAccountId,
+        chapterId: this.currentChapter.chapterId
+      } as Like;
+      this.currentUserLiked = true;
+      this.currentComposition.chapters[this.page - 1].chapterLikes.push(like);
+      this.chapterService.addLike(like).pipe(take(1)).subscribe();
+    }
+  }
+
+  checkLike() {
+    this.likesCount = this.currentChapter.chapterLikes.length;
+    this.currentUserLiked = false;
+    this.isAlreadyLiked = false;
+    if (this.likesCount > 0)
+      for (let l of this.currentChapter.chapterLikes) {
+        if (l.accountId == this.currentAccountId) {
+          this.currentUserLiked = true;
+          this.isAlreadyLiked = true;
+        }
+      }
   }
 }
+
