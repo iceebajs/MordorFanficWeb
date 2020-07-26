@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 
 import { ContentPanelRoutingModule } from './content-panel-routing.module';
@@ -17,7 +18,8 @@ import { MatButtonModule } from '@angular/material/button';
     ContentPanelRoutingModule,
     SafeHtmlModule,
     MatChipsModule,
-    MatButtonModule
+    MatButtonModule,
+    NgbModule
   ]
 })
 export class ContentPanelModule { }

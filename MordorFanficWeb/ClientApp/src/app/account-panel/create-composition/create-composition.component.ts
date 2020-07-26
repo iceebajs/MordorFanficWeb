@@ -109,7 +109,7 @@ export class CreateCompositionComponent implements OnInit {
     }
     this.compositionService.addCompositionTags(this.compositionTags)
       .pipe(take(1))
-      .subscribe(() => setTimeout(() => this.router.navigate(['account/profile']), 2000));
+      .subscribe(() => setTimeout(() => this.router.navigate(['account/profile']), 1000));
   }
 
   mapComposition() {

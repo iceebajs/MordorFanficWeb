@@ -70,8 +70,8 @@ export class ProfileComponent implements OnInit {
     this.compositionService.getAccountCompositions(this.accountId)
       .pipe(take(1))
       .subscribe((response: Composition[]) => {
-        this.dataSource.data = response;
-        this.accountCompositions = response;
+        this.accountCompositions = response.reverse();
+        this.dataSource.data = this.accountCompositions;
         this.dataSource.sort = this.sort;
         this.accountDataLoaded = Promise.resolve(true);
       }, error => console.log(error));

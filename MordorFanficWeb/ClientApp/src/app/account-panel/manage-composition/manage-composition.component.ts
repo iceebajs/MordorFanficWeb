@@ -555,8 +555,10 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
         .subscribe((imgUrl: UploadImage) => {
           this.addChapterAfterImgLoaded(imgUrl);
         });
-    else
-      this.addChapterAfterImgLoaded(null);
+    else {
+      const img: UploadImage = { url: '' } as UploadImage;
+      this.addChapterAfterImgLoaded(img);
+    }
   }
 
   uploadImageEdit(fileToUpload: File) {
@@ -570,8 +572,10 @@ export class ManageCompositionComponent implements OnInit, OnDestroy {
           this.updateChapterAfterImgLoaded(imgUrl);
         });
     }
-    else
-      this.updateChapterAfterImgLoaded(null);
+    else {
+      const img: UploadImage = { url: '' } as UploadImage;
+      this.updateChapterAfterImgLoaded(img);
+    }
   }
 
   deleteImage(fileToDelete: UploadImage) {

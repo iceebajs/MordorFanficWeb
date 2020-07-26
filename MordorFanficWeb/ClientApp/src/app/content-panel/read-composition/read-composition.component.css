@@ -1,8 +1,7 @@
 .button-container-compositon {
   height: 50px;
   position: relative;
-  width: 30%;
-  margin-left: 40%;
+  width: 100%;
 }
 
 .not-found-container {
@@ -18,11 +17,6 @@ img{
     width: 80%;
     max-height: 500px;
 }
-
-.shadow {
-  background-color: white;
-}
-
 
   #notfound .notfound {
     position: absolute;
