@@ -10,8 +10,8 @@ using MordorFanficWeb.Persistence.AppDbContext;
 namespace MordorFanficWeb.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200726144430_likes_updated")]
-    partial class likes_updated
+    [Migration("20200726154918_likes_update")]
+    partial class likes_update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -296,7 +296,8 @@ namespace MordorFanficWeb.Migrations
 
                     b.HasKey("ChapterLikeId");
 
-                    b.HasIndex("ChapterId");
+                    b.HasIndex("ChapterId", "AccountId")
+                        .IsUnique();
 
                     b.ToTable("ChapterLikes");
                 });

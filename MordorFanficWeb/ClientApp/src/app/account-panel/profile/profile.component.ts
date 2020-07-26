@@ -57,6 +57,10 @@ export class ProfileComponent implements OnInit {
     this.router.navigate([route]);
   }
 
+  read(id: number) {
+    this.router.navigate(['read', id]);
+  }
+
   getAccountData() {
     this.accountService.getUserAccountId(this.currentUser.id)
       .pipe(take(1))
@@ -75,10 +79,6 @@ export class ProfileComponent implements OnInit {
         this.dataSource.sort = this.sort;
         this.accountDataLoaded = Promise.resolve(true);
       }, error => console.log(error));
-  }
-
-  openComposition(composition: Composition) {
-    console.log(composition.compositionId);
   }
 
   manageComposition(composition: Composition) {

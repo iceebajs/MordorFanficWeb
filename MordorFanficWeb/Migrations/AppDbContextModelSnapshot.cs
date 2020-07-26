@@ -294,7 +294,8 @@ namespace MordorFanficWeb.Migrations
 
                     b.HasKey("ChapterLikeId");
 
-                    b.HasIndex("ChapterId");
+                    b.HasIndex("ChapterId", "AccountId")
+                        .IsUnique();
 
                     b.ToTable("ChapterLikes");
                 });

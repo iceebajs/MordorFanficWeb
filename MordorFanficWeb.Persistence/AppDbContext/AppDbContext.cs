@@ -25,6 +25,7 @@ namespace MordorFanficWeb.Persistence.AppDbContext
             base.OnModelCreating(builder);
             builder.Entity<Tags>().HasIndex(t => t.Tag).IsUnique();
             builder.Entity<CompositionRatings>().HasIndex(i => i.AccountId).IsUnique();
+            builder.Entity<ChapterLike>().HasIndex(p => new { p.ChapterId, p.AccountId }).IsUnique();
         }
 
         public async Task SaveAsync()
