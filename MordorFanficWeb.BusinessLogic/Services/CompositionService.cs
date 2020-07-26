@@ -34,5 +34,17 @@ namespace MordorFanficWeb.BusinessLogic.Services
             await CreateAsync(composition).ConfigureAwait(false);
             return composition.CompositionId;
         }
+
+        public async Task<List<Composition>> GetLastAdded()
+        {
+            return await dbContext.DbSet<Composition>()
+                .OrderByDescending(i => i.CompositionId)
+                .Include(c => c.Chapters)
+                .Include(t => t.CompositionTags)
+                .Include(c => c.CompositionComments)
+                .Include(r => r.CompositionRatings)
+                .Take(10)
+                .ToListAsync().ConfigureAwait(false);
+        }
     }
 }

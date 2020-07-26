@@ -17,5 +17,6 @@ namespace MordorFanficWeb.BusinessLogic.Interfaces
         Task<List<Composition>> GetAllCompositionsOfAccount(int id);
         Task<Composition> GetCompositionById(int id);
         Task<int> CreateComposition(Composition composition);
+        Task<List<Composition>> GetLastAdded();
     }
 }

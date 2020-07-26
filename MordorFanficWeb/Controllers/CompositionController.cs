@@ -80,6 +80,28 @@ namespace MordorFanficWeb.Controllers
             }
         }
 
+        [HttpGet("get-last-added")]
+        public async Task<ActionResult<List<CompositionViewModel>>> GetLastAdded()
+        {
+            try
+            {
+                var compositions = await compositionAdapter.GetLastAdded().ConfigureAwait(false);
+                if (compositions == null)
+                {
+                    logger.LogError($"Compositions list cannot be found.");
+                    return NotFound();
+                }
+
+                logger.LogInformation("Returned last compositions from db");
+                return compositions;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong inside GetLastAdded action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
         [HttpGet("get-account-compositions/{id}")]
         public async Task<ActionResult<List<CompositionViewModel>>> GetAllCompositionsOfAccount(int id)
         {

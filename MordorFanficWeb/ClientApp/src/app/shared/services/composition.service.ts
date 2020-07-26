@@ -25,6 +25,11 @@ export class CompositionService {
       .pipe(catchError(this.handleError<Composition[]>('getCompositions')));
   }
 
+  getLastCompositions(): Observable<Composition[]> {
+    return this.httpClient.get<Composition[]>(`${this.baseURL}/composition/get-last-added`)
+      .pipe(catchError(this.handleError<Composition[]>('getLastCompositions')));
+  }
+
   getCompositionById(id: number): Observable<Composition> {
     return this.httpClient.get<Composition>(`${this.baseURL}/composition/${id}`)
       .pipe(catchError(this.handleError<Composition>('getCompositionById')));

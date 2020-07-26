@@ -1,11 +1,51 @@
 <title>Home</title>
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-xl-9 col-lg-9 col-md-11 col-sm-12 mx-auto">
+  <div class="row" *ngIf="compositionsLoaded && tagsLoaded | async">
+    <div class="col-lg-4 col-md-4 col-sm-10">
+      Search
+    </div>
 
-      Main page
+    <div class="w-100"></div>
 
+    <div class="col mb-2 mt-2">
+      <h1 style="margin-left:40%;">Last updates</h1>
+    </div>
 
+    <div class="w-100"></div>
+
+    <div class="col-xl-8 col-lg-10 col-md-10 col-sm-12 mx-auto mb-2">
+      <div class="row shadow shadow-wrapping pb-3 mb-4" *ngFor="let composition of compositionsList; index as i">
+        <div class="col">
+          <h2 class="text-center mt-3">{{composition.title}}</h2>
+        </div>
+        <div class="w-100"></div>
+        <div class="col-lg-3 col-md-10 col-sm-10 mx-auto">
+          <p><strong>Genre: </strong>{{composition.genre}}</p>
+          <p><strong>Chapters count: </strong>{{composition.chapters.length}}</p>
+          <p><strong>Composition rating: </strong>{{compositionRating[i]}}</p>
+          <p>
+            <strong>Tags: </strong>
+            <mat-chip-list>
+              <mat-chip color="primary" selected *ngFor="let compositionTag of composition.compositionTags">
+                <a (click)="searchByTag(compositionTag.tagId - 1)">{{tagsList[compositionTag.tagId - 1].tag}}</a>
+              </mat-chip>
+            </mat-chip-list>
+          </p>
+        </div>
+        <div class="col-lg-6 col-md-10 col-sm-10 mx-auto" [innerHTML]="composition.previewContext | safeHtml">
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-lg-10 col-md-10 col-sm-10 mx-auto mt-1">
+      <h2 class="text-center"> Composition tags </h2>
+      <div class="col p-4">
+        <mat-chip-list *ngIf="tagsLoaded | async">
+          <mat-chip color="primary" selected *ngFor="let tag of tagsList; index as i">
+            <a (click)="searchByTag(i)">{{tag.tag}}</a>
+          </mat-chip>
+        </mat-chip-list>
+      </div>
     </div>
   </div>
 </div>

@@ -267,6 +267,12 @@ button.active:focus {
   outline-style: none !important;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Roboto', serif;
+  font-weight: 700;
+  color: #3C52B4;
+}
+
 @media (max-width: 991.98px) {
   .align-button {
     left: 77%;
