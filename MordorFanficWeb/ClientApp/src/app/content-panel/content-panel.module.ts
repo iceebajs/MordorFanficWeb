@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { ContentPanelRoutingModule } from './content-panel-routing.module';
 import { HomeComponent } from './home/home.component';
@@ -16,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [
     CommonModule,
     ContentPanelRoutingModule,
+    FormsModule,
     SafeHtmlModule,
     MatChipsModule,
     MatButtonModule,

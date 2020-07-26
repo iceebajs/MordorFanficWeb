@@ -10,6 +10,8 @@ import { Chapter } from '../../shared/interfaces/chapter/chapter.interface';
 import { Tag } from '../../shared/interfaces/tags/tag.interface';
 import { Rating } from '../../shared/interfaces/composition/rating.interface';
 import { Like } from '../../shared/interfaces/chapter/like.interface';
+import { UserCommentary } from '../../shared/interfaces/composition/comment.interface';
+import { User } from '../../shared/interfaces/user.interface';
 
 @Component({
   selector: 'app-read-composition',
@@ -27,6 +29,7 @@ export class ReadCompositionComponent implements OnInit {
     this.accountService.getUserAccountId(localStorage.getItem('id')).pipe(take(1)).subscribe((response) => {
       this.currentAccountId = response;
     });
+    this.accountService.getUserById(localStorage.getItem('id')).pipe(take(1)).subscribe((response: User) => this.userName = response.userName);
     this.compositionId = Number(this.route.snapshot.paramMap.get('id'));
     this.compositionService.getAllTags()
       .pipe(take(1))
@@ -42,12 +45,19 @@ export class ReadCompositionComponent implements OnInit {
         this.currentComposition = response;
         this.dataLoaded = Promise.resolve(true);
         this.calculateRatings(response.compositionRatings);
-        this.checkVote();
-        this.currentComposition.chapters.length < 1 ? this.setChapterError() : this.setChapter();
+        this.setCommentsAndRatings();
       },
         () => { this.hasError = true; this.errorMessage = 'Composition not found.' });
   }
 
+  setCommentsAndRatings() {
+    this.checkVote();
+    this.commentsCount = this.currentComposition.compositionComments.length;
+    this.switchComments(1);
+    this.currentComposition.chapters.length < 1 ? this.setChapterError() : this.setChapter();
+  }
+
+  userName: string;
   currentAccountId: number;
   isLoggedIn: boolean = false;
   userRate = 0;
@@ -166,6 +176,33 @@ export class ReadCompositionComponent implements OnInit {
           this.isAlreadyLiked = true;
         }
       }
+  }
+
+  //comments
+  currentUserComment: string = '';
+  submitComment() {
+    if (this.currentUserComment.length > 0) {
+      const comment: UserCommentary = {
+        userName: this.userName,
+        commentContext: this.currentUserComment,
+        compositionId: this.currentComposition.compositionId
+      } as UserCommentary;
+      this.compositionService.addComment(comment).pipe(take(1)).subscribe(() => this.currentUserComment = '');
+    }
+  }
+
+  commentsPage = 1;
+  commentsCount: number;
+  currentComments: UserCommentary[] = [];
+  switchComments(p: number) {
+    let i = 0;
+    this.currentComments.length = 0;
+    while (i < 6) {
+      if (this.currentComposition.compositionComments[i + 6 * (p - 1)])
+        this.currentComments.push(this.currentComposition.compositionComments[i + 6 * (p - 1)]);
+      i++;
+    }
+
   }
 }
 

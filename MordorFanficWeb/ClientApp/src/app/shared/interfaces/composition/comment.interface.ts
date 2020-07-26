@@ -1,4 +1,4 @@
-export interface Comment {
+export interface UserCommentary {
   commentId: number;
   userName: string;
   commentContext: string;

@@ -9,6 +9,7 @@ import { Rating } from '../interfaces/composition/rating.interface';
 import { Tag } from '../interfaces/tags/tag.interface';
 import { CompositionTag } from '../interfaces/composition-tags/composition-tag.interface';
 import { UploadImage } from '../interfaces/chapter/upload-image.interface';
+import { UserCommentary } from '../interfaces/composition/comment.interface';
 
 @Injectable()
 export class CompositionService {
@@ -82,10 +83,10 @@ export class CompositionService {
       .pipe(catchError(this.handleError<Rating>('addRating', rating)));
   }
 
-  addComment(comment: Comment) {
+  addComment(comment: UserCommentary) {
     const headers = this.setUserHeaders();
-    return this.httpClient.post<Comment>(`${this.baseURL}/composition/add-comment`, comment, { headers: headers })
-      .pipe(catchError(this.handleError<Comment>('addComment', comment)));
+    return this.httpClient.post(`${this.baseURL}/composition/add-comment`, comment, { headers: headers })
+      .pipe(catchError(this.handleError('addComment', comment)));
   }
 
   deleteImages(images: UploadImage[]) {

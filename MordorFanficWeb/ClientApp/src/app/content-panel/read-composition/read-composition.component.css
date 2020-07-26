@@ -13,19 +13,19 @@
   height: 100vh;
 }
 
-img{
-    width: 80%;
-    max-height: 500px;
+img {
+  width: 80%;
+  max-height: 500px;
 }
 
-  #notfound .notfound {
-    position: absolute;
-    left: 50%;
-    top: 40%;
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-  }
+#notfound .notfound {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
 
 .notfound {
   max-width: 710px;
@@ -128,5 +128,34 @@ ngb-pagination ::ng-deep ul > li.active > a {
 }
 
 .filled.bad {
-  color: #ff1e1e;
+  color: gold;
+}
+
+textarea {
+  width: 100%;
+  resize: none;
+  border: none;
+  border-bottom: 2px solid;
+  border-color: #3C52B4;
+  background-color: whitesmoke;
+  height: 10rem;
+}
+
+  textarea:focus,
+  textarea:active {
+    border: 1px solid;
+    outline: none !important;
+    outline-style: none !important;
+    border-color: #3C52B4;
+  }
+
+.card-header {
+  width: 100%;
+  background-color: #3C52B4;
+  color: whitesmoke;
+}
+
+.card-body {
+  width: 100%;
+  background-color: whitesmoke;
 }

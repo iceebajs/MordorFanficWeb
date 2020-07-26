@@ -9,7 +9,7 @@
           {{likesCount}}
         </button>
       </h1>
-      <img class="rounded img-fluid d-block shadow-lg mx-auto"
+      <img class="rounded img-fluid d-block shadow-lg mx-auto mb-3"
            [src]="currentChapter.imgSource" />
 
       <div [innerHTML]="currentChapter.context | safeHtml"
@@ -78,11 +78,41 @@
     <div class="w-100"></div>
 
     <div class="col-xl-6 col-lg-8 col-md-10 col-sm-12 mx-auto" *ngIf="!isRead">
-      <div class="row" *ngIf="isLoggedIn">
-        addComment
+      <div class="row mt-3 mb-2" *ngIf="isLoggedIn">
+        <div class="col">
+          <h3 class="font-weight-bold">Write a comment</h3>
+          <textarea placeholder="Enter your comment..."
+                    [(ngModel)]="currentUserComment"></textarea>
+          <div class="button-container">
+            <div class="align-button">
+              <button mat-raised-button color="primary" (click)="submitComment()">
+                <mat-icon class="mat-18 mat_icon">comment_blank</mat-icon> Comment
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="row pb-3 mb-4">
-        Comments section
+        <div class="col-12 mb-3" *ngFor="let comment of currentComments">
+          <div class="card-header">
+            {{comment.userName}}
+          </div>
+          <div class="card-body">
+            {{comment.commentContext}}
+          </div>
+        </div>
+
+        <div class="button-container-compositon justify-content-end d-flex">
+          <ngb-pagination [collectionSize]="commentsCount"
+                          [(page)]="commentsPage"
+                          [maxSize]="3"
+                          [pageSize]="6"
+                          [boundaryLinks]="true"
+                          [rotate]="true"
+                          (pageChange)="switchComments($event)">
+
+          </ngb-pagination>
+        </div>
       </div>
     </div>
   </div>
