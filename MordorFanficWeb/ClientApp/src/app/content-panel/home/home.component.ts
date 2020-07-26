@@ -5,6 +5,7 @@ import { CompositionService } from './../../shared/services/composition.service'
 import { Tag } from '../../shared/interfaces/tags/tag.interface';
 import { Composition } from '../../shared/interfaces/composition/composition.interface';
 import { Rating } from '../../shared/interfaces/composition/rating.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +15,9 @@ import { Rating } from '../../shared/interfaces/composition/rating.interface';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private authService: AuthorizationService, private compositionService: CompositionService) { }
+  constructor(private authService: AuthorizationService,
+    private compositionService: CompositionService,
+    private router: Router) { }
 
   ngOnInit(): void {
     if (this.authService.isSignedIn())
@@ -63,5 +66,9 @@ export class HomeComponent implements OnInit {
       else
         return summary;
     }
+  }
+
+  readComposition(id: number) {
+    this.router.navigate(['read', id]);
   }
 }

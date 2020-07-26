@@ -43,7 +43,7 @@ namespace MordorFanficWeb.BusinessLogic.Services
                 .Include(t => t.CompositionTags)
                 .Include(c => c.CompositionComments)
                 .Include(r => r.CompositionRatings)
-                .Take(10)
+                .Take(6)
                 .ToListAsync().ConfigureAwait(false);
         }
     }

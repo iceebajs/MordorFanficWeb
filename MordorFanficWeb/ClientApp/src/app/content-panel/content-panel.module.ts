@@ -6,15 +6,18 @@ import { HomeComponent } from './home/home.component';
 import { SafeHtmlModule } from './../shared/helpers/safe-html.module';
 
 import { MatChipsModule } from '@angular/material/chips';
+import { ReadCompositionComponent } from './read-composition/read-composition.component';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
-  declarations: [HomeComponent],
+  declarations: [HomeComponent, ReadCompositionComponent],
   imports: [
     CommonModule,
     ContentPanelRoutingModule,
     SafeHtmlModule,
-    MatChipsModule
+    MatChipsModule,
+    MatButtonModule
   ]
 })
 export class ContentPanelModule { }

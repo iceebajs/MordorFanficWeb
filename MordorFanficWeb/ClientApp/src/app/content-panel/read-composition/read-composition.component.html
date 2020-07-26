@@ -1,0 +1,53 @@
+<title *ngIf="dataLoaded | async">Read {{currentComposition.title}}</title>
+<div class="container-fluid mt-4 mb-4" *ngIf="!hasError">
+  <div class="row" *ngIf="dataLoaded | async">
+    <div class="col-xl-6 col-lg-8 col-md-10 col-sm-12 mx-auto shadow shadow-wrapping">
+      <h1 class="text-center">{{currentChapter.chapterTitle}}</h1>
+      <img class="rounded img-fluid d-block shadow-lg mx-auto"
+           [src]="currentChapter.imgSource" />
+
+      <div [innerHTML]="currentChapter.context | safeHtml">
+      </div>
+
+
+      <div class="button-container-compositon">
+        <span class="pr-1">
+          <button mat-raised-button color="primary"
+                  [disabled]="prevButtonDisabled"
+                  (click)="prevChapter()">
+            Previous
+          </button>
+        </span>
+
+        <span class="pl-1">
+          <button mat-raised-button color="primary"
+                  [disabled]="nextButtonDisabled"
+                  (click)="nextChapter()">
+            Next
+          </button>
+        </span>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container not-found-container" *ngIf="hasError">
+  <div class="row">
+    <div class="col">
+      <div id="notfound">
+        <div class="notfound">
+          <div class="notfound-404">
+          </div>
+          <h2>{{errorMessage}}</h2>
+          <div>
+            <a routerLink="" class="btn btn-primary btn-lg">
+              <span class="glyphicon glyphicon-home"></span>
+              Back to home
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
