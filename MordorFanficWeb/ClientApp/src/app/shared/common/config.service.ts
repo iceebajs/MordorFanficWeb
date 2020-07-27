@@ -4,10 +4,12 @@ import { Injectable } from '@angular/core';
 export class ConfigService {
   _apiURI: string;
   _appURL: string;
+  _socketURL: string;
 
   constructor() {
     this._apiURI = 'api';
-    this._appURL = 'http://localhost:50183'
+    this._appURL = 'https://localhost:44396/'
+    this._socketURL = 'wss://localhost:44396/ws';
   }
 
   getApiURI() {
@@ -16,5 +18,9 @@ export class ConfigService {
 
   getAppURL() {
     return this._appURL;
+  }
+
+  getSocketURL() {
+    return this._socketURL;
   }
 }

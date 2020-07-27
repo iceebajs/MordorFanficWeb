@@ -157,13 +157,12 @@ namespace MordorFanficWeb.Controllers
             }
         }
 
-        [Authorize(Policy = "RegisteredUsers")]
         [HttpGet("{id}")]
         public async Task<ActionResult> GetUserById(string id)
         {
             try
             {
-                if (id == null)
+                if (id == "null" || id == null)
                 {
                     logger.LogError("User id object sent from client is null.");
                     return BadRequest("User id object is null");
@@ -203,7 +202,7 @@ namespace MordorFanficWeb.Controllers
         {
             try
             {
-                if (id == null)
+                if (id == "null" || id == null)
                 {
                     logger.LogError("User id object sent from client is null");
                     return BadRequest("User id object is null");
@@ -231,7 +230,7 @@ namespace MordorFanficWeb.Controllers
         {
             try
             {
-                if(id == null)
+                if(id == "null" || id == null)
                 {
                     logger.LogError("User id object sent from client is null");
                     return BadRequest("User id object is null");
@@ -253,7 +252,7 @@ namespace MordorFanficWeb.Controllers
         {
             try
             {
-                if (id == null)
+                if (id == "null" || id == null)
                 {
                     logger.LogError("User id object sent from client is null");
                     return BadRequest("User id object is null");
@@ -279,7 +278,7 @@ namespace MordorFanficWeb.Controllers
         {
             try
             {
-                if (id == null)
+                if (id == "null" || id == null)
                 {
                     logger.LogError("User id object sent from client is null");
                     return BadRequest("User id object is null");
@@ -300,7 +299,7 @@ namespace MordorFanficWeb.Controllers
         {
             try
             {
-                if (id == null)
+                if (id == "null" || id == null)
                 {
                     logger.LogError("User id object sent from client is null");
                     return BadRequest("User id object is null");
@@ -318,13 +317,12 @@ namespace MordorFanficWeb.Controllers
             }
         }
 
-        [Authorize(Policy = "RegisteredUsers")]
         [HttpGet("get-account-id/{id}")]
         public async Task<ActionResult<int>> GetAccountId(string id)
         {
             try
             {
-                if (id == null)
+                if (id == "null" || id == null)
                 {
                     logger.LogError("User id object sent from client is null");
                     return BadRequest("User id object is null");

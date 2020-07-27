@@ -111,10 +111,10 @@
 
   <div class="w-100 pb-2"></div>
   <h2 class="text-center">Drag/click to upload image</h2>
-  <div class="uploadfilecontainer" style="background-color: transparent;" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
+  <div class="uploadfilecontainer" style="background-color: transparent; word-break: break-word;" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
     <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
   </div>
-  <div class="files-list" *ngFor="let file of files;let i= index">
+  <div class="files-list" style="width: 100%; word-break: break-word;" *ngFor="let file of files;let i= index">
     <p> {{ file }} </p>
     <button mat-button class="delete-file" (click)="deleteAttachment(i)" color="warn">
       <mat-icon class="mat-18 mat_icon">delete_forever</mat-icon>
@@ -164,7 +164,7 @@
        (onFileDropped)="uploadFile($event)">
     <input hidden type="file" #fileInput (change)="uploadFileEdit($event.target.files)">
   </div>
-  <div class="files-list" *ngFor="let fileEdit of filesEdit;let i= index">
+  <div class="files-list" style="width: 100%; word-break: break-word;" *ngFor="let fileEdit of filesEdit;let i= index">
     <p> {{ fileEdit }} </p>
     <button mat-button class="delete-file" (click)="deleteAttachmentEdit(i)" color="warn">
       <mat-icon class="mat-18 mat_icon">delete_forever</mat-icon>
@@ -199,7 +199,7 @@
 </ng-template>
 
 <ng-template #changeChaptNum>
-  <div class="col-lg-7 col-md-8 col-sm-10 mx-auto">
+  <div class="col-lg-9 col-md-9 col-sm-10 mx-auto">
     <h3 class="text-center mt-2"><strong>*Drag and drop plates to change chapter sequence*</strong></h3>
     <div cdkDropList class="sequence-list" (cdkDropListDropped)="drop($event)">
       <div class="sequence-box" *ngFor="let chapterItem of chaptersArray; index as i" cdkDrag>

@@ -35,6 +35,7 @@ using MordorFanficWeb.PresentationAdapters.CommentsAdapter;
 using MordorFanficWeb.PresentationAdapters.CompositionRatingsAdapter;
 using MordorFanficWeb.PresentationAdapters.ChapterLikesAdapter;
 using MordorFanficWeb.BusinessLogic.Helpers;
+using System.Threading.Tasks;
 
 namespace MordorFanficWeb
 {
@@ -167,6 +168,7 @@ namespace MordorFanficWeb
                 return new StorageConnectionFactory(cloudStorageOptions);
             });
             services.AddSingleton<ICloudStorageService, CloudStorageService>();
+            services.AddSingleton(typeof(WebSocketService), new WebSocketService());
 
             services.AddSingleton(Common.AutoMapper.AutoMapper.Configure());
 
@@ -203,6 +205,28 @@ namespace MordorFanficWeb
             }
             app.UseRouting();
             app.UseMvc();
+
+            app.UseWebSockets();
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Path == "/ws")
+                {
+                    if (context.WebSockets.IsWebSocketRequest)
+                    {
+                        var socket = await context.WebSockets.AcceptWebSocketAsync().ConfigureAwait(false);
+                        var webSocketService = (WebSocketService)app.ApplicationServices.GetService(typeof(WebSocketService));
+                        await webSocketService.AddComment(socket).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        context.Response.StatusCode = 400;
+                    }
+                }
+                else
+                {
+                    await next().ConfigureAwait(false);
+                }
+            });           
 
             app.UseSpa(spa =>
             {

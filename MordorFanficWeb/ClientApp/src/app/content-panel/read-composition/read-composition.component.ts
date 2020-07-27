@@ -12,30 +12,39 @@ import { Rating } from '../../shared/interfaces/composition/rating.interface';
 import { Like } from '../../shared/interfaces/chapter/like.interface';
 import { UserCommentary } from '../../shared/interfaces/composition/comment.interface';
 import { User } from '../../shared/interfaces/user.interface';
+import { WebSocketService } from '../../shared/services/web-socket.service';
+import { SocketComment } from '../../shared/interfaces/composition/socket-commentary.interface';
 
 @Component({
   selector: 'app-read-composition',
   templateUrl: './read-composition.component.html',
   styleUrls: ['./read-composition.component.css'],
-  providers: [CompositionService, AccountService, ChapterService]
+  providers: [CompositionService, AccountService, ChapterService, WebSocketService]
 })
 export class ReadCompositionComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private compositionService: CompositionService,
     private authService: AuthorizationService, private accountService: AccountService,
-    private chapterService: ChapterService) { }
+    private chapterService: ChapterService, private webSocketService: WebSocketService) {
+    this.webSocketService.newCommentary.subscribe(comment => {
+      this.setNewComment(comment);
+    });
+  }
 
   ngOnInit(): void {
+    if (localStorage.getItem('id')){
     this.accountService.getUserAccountId(localStorage.getItem('id')).pipe(take(1)).subscribe((response) => {
-      this.currentAccountId = response;
-    });
-    this.accountService.getUserById(localStorage.getItem('id')).pipe(take(1)).subscribe((response: User) => this.userName = response.userName);
+        this.currentAccountId = response;
+      });
+    this.accountService.getUserById(localStorage.getItem('id')).pipe(take(1)).subscribe((response: User) => { if (response) this.userName = response.userName });
+    }
     this.compositionId = Number(this.route.snapshot.paramMap.get('id'));
     this.compositionService.getAllTags()
       .pipe(take(1))
       .subscribe((response: Tag[]) => { this.tagsList = response; this.getComposition(); });
     this.isLoggedIn = this.authService.isSignedIn();
     this.setLikeButtonStatus();
+    this.webSocketService.startSocket();
   }
 
   getComposition() {
@@ -57,7 +66,7 @@ export class ReadCompositionComponent implements OnInit {
     this.currentComposition.chapters.length < 1 ? this.setChapterError() : this.setChapter();
   }
 
-  userName: string;
+  userName: string = '';
   currentAccountId: number;
   isLoggedIn: boolean = false;
   userRate = 0;
@@ -187,7 +196,10 @@ export class ReadCompositionComponent implements OnInit {
         commentContext: this.currentUserComment,
         compositionId: this.currentComposition.compositionId
       } as UserCommentary;
-      this.compositionService.addComment(comment).pipe(take(1)).subscribe(() => this.currentUserComment = '');
+      this.compositionService.addComment(comment).pipe(take(1)).subscribe(() => {
+        this.currentUserComment = '';
+        this.sendCommentBySocket(comment);
+      });
     }
   }
 
@@ -203,6 +215,25 @@ export class ReadCompositionComponent implements OnInit {
       i++;
     }
 
+  }
+
+  //websocket
+  sendCommentBySocket(comment: UserCommentary) {
+    this.webSocketService.sendAddCommentRequest(comment);
+  }
+
+  setNewComment(comment: SocketComment[]) {
+    if (this.currentComposition !== undefined) {
+      const newItem: UserCommentary = {
+        commentId: comment[0].CommentId,
+        commentContext: comment[0].CommentContext,
+        userName: comment[0].UserName,
+        compositionId: comment[0].CompositionId
+      } as UserCommentary;
+      this.currentComposition.compositionComments.push(newItem);
+      this.commentsCount += 1;
+      this.switchComments(this.commentsPage);
+    }
   }
 }
 
