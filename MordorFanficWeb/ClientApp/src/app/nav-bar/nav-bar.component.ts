@@ -31,6 +31,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
       asObservable().
       subscribe(isLoggedIn => {
         this.isLoggedIn = isLoggedIn;
+        this.isAdminUser = this.isAdmin();
+        this.isAdminUser ? this.asUserName = localStorage.getItem('asUserEmail') : this.asUserName = undefined;
       });
   }
 
@@ -102,4 +104,14 @@ export class NavBarComponent implements OnInit, OnDestroy {
     setTimeout(() => this.router.navigate(['read', id]), 1000);
   }
 
+  isAdminUser: boolean = false;
+  asUserName: string;
+  asUserLogout() {
+    localStorage.removeItem('asUserEmail');
+    localStorage.removeItem('asUserId');
+    location.reload();
+  }
+  isAdmin() {
+    return localStorage.getItem('role') === 'admin' ? true : false;
+  }
 }

@@ -131,5 +131,6 @@ export class AdminDashboardComponent implements OnInit {
   loginAsUser(user: User) {
     localStorage.setItem('asUserEmail', user.email);
     localStorage.setItem('asUserId', user.id);
+    location.reload();
   }
 }

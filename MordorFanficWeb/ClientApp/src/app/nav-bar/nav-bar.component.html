@@ -33,6 +33,9 @@
       </li>
     </ul>
     <ul class="navbar-nav margin-nav account-panel" *ngIf="isLoggedIn">
+      <li *ngIf="isAdminUser && asUserName">
+        <a (click)="asUserLogout();">As {{asUserName}} </a>
+      </li>
       <li>
         <a (click)="goTo('/account/profile'); isMenuCollapsed = true;">Your account</a>
       </li>
