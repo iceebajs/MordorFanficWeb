@@ -69,7 +69,7 @@ export class AdminDashboardComponent implements OnInit {
   deleteUser(deleteUserModal, user: User) {
     this.userEmailToDelete = user.email;
     this.deleteModalHasError = false;
-    this.modalService.open(deleteUserModal, { ariaLabelledBy: 'modal-delete' }).result.then((result) => {
+    this.modalService.open(deleteUserModal, { ariaLabelledBy: 'modal-delete', centered: true }).result.then((result) => {
       if (result === true) {
         this.selection.select(user);
         this.accService.deleteUser(user.id).pipe(take(1)).subscribe(() => {
@@ -107,7 +107,7 @@ export class AdminDashboardComponent implements OnInit {
           this.changeUserRoleTo = 'user';
         }
     });
-    this.modalService.open(changeRoleModal, { ariaLabelledBy: 'modal-change' }).result.then((result) => {
+    this.modalService.open(changeRoleModal, { ariaLabelledBy: 'modal-change', centered: true }).result.then((result) => {
       if (result === true) {
         this.changeUserRoleTo === 'admin' ?
           this.accService.setUserAsAdmin(this.userIdToChangeRole).pipe(take(1)).subscribe() :

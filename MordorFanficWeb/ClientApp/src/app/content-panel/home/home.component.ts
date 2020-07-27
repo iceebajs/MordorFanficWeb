@@ -25,7 +25,10 @@ export class HomeComponent implements OnInit {
 
     this.compositionService.getAllTags()
       .pipe(take(1))
-      .subscribe((response: Tag[]) => { this.tagsList = response; this.tagsLoaded = Promise.resolve(true) });
+      .subscribe((response: Tag[]) => {
+        this.tagsList = response;
+        this.tagsLoaded = Promise.resolve(true);
+      });
 
     this.compositionService.getLastCompositions()
       .pipe(take(1))

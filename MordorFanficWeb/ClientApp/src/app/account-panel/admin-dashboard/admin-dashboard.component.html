@@ -107,6 +107,7 @@
   </div>
   <div class="modal-footer">
     <button mat-button (click)="modal.close(true)">Yes</button>
+    <button mat-button (click)="modal.close(false)">No</button>
   </div>
 </ng-template>
 
@@ -119,7 +120,7 @@
     </button>
   </div>
   <div class="modal-footer">
-    <button mat-button (click)="modal.close(false)">No</button>
     <button class="alert-danger" mat-button (click)="modal.close(true)">Yes</button>
+    <button mat-button (click)="modal.close(false)">No</button>
   </div>
 </ng-template>

@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthorizationService } from './../shared/services/authorization.service';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-nav-bar',
@@ -15,7 +16,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
   isLoggedIn: boolean = false;
   subscription: Subscription;
 
-  constructor(private router: Router, private authService: AuthorizationService) { }
+  constructor(private router: Router, private authService: AuthorizationService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
     if (this.authService.isSignedIn())
@@ -38,4 +39,21 @@ export class NavBarComponent implements OnInit, OnDestroy {
   goTo(route: string): void {
     this.router.navigate([route]);
   }
+
+
+  searchValue: string = '';
+  public doFilter = (value: string) => {
+    this.searchValue = value;
+  }
+
+  find() {
+  }
+
+  open(content) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', scrollable: true, centered: true }).result.then(() => {
+      this.searchValue = '';
+    }, () => {
+    });
+  }
+
 }

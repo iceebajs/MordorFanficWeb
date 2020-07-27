@@ -1,14 +1,9 @@
 <title>Home</title>
 <div class="container-fluid">
   <div class="row" *ngIf="compositionsLoaded && tagsLoaded | async">
-    <div class="col-lg-4 col-md-4 col-sm-10">
-      Search
-    </div>
-
-    <div class="w-100"></div>
 
     <div class="col mb-2 mt-2">
-      <h1 style="margin-left:40%;">Last updates</h1>
+      <h1 style="margin-left:40%;">Latest updates</h1>
     </div>
 
     <div class="w-100"></div>
@@ -31,7 +26,7 @@
             </ngb-rating>
           </p>
           <p>
-            <strong>Tags: </strong>
+            <strong>Tags:</strong>
             <mat-chip-list>
               <mat-chip color="primary" selected *ngFor="let compositionTag of composition.compositionTags">
                 <a (click)="searchByTag(compositionTag.tagId - 1)">{{tagsList[compositionTag.tagId - 1].tag}}</a>

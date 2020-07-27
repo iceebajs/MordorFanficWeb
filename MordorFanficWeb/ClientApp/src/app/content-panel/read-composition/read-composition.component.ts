@@ -32,11 +32,11 @@ export class ReadCompositionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (localStorage.getItem('id')){
-    this.accountService.getUserAccountId(localStorage.getItem('id')).pipe(take(1)).subscribe((response) => {
+    if (localStorage.getItem('id')) {
+      this.accountService.getUserAccountId(localStorage.getItem('id')).pipe(take(1)).subscribe((response) => {
         this.currentAccountId = response;
       });
-    this.accountService.getUserById(localStorage.getItem('id')).pipe(take(1)).subscribe((response: User) => { if (response) this.userName = response.userName });
+      this.accountService.getUserById(localStorage.getItem('id')).pipe(take(1)).subscribe((response: User) => { if (response) this.userName = response.userName });
     }
     this.compositionId = Number(this.route.snapshot.paramMap.get('id'));
     this.compositionService.getAllTags()

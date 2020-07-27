@@ -31,11 +31,14 @@ namespace MordorFanficWeb.BusinessLogic.Services
         {
             foreach(var name in names)
             {
-                Uri uri = new Uri(name.Url);
-                string filename = Path.GetFileName(uri.LocalPath);
-                var blobContainer = await storageConnectionFactory.GetContainer().ConfigureAwait(false);
-                var blob = blobContainer.GetBlockBlobReference(filename);
-                await blob.DeleteIfExistsAsync().ConfigureAwait(false);
+                if(name.Url.Length > 0)
+                {
+                    Uri uri = new Uri(name.Url);
+                    string filename = Path.GetFileName(uri.LocalPath);
+                    var blobContainer = await storageConnectionFactory.GetContainer().ConfigureAwait(false);
+                    var blob = blobContainer.GetBlockBlobReference(filename);
+                    await blob.DeleteIfExistsAsync().ConfigureAwait(false);
+                }
             }
         }
 

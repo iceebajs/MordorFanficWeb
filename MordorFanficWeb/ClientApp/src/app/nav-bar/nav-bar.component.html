@@ -8,6 +8,21 @@
       <li>
         <a (click)="goTo('/'); isMenuCollapsed = true;">Home</a>
       </li>
+      <li>
+        <mat-form-field style="width: 80%" class="ml-lg-3 ml-md-0">
+          <mat-label style=" color:whitesmoke;"> Search... </mat-label>
+          <input matInput
+                 type="text"
+                 style="color:whitesmoke;"
+                 onfocus="this.value=''"
+                 (keyup)="doFilter($event.target.value)">
+        </mat-form-field>
+      </li>
+      <li>
+        <button mat-raised-button style="top: 20%" color="primary" class="ml-lg-4 ml-md-0" (click)="find(); open(content);">
+          <mat-icon class="mat-18 mat_icon" style=" color: whitesmoke; ">search</mat-icon>
+        </button>
+      </li>
     </ul>
     <ul class="navbar-nav margin-nav account-panel" *ngIf="!isLoggedIn">
       <li>
@@ -27,3 +42,22 @@
     </ul>
   </div>
 </nav>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h2 class="modal-title text-center" id="modal-basic-title">Search result</h2>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <h3>Search results for: <strong>{{searchValue}}</strong></h3>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button mat-button (click)="modal.close()">Close</button>
+  </div>
+</ng-template>
