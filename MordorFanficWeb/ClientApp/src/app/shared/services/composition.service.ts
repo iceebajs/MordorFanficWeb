@@ -10,6 +10,7 @@ import { Tag } from '../interfaces/tags/tag.interface';
 import { CompositionTag } from '../interfaces/composition-tags/composition-tag.interface';
 import { UploadImage } from '../interfaces/chapter/upload-image.interface';
 import { UserCommentary } from '../interfaces/composition/comment.interface';
+import { UserKeyword } from '../interfaces/composition/keyword.interface';
 
 @Injectable()
 export class CompositionService {
@@ -93,6 +94,11 @@ export class CompositionService {
     const headers = this.setUserHeaders();
     return this.httpClient.post(`${this.baseURL}/composition/delete-images`, images, { headers: headers })
       .pipe(catchError(this.handleError<File>('deleteImages')));
+  }
+
+  findComposition(keyword: UserKeyword): Observable<Composition[]> {
+    return this.httpClient.post<Composition[]>(`${this.baseURL}/composition/find-composition`, keyword)
+      .pipe(catchError(this.handleError<Composition[]>('findComposition')));
   }
 
   getErrorMessage() {

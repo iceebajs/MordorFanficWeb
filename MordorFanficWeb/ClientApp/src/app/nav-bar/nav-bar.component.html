@@ -14,12 +14,12 @@
           <input matInput
                  type="text"
                  style="color:whitesmoke;"
-                 onfocus="this.value=''"
+                 [ngModel]="searchValue"
                  (keyup)="doFilter($event.target.value)">
         </mat-form-field>
       </li>
       <li>
-        <button mat-raised-button style="top: 20%" color="primary" class="ml-lg-4 ml-md-0" (click)="find(); open(content);">
+        <button mat-raised-button style="top: 20%" color="primary" class="ml-lg-4 ml-md-0" (click)="find(content)">
           <mat-icon class="mat-18 mat_icon" style=" color: whitesmoke; ">search</mat-icon>
         </button>
       </li>
@@ -52,9 +52,22 @@
   </div>
   <div class="modal-body">
     <form>
-      <div class="form-group">
+      <div class="form-group" *ngIf="!notFound">
         <h3>Search results for: <strong>{{searchValue}}</strong></h3>
+        <h4 *ngFor="let comp of foundCompositions; index as i">
+          <strong>Title:</strong> {{comp.title}} --- <strong>Genre:</strong> {{comp.genre}} --- <strong>Rating:</strong> {{compositionRating[i]}}
+          <button mat-icon-button (click)="modal.close(); readComposition(comp.compositionId);">
+            <mat-icon class="mat-18 mat_icon">menu_book</mat-icon>
+          </button>
+        </h4>
       </div>
+      <div class="form-group" *ngIf="notFound">
+        <h3>Search results for: <strong>{{searchValue}}</strong></h3>
+        <h1>
+          No matches found
+        </h1>
+      </div>
+
     </form>
   </div>
   <div class="modal-footer">

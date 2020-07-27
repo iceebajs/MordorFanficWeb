@@ -50,6 +50,7 @@
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\composition-tags\composition-tag.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\composition\comment.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\composition\composition.interface.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\composition\keyword.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\composition\rating.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\composition\socket-commentary.interface.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\interfaces\credentials.interface.ts" />

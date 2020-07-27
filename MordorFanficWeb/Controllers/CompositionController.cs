@@ -258,5 +258,28 @@ namespace MordorFanficWeb.Controllers
             }
 
         }
+
+
+        [HttpPost("find-composition")]
+        public async Task<ActionResult> FindComposition([FromBody] KeywordViewModel keyword)
+        {
+            try
+            {
+                if (keyword == null)
+                {
+                    logger.LogError($"Keyword object sent from client is null");
+                    return BadRequest("Keyword object is null");
+                }
+
+                var result = await compositionAdapter.FindInCompositions(keyword.Keyword).ConfigureAwait(false);
+                logger.LogInformation($"Composition find action succeed");
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong inside CreateComment action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
     }
 }

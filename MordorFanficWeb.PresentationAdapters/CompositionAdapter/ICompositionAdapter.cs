@@ -14,5 +14,6 @@ namespace MordorFanficWeb.PresentationAdapters.CompositionAdapter
         Task<List<CompositionViewModel>> GetAllCompositions();
         Task<List<CompositionViewModel>> GetAllCompositionsOfAccount(int id);
         Task<List<CompositionViewModel>> GetLastAdded();
+        Task<List<CompositionViewModel>> FindInCompositions(string keyword);
     }
 }

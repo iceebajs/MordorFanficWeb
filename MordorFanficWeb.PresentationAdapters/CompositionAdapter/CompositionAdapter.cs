@@ -55,5 +55,10 @@ namespace MordorFanficWeb.PresentationAdapters.CompositionAdapter
         {
             return mapper.Map<List<CompositionViewModel>>(await compositionService.GetLastAdded().ConfigureAwait(false));
         }
+
+        public async Task<List<CompositionViewModel>> FindInCompositions(string keyword)
+        {
+            return mapper.Map<List<CompositionViewModel>>(await compositionService.FindInCompositions(keyword).ConfigureAwait(false));
+        }
     }
 }

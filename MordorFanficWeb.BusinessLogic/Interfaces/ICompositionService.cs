@@ -18,5 +18,6 @@ namespace MordorFanficWeb.BusinessLogic.Interfaces
         Task<Composition> GetCompositionById(int id);
         Task<int> CreateComposition(Composition composition);
         Task<List<Composition>> GetLastAdded();
+        Task<List<Composition>> FindInCompositions(string keyword);
     }
 }
